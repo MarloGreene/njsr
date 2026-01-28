@@ -13,20 +13,15 @@ const scriptJsPath = path.join(rootDir, 'tools', 'script.js');
 // Tool descriptions
 const toolDescriptions = {
   '23': '23 Questions Answered by The Book of Mormon - Educational scripture quiz',
-  'bg': 'Background Gradient Generator - CSS gradient background creator with live preview',
-  'bc': 'Battle Buddy Checker - Military unit organization and status tracking',
   'bom': 'Book of Mormon Reader - A web-based scripture reader for The Book of Mormon',
   'bomr': 'Book of Mormon Random Image Viewer - Random reverent imagery from The Book of Mormon',
   'buddy': 'Buddy Letter Assistant - VA PTSD claim support letter generator',
   'cal': 'Calendar - Simple yearly calendar display',
-  'cash': 'Expense Tracker - Track spending, manage budget, and analyze expenses',
   'click': 'Metronome - Interactive musical metronome with BPM controls',
   'color': 'Color Picker - Advanced color selection with screen sampling',
   'colors': 'Color Palette Generator - Random palette creation with save/lock features',
   'countdown': 'Countdown Timer - Event countdown with date/time setting',
-  'degrees': 'Six Degrees of Kevin Bacon - Actor connection finder using IMDb data',
   'dice': 'Dice Roller - Polyhedral dice simulator with drag-and-drop tower',
-  'eb': 'LDS Scripture Reader - Comprehensive reader for LDS scriptures',
   'foto': 'Photo Portfolio - Image gallery with zoom and grid controls',
   'ip': 'IP Information Dashboard - Network and browser fingerprinting info',
   'ip2': 'Network Information - IPv4/IPv6 address details',
@@ -46,37 +41,27 @@ const toolDescriptions = {
   'sm/bom': 'Book of Mormon Matrix - Matrix animation with Book of Mormon verses',
   'sm/pogp': 'Pearl of Great Price Matrix - Matrix animation with Pearl of Great Price verses',
   'sm/dc': 'Doctrine & Covenants Matrix - Matrix animation with Doctrine and Covenants verses',
-  'split': 'Simple Stopwatch - Basic timing with split functionality',
-  'ss': 'Lightning Fast Scripture Search - Scripture search (variant)',
-  'ssah': 'LDS Scripture Search & Highlighter - Advanced scripture study tool',
   'stopwatch': 'Stopwatch - Polished timing application',
   'tarot': 'Tarot Card Reader - Mystical card reading application',
   'tt': 'tTracker - Tinnitus episode logger',
-  'url': 'URL Tools - Encoder, decoder, and short URL generator (PAUSED, client-side only)',
   'wc': 'Text Statistics - Text analysis and counting tool',
   'write': 'just write - Minimalist note-taking application',
   'zenw': 'Zen Writer - Distraction-free text editor',
-  'zonk': 'VA Disability Claim Guide - Veteran benefits resource',
-  'zsr': 'Zen Scripture Reader - Scripture reading with zen interface'
+  'zonk': 'VA Disability Claim Guide - Veteran benefits resource'
 };
 
 // Tool categories for sorting by kind
 const toolCategories = {
   '23': 'religious',
-  'bg': 'design',
-  'bc': 'productivity',
   'bom': 'religious',
   'bomr': 'religious',
   'buddy': 'medical',
   'cal': 'productivity',
-  'cash': 'productivity',
   'click': 'music',
   'color': 'design',
   'colors': 'design',
   'countdown': 'productivity',
-  'degrees': 'entertainment',
   'dice': 'gaming',
-  'eb': 'religious',
   'foto': 'design',
   'ip': 'networking',
   'ip2': 'networking',
@@ -96,22 +81,17 @@ const toolCategories = {
   'sm/bom': 'religious',
   'sm/pogp': 'religious',
   'sm/dc': 'religious',
-  'split': 'productivity',
-  'ss': 'religious',
-  'ssah': 'religious',
   'stopwatch': 'productivity',
   'tarot': 'entertainment',
   'tt': 'medical',
-  'url': 'productivity',
   'wc': 'productivity',
   'write': 'productivity',
   'zenw': 'productivity',
-  'zonk': 'medical',
-  'zsr': 'religious'
+  'zonk': 'medical'
 };
 
 // Directories to exclude from tool detection
-const excludeDirs = ['textfiles', 'tmp', 'tools', 'stuff', 'work', 'alpha', 'beta', 'node_modules', '.git', '.github', 'meh'];
+const excludeDirs = ['bc', 'bg', 'cash', 'degrees', 'eb', 'oldbuddy', 'split', 'ss', 'ssah', 'stuff', 'textfiles', 'tmp', 'tools', 'url', 'work', 'zsr', 'alpha', 'beta', 'node_modules', '.git', '.github', 'meh'];
 
 function getDirectories(source) {
   return fs.readdirSync(source, { withFileTypes: true })

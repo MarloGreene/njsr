@@ -25,3 +25,19 @@ degrees/db/*.db
 
 # Migration script (no longer needed)
 migrate-to-flat.js
+
+# Inactive/abandoned tools (kept locally)
+bc/
+bg/
+cash/
+degrees/
+eb/
+oldbuddy/
+split/
+ss/
+ssah/
+stuff/
+textfiles/
+url/
+work/
+zsr/
