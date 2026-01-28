@@ -1,0 +1,103 @@
+body {
+    font-family: serif;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.light {
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+body.dark {
+    background-color: #333;
+    color: #f9f9f9;
+}
+
+header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 10px;
+    background-color: #8B4513;
+    color: white;
+    gap: 10px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+#controls {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    background-color: #eee;
+    gap: 15px;
+}
+
+body.dark #controls {
+    background-color: #444;
+}
+
+#palette {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    gap: 5px;
+}
+
+.color-btn {
+    width: 30px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+#highlightMode {
+    padding: 10px;
+}
+
+#highlightMode button {
+    margin-right: 10px;
+    padding: 5px 10px;
+}
+
+#highlightMode .active {
+    background-color: #8B4513;
+    color: white;
+}
+
+#content {
+    padding: 20px;
+    column-count: 1;
+    column-gap: 20px;
+    line-height: 1.5;
+}
+
+.verse {
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.verse:hover {
+    background-color: rgba(139, 69, 19, 0.1);
+}
+
+.highlight {
+    background-color: yellow; /* default */
+}
+
+.box-highlight {
+    border: 2px solid yellow;
+    padding: 2px;
+    display: inline;
+}
+
+@media (max-width: 768px) {
+    #content {
+        column-count: 1;
+    }
+}

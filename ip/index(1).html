@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src https://api.ipify.org https://api64.ipify.org https://ipapi.co;">
+    <title>IP Information Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>IP Information Dashboard</h1>
+        <button id="refresh-btn" title="Refresh all data" aria-label="Refresh IP and fingerprinting data">Refresh Data</button>
+        <p id="last-updated">Last updated: Loading...</p>
+        <div id="toast" class="toast">Data refreshed successfully!</div>
+    </header>
+    <main>
+        <section id="ip-info">
+            <h2>Your IP Information</h2>
+            <div id="ip-details">
+                <p>Loading IP information...</p>
+            </div>
+            <div id="geo-details">
+                <p>Loading geolocation information...</p>
+            </div>
+        </section>
+        <section id="browser-info">
+            <h2>Browser Fingerprinting Data</h2>
+            <p><strong>Privacy Warning:</strong> This data is visible to anyone viewing your screen. Do not share screenshots or display this page in public. It's for personal use only.</p>
+            <p>Browser fingerprinting collects unique characteristics of your browser and device to create a "fingerprint" that can identify you across websites without cookies. This includes hardware specs, software versions, and rendering behaviors. It's used for tracking, security, and analytics, but can raise privacy concerns.</p>
+            <table id="fingerprint-table">
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Fingerprinting data will be inserted here -->
+                </tbody>
+            </table>
+            <div id="obfuscation-tips">
+                <h3>Obfuscating Your Fingerprint</h3>
+                <p>Browser fingerprints are hard to completely eliminate, but you can make yours less unique with these basic techniques:</p>
+                <ul>
+                    <li><strong>Use privacy-focused browsers:</strong> Switch to Tor Browser, Brave, or Firefox with privacy extensions like uBlock Origin, HTTPS Everywhere, and NoScript.</li>
+                    <li><strong>Manage plugins and extensions:</strong> Disable unnecessary browser plugins or use a browser with fewer default plugins.</li>
+                    <li><strong>Adjust display settings:</strong> Change your screen resolution, zoom level, or browser window size to alter reported dimensions.</li>
+                    <li><strong>Modify fonts:</strong> Install or enable font blocking extensions to prevent font fingerprinting.</li>
+                    <li><strong>Use VPNs or proxies:</strong> Mask your IP address and location data, which can be part of fingerprinting.</li>
+                    <li><strong>Enable anti-fingerprinting features:</strong> Some browsers have built-in options to resist fingerprinting (e.g., Firefox's privacy.resistFingerprinting).</li>
+                    <li><strong>Clear cookies and data regularly:</strong> While not directly fingerprinting, it helps prevent tracking.</li>
+                </ul>
+                <p>Note: These methods can impact usability and aren't foolproof. For strong privacy, consider using Tor or dedicated privacy tools.</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p><strong>IP Information Dashboard</strong> &middot; /ip/</p>
+        <p>Network and browser fingerprinting information.</p>
+        <p>MIT License &copy; njsr.org 2002-2026</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

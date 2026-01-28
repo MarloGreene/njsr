@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Tools - Encoder, Decoder & Shortener</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>URL Tools</h1>
+        <p class="subtitle">Encode, decode, and shorten URLs with ease</p>
+
+        <div class="tools-grid">
+            <!-- URL Encoder -->
+            <div class="tool-section">
+                <h2>🔗 URL Encoder</h2>
+                <p>Convert special characters to URL-safe format</p>
+                <textarea id="encodeInput" placeholder="Enter text to encode (e.g., hello world!@#)"></textarea>
+                <button id="encodeBtn" class="btn primary">Encode URL</button>
+                <textarea id="encodeOutput" placeholder="Encoded result will appear here" readonly></textarea>
+                <button id="copyEncodeBtn" class="btn secondary">Copy Result</button>
+            </div>
+
+            <!-- URL Decoder -->
+            <div class="tool-section">
+                <h2>🔓 URL Decoder</h2>
+                <p>Convert URL-encoded text back to readable format</p>
+                <textarea id="decodeInput" placeholder="Enter encoded URL (e.g., hello%20world%21%40%23)"></textarea>
+                <button id="decodeBtn" class="btn primary">Decode URL</button>
+                <textarea id="decodeOutput" placeholder="Decoded result will appear here" readonly></textarea>
+                <button id="copyDecodeBtn" class="btn secondary">Copy Result</button>
+            </div>
+
+            <!-- Short URL Generator -->
+            <div class="tool-section">
+                <h2>✂️ Short URL Generator</h2>
+                <p>Generate short, shareable URLs</p>
+                <input type="url" id="shortenInput" placeholder="Enter full URL (https://example.com/very/long/path)">
+                <div class="shorten-options">
+                    <label>
+                        <input type="checkbox" id="customLength"> Custom length:
+                        <input type="number" id="customLengthValue" min="3" max="10" value="5" disabled>
+                    </label>
+                </div>
+                <button id="shortenBtn" class="btn primary">Generate Short URL</button>
+                <div class="short-url-result" id="shortUrlResult">
+                    <input type="text" id="shortUrlOutput" placeholder="Short URL will appear here" readonly>
+                    <button id="copyShortBtn" class="btn secondary">Copy</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>ℹ️ How it works</h3>
+            <ul>
+                <li><strong>URL Encoder:</strong> Converts special characters to %XX format for safe URL transmission</li>
+                <li><strong>URL Decoder:</strong> Reverses URL encoding back to readable text</li>
+                <li><strong>Short URL:</strong> Creates random short URLs (client-side only, not actually shortened)</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer style="margin-top:2rem;padding:1.5rem;background:#1a1a2e;border-top:1px solid #333;text-align:center;font-size:0.85rem;color:#888;">
+        <p style="margin:0 0 0.5rem;color:#ccc;"><strong>URL Tools</strong> &middot; /url/</p>
+        <p style="margin:0 0 0.5rem;">URL encoder, decoder, and utilities. Client-side only.</p>
+        <p style="margin:0;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

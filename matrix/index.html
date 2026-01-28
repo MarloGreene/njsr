@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Rain</title>
+    <link rel="stylesheet" href="matrix.css">
+</head>
+<body>
+    <canvas id="matrixCanvas"></canvas>
+    <div class="controls">
+        <button class="control-btn" id="toggleBtn">Pause</button>
+        <label class="speed-label">
+            Speed:
+            <input type="range" id="speedSlider" min="10" max="100" value="50" class="speed-slider">
+        </label>
+        <span style="margin-left:1rem;font-size:0.75rem;opacity:0.6;">Matrix Rain &middot; /matrix/ &middot; MIT &copy; njsr.org</span>
+    </div>
+    <script src="matrix.js"></script>
+</body>
+</html>

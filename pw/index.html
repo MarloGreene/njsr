@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Checker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>How Secure is My Password?</h1>
+    <input type="password" id="password" placeholder="Enter your password">
+    <button id="generate">Generate Strong Password</button>
+    <div id="strength">Strength: </div>
+    <div id="time">Estimated time to crack: </div>
+
+    <footer style="margin-top:2rem;padding:1rem;text-align:center;font-size:0.85rem;color:#666;">
+        <p style="margin:0 0 0.5rem;"><strong>Password Strength Checker</strong> &middot; /pw/</p>
+        <p style="margin:0 0 0.5rem;">Analyze password security. All processing done locally - nothing transmitted.</p>
+        <p style="margin:0;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarot Card Reader</title>
+    <link rel="stylesheet" href="tarot.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔮 Tarot Reader</h1>
+            <p class="subtitle">Draw cards for guidance and reflection</p>
+        </header>
+        
+        <div class="spread-selector">
+            <button class="spread-btn active" data-spread="1">Single Card</button>
+            <button class="spread-btn" data-spread="3">Past • Present • Future</button>
+            <button class="spread-btn" data-spread="5">Celtic Cross</button>
+        </div>
+        
+        <div class="deck-container">
+            <div class="deck" id="deck"></div>
+            <div class="reading-area" id="readingArea"></div>
+            <button class="draw-btn" id="drawBtn">Draw Cards</button>
+        </div>
+        
+        <div class="history-section" id="historySection" style="display: none;">
+            <div class="history-header">
+                <h3>📜 Reading History</h3>
+                <button class="clear-btn" id="clearHistoryBtn">Clear All</button>
+            </div>
+            <div class="history-list" id="historyList"></div>
+        </div>
+    </div>
+
+    <footer style="margin-top:2rem;padding:1.5rem;background:#1a1a2e;border-top:1px solid #333;text-align:center;font-size:0.85rem;color:#888;">
+        <p style="margin:0 0 0.5rem;color:#ccc;"><strong>Tarot Card Reader</strong> &middot; /tarot/</p>
+        <p style="margin:0 0 0.5rem;">Draw cards for guidance and reflection.</p>
+        <p style="margin:0 0 0.5rem;font-style:italic;opacity:0.8;">For entertainment purposes only. Not intended as professional advice.</p>
+        <p style="margin:0;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+    </footer>
+
+    <script src="tarot.js"></script>
+</body>
+</html>

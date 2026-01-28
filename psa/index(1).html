@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; frame-ancestors 'none';">
+    <meta name="referrer" content="no-referrer">
+    <title>PTSD Symptom Awareness Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PTSD Symptom Awareness</h1>
+            <p class="subtitle">Understanding symptoms and VA disability ratings</p>
+        </header>
+
+        <!-- Dependents Ticker -->
+        <div class="dependents-ticker">
+            <span class="ticker-label">Compensation for:</span>
+            <label class="ticker-item">
+                <input type="checkbox" id="hasSpouse"> Spouse
+            </label>
+            <span class="ticker-plus">+</span>
+            <label class="ticker-item">
+                <input type="number" id="numChildren" min="0" max="10" value="0" aria-label="Number of children"> children
+            </label>
+            <button class="reset-btn" onclick="resetAll()">Reset All</button>
+        </div>
+
+        <main>
+            <div class="main-content">
+                <!-- Experience Section - Primary Driver -->
+                <section class="exposure-section primary" role="region" aria-labelledby="exposure-heading">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                    <span class="progress-text" id="progressText">0 of 13 exposures selected</span>
+                </div>
+                <div class="exposure-header">
+                    <h2 id="exposure-heading"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> What Did You Experience?</h2>
+                    <span class="exposure-count" id="exposureCount" aria-live="polite">0 selected</span>
+                </div>
+                <p class="exposure-intro">Check everything that applies. This is between you and your screen.</p>
+                <div class="exposure-grid">
+                    <label class="exposure-item">
+                        <input type="checkbox" class="exposure-checkbox" data-weight="10" data-info="ptsd">
+                        <span class="checkmark"></span>
+                        <span>Combat MOS / Combat Arms</span>
+                    </label>
+                    <label class="exposure-item">
+                        <input type="checkbox" class="exposure-checkbox" data-weight="15" data-info="ptsd">
+                        <span class="checkmark"></span>
+                        <span>Deployed to combat zone</span>
+                    </label>
+                    <label class="exposure-item">
+                        <input type="checkbox" class="exposure-checkbox" data-weight="15" data-info="ptsd">
+                        <span class="checkmark"></span>
+                        <span>Went outside the wire regularly</span>
+                    </label>
+                    <label class="exposure-item">
+                        <input type="checkbox" class="exposure-checkbox" data-weight="20" data-info="ptsd,tbi">
+                        <span class="checkmark"></span>
+                        <span>Received incoming fire (IDF/rockets/mortars)</span>
+                    </label>
+                    <label class="exposure-item">
+                        <input type="checkbox" class="exposure-checkbox" data-weight="20" data-info="ptsd,tbi">
+                        <span class="checkmark"></span>
+                        <span>IED / VBIED exposure</span>
+                    </label>
+                    <label class="exposure-item">
+                        <input type="checkbox" class="exposure-checkbox" data-weight="20" data-info="ptsd">
+                        <span class="checkmark"></span>
+                        <span>Engaged enemy / direct combat</span>
+                    </label>
+                    <label class="exposure-item">
+                        <input type="checkbox" class="exposure-checkbox" data-weight="25" data-info="ptsd">
+                        <span class="checkmark"></span>
+                        <span>Witnessed death or serious injury</span>
+                    </label>
+                    <label class="exposure-item">
+                        <input type="checkbox" class="exposure-checkbox" data-weight="25" data-info="grief">
+                        <span class="checkmark"></span>
+                        <span>Lost a battle buddy</span>
+                    </label>
+                    <label class="exposure-item">
+                        <input type="checkbox" class="exposure-checkbox" data-weight="15" data-info="ptsd,tbi">
+                        <span class="checkmark"></span>
+                        <span>Convoy operations</span>
+                    </label>
+                    <label class="exposure-item">
+                        <input type="checkbox" class="exposure-checkbox" data-weight="20" data-info="ptsd">
+                        <span class="checkmark"></span>
+                        <span>Handled human remains</span>
+                    </label>
+                    <label class="exposure-item">
+                        <input type="checkbox" class="exposure-checkbox" data-weight="15" data-info="mst">
+                        <span class="checkmark"></span>
+                        <span>Military Sexual Trauma (MST)</span>
+                    </label>
+                    <label class="exposure-item">
+                        <input type="checkbox" class="exposure-checkbox" data-weight="15" data-info="complex">
+                        <span class="checkmark"></span>
+                        <span>Multiple deployments</span>
+                    </label>
+                </div>
+                <!-- Integrated Slider + Compensation -->
+                <div class="rating-bar" id="sliderSection">
+                    <div class="rating-bar-main">
+                        <div class="slider-compact">
+                            <input type="range" id="ptsdSlider" min="0" max="100" value="0" step="10" class="slider" aria-label="PTSD severity rating slider">
+                            <div class="slider-labels">
+                                <span>None</span>
+                                <span>Total Impact</span>
+                            </div>
+                        </div>
+                        <div class="comp-display" id="compCol">
+                            <div class="comp-amount" id="compAmount">$0</div>
+                            <div class="comp-label" id="compLabel">/month <span class="rating-badge" id="ratingDisplay">0%</span></div>
+                        </div>
+                    </div>
+                    <div class="rating-bar-note" id="exposureResult">
+                        <span id="exposureMessage">Check your experiences above</span>
+                        <a href="https://www.va.gov/disability/compensation-rates/veteran-rates/" target="_blank" rel="noopener" class="rates-link">2026 VA rates</a>
+                    </div>
+                </div>
+
+                <!-- High Rating Alert -->
+                <div class="high-rating-alert" id="highRatingAlert">
+                    <div class="alert-content">
+                        <strong>You may be entitled to this.</strong>
+                        <a href="https://www.va.gov/vso/" target="_blank" rel="noopener" class="alert-btn">Find a VSO</a>
+                        <a href="tel:1-800-827-1000" class="alert-btn secondary">Call VA</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Symptoms Grid -->
+            <section class="symptoms-section" role="region" aria-labelledby="symptoms-heading">
+                <h2 id="symptoms-heading"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> What This Looks Like Day-to-Day</h2>
+                <p class="symptoms-intro">These are the official DSM-5 symptoms. The more the slider goes up, the more you might recognize.</p>
+
+                <!-- Criterion B -->
+                <div class="symptom-cluster" id="clusterB">
+                    <h3>When It Comes Back Uninvited <span class="criterion-ref" title="DSM-5 Criterion B: Intrusion Symptoms">(Intrusion)</span></h3>
+                    <div class="symptoms-grid">
+                        <label class="symptom-item" data-threshold="10">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Intrusive, distressing memories</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="10">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Recurring nightmares</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="30">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Flashbacks</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="30">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Distress when reminded of trauma</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="50">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Physical reactions to reminders</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Criterion C -->
+                <div class="symptom-cluster" id="clusterC">
+                    <h3>Staying Away from Triggers <span class="criterion-ref" title="DSM-5 Criterion C: Avoidance">(Avoidance)</span></h3>
+                    <div class="symptoms-grid">
+                        <label class="symptom-item" data-threshold="10">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Avoiding thoughts/feelings/memories</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="30">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Avoiding people/places/situations</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Criterion D -->
+                <div class="symptom-cluster" id="clusterD">
+                    <h3>The Dark Thoughts <span class="criterion-ref" title="DSM-5 Criterion D: Negative Alterations in Cognitions and Mood">(Mood Changes)</span></h3>
+                    <div class="symptoms-grid">
+                        <label class="symptom-item" data-threshold="50">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Memory gaps about the trauma</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="30">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Negative beliefs ("I'm broken")</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="50">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Self-blame or blaming others</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="30">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Persistent negative emotions</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="50">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Loss of interest in activities</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="70">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Feeling detached from others</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="70">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Can't feel positive emotions</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Criterion E -->
+                <div class="symptom-cluster" id="clusterE">
+                    <h3>Always On Edge <span class="criterion-ref" title="DSM-5 Criterion E: Alterations in Arousal and Reactivity">(Hyperarousal)</span></h3>
+                    <div class="symptoms-grid">
+                        <label class="symptom-item" data-threshold="10">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Irritability / angry outbursts</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="70">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Reckless / self-destructive behavior</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="30">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Hypervigilance (always on guard)</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="30">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Exaggerated startle response</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="50">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Difficulty concentrating</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="10">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Sleep problems</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Additional Common Issues -->
+                <div class="symptom-cluster" id="clusterOther">
+                    <h3>What Often Comes With It <span class="criterion-ref" title="Common co-occurring conditions">(Secondary Conditions)</span></h3>
+                    <div class="symptoms-grid">
+                        <label class="symptom-item" data-threshold="10">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Hearing loss / tinnitus</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="50">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Depression</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="50">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Anxiety</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="70">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Substance use to cope</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="70">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Trouble keeping employment</span>
+                        </label>
+                        <label class="symptom-item" data-threshold="50">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span class="symptom-text">Relationship difficulties</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+            </div> <!-- end main-content -->
+
+            <div class="sidebar">
+                <!-- Contextual Education (Progressive Disclosure) -->
+                <section class="info-section" id="infoPanel" role="region" aria-labelledby="info-heading">
+                <h3 id="info-heading" class="sr-only">Related Information</h3>
+                <div class="info-card" id="infoPtsd">
+                    <h4>About PTSD</h4>
+                    <p>PTSD isn't weakness—it's your brain's alarm system stuck in the "on" position. The hypervigilance that kept you alive downrange? Now it fires at Walmart.</p>
+                    <p class="info-stat">22% of combat veterans develop PTSD.</p>
+                </div>
+                <div class="info-card" id="infoComplex">
+                    <h4>Complex PTSD</h4>
+                    <p>Multiple deployments can cause C-PTSD—regular PTSD plus difficulty controlling emotions and relationships. Your brain rewired to survive. That's not a character flaw.</p>
+                    <p class="info-stat">Repeated trauma changes brain structure. The VA recognizes this.</p>
+                </div>
+                <div class="info-card" id="infoTbi">
+                    <h4>Traumatic Brain Injury</h4>
+                    <p>Blast waves cause invisible damage. Symptoms overlap with PTSD: memory issues, irritability, headaches. Many vets have both—each is separately ratable.</p>
+                    <p class="info-stat">TBI has its own VA rating, separate from PTSD.</p>
+                </div>
+                <div class="info-card" id="infoMst">
+                    <h4>Military Sexual Trauma</h4>
+                    <p>MST claims have special evidentiary standards—the VA knows reporting was often unsafe. Your word matters. Buddy statements and behavior changes count.</p>
+                    <p class="info-stat">Talk to a VSO about MST-specific procedures.</p>
+                </div>
+                <div class="info-card" id="infoGrief">
+                    <h4>Combat Loss & Survivor's Guilt</h4>
+                    <p>Losing a battle buddy isn't like other grief. The "why them not me" is a recognized trauma response that physically changes your brain.</p>
+                    <p class="info-stat">Survivor's guilt is a documented PTSD symptom.</p>
+                </div>
+            </section>
+
+            <!-- Resources Section -->
+            <section class="resources-section" role="region" aria-labelledby="resources-heading">
+                <h2 id="resources-heading"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> What's Next?</h2>
+                <div class="resources-grid">
+                    <a href="https://www.va.gov/vso/" target="_blank" rel="noopener" class="resource-card primary-action">
+                        <h3>Find a VSO Near You</h3>
+                        <p>Free help filing your claim—they know the system</p>
+                    </a>
+                    <a href="https://www.va.gov/disability/how-to-file-claim/" target="_blank" rel="noopener" class="resource-card">
+                        <h3>File a Disability Claim</h3>
+                        <p>Start the process on VA.gov</p>
+                    </a>
+                    <a href="https://www.veteranscrisisline.net/" target="_blank" rel="noopener" class="resource-card crisis">
+                        <h3>Veterans Crisis Line</h3>
+                        <p>1-800-273-8255 (Press 1)</p>
+                    </a>
+                </div>
+            </section>
+            </div> <!-- end sidebar -->
+        </main>
+
+        <div class="print-section">
+            <button onclick="window.print()" class="print-btn">Print This Page</button>
+        </div>
+
+        <footer>
+            <div class="disclaimer">
+                <p style="margin-bottom:0.5rem;"><strong>PTSD Symptom Awareness Tool</strong> &middot; /psa/</p>
+                <h4>Important Disclaimer</h4>
+                <p><strong>This tool is for educational and awareness purposes only.</strong> It is not a diagnostic instrument and does not constitute medical advice, diagnosis, or treatment. Based on the <a href="https://www.ptsd.va.gov/professional/assessment/adult-int/caps.asp" target="_blank" rel="noopener">CAPS-5</a>. Only a qualified healthcare provider can diagnose PTSD.</p>
+                <p>VA disability ratings depend on many factors. Compensation amounts are estimates based on <a href="https://www.va.gov/disability/compensation-rates/veteran-rates/" target="_blank" rel="noopener">2026 VA rates</a> adjusted for selected dependents.</p>
+                <p>We are not doctors, lawyers, or VA representatives. This tool does not provide medical or legal advice.</p>
+                <p><strong>Crisis? Veterans Crisis Line: 988 (Press 1)</strong> or text 838255.</p>
+                <p style="margin-top:1rem;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

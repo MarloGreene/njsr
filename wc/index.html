@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Stats</title>
+    <link rel="stylesheet" href="textstats.css">
+</head>
+<body>
+    <div class="container">
+        <div class="stats-card">
+            <h1 class="title">Text Statistics</h1>
+            
+            <div class="textarea-container">
+                <textarea 
+                    id="textInput" 
+                    class="text-input" 
+                    placeholder="Type or paste your text here..."
+                ></textarea>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="charCount">0</div>
+                    <div class="stat-label">Characters</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="charNoSpaces">0</div>
+                    <div class="stat-label">Characters (no spaces)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="wordCount">0</div>
+                    <div class="stat-label">Words</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="sentenceCount">0</div>
+                    <div class="stat-label">Sentences</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="paragraphCount">0</div>
+                    <div class="stat-label">Paragraphs</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="lineCount">0</div>
+                    <div class="stat-label">Lines</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="readingTime">0</div>
+                    <div class="stat-label">Reading Time (min)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="speakingTime">0</div>
+                    <div class="stat-label">Speaking Time (min)</div>
+                </div>
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-clear" id="clearBtn">Clear Text</button>
+                <button class="btn btn-copy" id="copyBtn">Copy Stats</button>
+            </div>
+            <div class="storage-info">
+                <button class="btn-link" id="clearStorageBtn">Clear Saved Text</button>
+            </div>
+        </div>
+    </div>
+
+    <footer style="margin-top:2rem;padding:1.5rem;background:#f5f5f5;border-top:1px solid #ddd;text-align:center;font-size:0.85rem;color:#666;">
+        <p style="margin:0 0 0.5rem;color:#333;"><strong>Text Statistics</strong> &middot; /wc/</p>
+        <p style="margin:0 0 0.5rem;">Text analysis and counting tool. All data stored locally.</p>
+        <p style="margin:0;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+    </footer>
+
+    <script src="textstats.js"></script>
+</body>
+</html>

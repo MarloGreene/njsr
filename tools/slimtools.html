@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: #0f1419;
+            color: #e6edf3;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: #1a1f2e;
+            border-right: 1px solid #30363d;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid #30363d;
+            position: sticky;
+            top: 0;
+            background: #1a1f2e;
+            z-index: 10;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #58a6ff, #bc8cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tool-list {
+            flex: 1;
+            padding: 0.5rem 0;
+        }
+
+        .tool-category {
+            margin-bottom: 1.5rem;
+        }
+
+        .category-title {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #8b949e;
+            letter-spacing: 0.5px;
+        }
+
+        .tool-link {
+            display: block;
+            padding: 0.65rem 1rem 0.65rem 2rem;
+            color: #8b949e;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .tool-link:hover {
+            background: #2d333b;
+            color: #e6edf3;
+            border-left-color: #58a6ff;
+        }
+
+        .tool-link.active {
+            background: #2d333b;
+            color: #58a6ff;
+            border-left-color: #58a6ff;
+            font-weight: 500;
+        }
+
+        .tool-link::before {
+            content: '▸';
+            position: absolute;
+            left: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .tool-link.active::before,
+        .tool-link:hover::before {
+            opacity: 1;
+        }
+
+        .tool-path {
+            font-size: 0.75rem;
+            color: #586069;
+            margin-left: 0.5rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .tool-link:hover .tool-path {
+            color: #8b949e;
+        }
+
+        .tool-link.active .tool-path {
+            color: #58a6ff;
+        }
+
+        /* Main Content */
+        .main-content {
+            position: relative;
+            background: #0f1419;
+            overflow: hidden;
+        }
+
+        .content-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+
+        .placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #8b949e;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .placeholder-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .placeholder h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #e6edf3;
+        }
+
+        .placeholder p {
+            font-size: 1rem;
+        }
+
+        /* Mobile Toggle */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1000;
+            background: #1a1f2e;
+            border: 1px solid #30363d;
+            color: #e6edf3;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: 280px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 999;
+                box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .main-content.sidebar-open {
+                filter: brightness(0.7);
+            }
+        }
+
+        /* Scrollbar styling */
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #1a1f2e;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #484f58;
+        }
+    </style>
+</head>
+<body>
+    <button class="mobile-toggle" id="mobileToggle">☰ Menu</button>
+
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1>🛠️ Tools</h1>
+            </div>
+            
+            <nav class="tool-list">
+                <div class="tool-category">
+                    <div class="category-title">⏱️ Time & Productivity</div>
+                    <a href="../cal/cal.html" class="tool-link" data-tool="calendar">Calendar<span class="tool-path">/cal</span></a>
+                    <a href="../countdown/countdown.html" class="tool-link" data-tool="countdown">Countdown Timer<span class="tool-path">/countdown</span></a>
+                    <a href="../stopwatch/stopwatch.html" class="tool-link" data-tool="stopwatch">Stopwatch<span class="tool-path">/stopwatch</span></a>
+                    <a href="../split/index.html" class="tool-link" data-tool="split">Simple Stopwatch<span class="tool-path">/split</span></a>
+                    <a href="../click/metronome.html" class="tool-link" data-tool="metronome">Metronome<span class="tool-path">/click</span></a>
+                </div>
+
+                <div class="tool-category">
+                    <div class="category-title">🎨 Design & Color</div>
+                    <a href="../color/color-picker.html" class="tool-link" data-tool="color-picker">Color Picker<span class="tool-path">/color</span></a>
+                    <a href="../colors/palette.html" class="tool-link" data-tool="palette">Palette Generator<span class="tool-path">/colors</span></a>
+                </div>
+
+                <div class="tool-category">
+                    <div class="category-title">🎲 Random & Games</div>
+                    <a href="../dice/dice.html" class="tool-link" data-tool="dice">Dice Roller<span class="tool-path">/dice</span></a>
+                    <a href="../rng/index.html" class="tool-link" data-tool="rng">Password Generator<span class="tool-path">/rng</span></a>
+                    <a href="../tarot/tarot.html" class="tool-link" data-tool="tarot">Tarot Reader<span class="tool-path">/tarot</span></a>
+                </div>
+
+                <div class="tool-category">
+                    <div class="category-title">🔧 Utilities</div>
+                    <a href="../qr/qr.html" class="tool-link" data-tool="qr">QR Code Generator<span class="tool-path">/qr</span></a>
+                    <a href="../wc/textstats.html" class="tool-link" data-tool="textstats">Text Statistics<span class="tool-path">/wc</span></a>
+                    <a href="../tt/index.html" class="tool-link" data-tool="ttracker">Tinnitus Tracker<span class="tool-path">/tt</span></a>
+                </div>
+
+                <div class="tool-category">
+                    <div class="category-title">✨ Visual Effects</div>
+                    <a href="../matrix/matrix.html" class="tool-link" data-tool="matrix">Matrix Rain<span class="tool-path">/matrix</span></a>
+                    <a href="../sm/bible-matrix.html" class="tool-link" data-tool="bible-matrix">Bible Matrix<span class="tool-path">/sm</span></a>
+                    <a href="../sm/bom-matrix.html" class="tool-link" data-tool="bom-matrix">Book of Mormon Matrix<span class="tool-path">/sm</span></a>
+                    <a href="../sm/dnc-matrix.html" class="tool-link" data-tool="dnc-matrix">D&C Matrix<span class="tool-path">/sm</span></a>
+                    <a href="../sm/pogp-matrix.html" class="tool-link" data-tool="pogp-matrix">Pearl of Great Price Matrix<span class="tool-path">/sm</span></a>
+                </div>
+
+                <div class="tool-category">
+                    <div class="category-title">📖 Scripture Resources</div>
+                    <a href="../lfss/scripture-search.html" class="tool-link" data-tool="scripture-search">Scripture Search<span class="tool-path">/lfss</span></a>
+                    <a href="../bom/index.html" class="tool-link" data-tool="bom">Book of Mormon<span class="tool-path">/bom</span></a>
+                    <a href="../bom/search.html" class="tool-link" data-tool="bom-search">BOM Search<span class="tool-path">/bom</span></a>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main-content" id="mainContent">
+            <div class="placeholder" id="placeholder">
+                <div class="placeholder-icon">🛠️</div>
+                <h2>Select a Tool</h2>
+                <p>Choose a tool from the left sidebar to get started</p>
+            </div>
+            <iframe class="content-frame" id="contentFrame" style="display: none;"></iframe>
+        </main>
+    </div>
+
+    <script>
+        const toolLinks = document.querySelectorAll('.tool-link');
+        const contentFrame = document.getElementById('contentFrame');
+        const placeholder = document.getElementById('placeholder');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const mobileToggle = document.getElementById('mobileToggle');
+
+        // Handle tool selection
+        toolLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const url = link.getAttribute('href');
+                
+                // Update active state
+                toolLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                // Load in iframe
+                placeholder.style.display = 'none';
+                contentFrame.style.display = 'block';
+                contentFrame.src = url;
+                
+                // Close mobile menu if open
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                    mainContent.classList.remove('sidebar-open');
+                }
+                
+                // Store in localStorage for persistence
+                localStorage.setItem('lastTool', url);
+            });
+        });
+
+        // Mobile menu toggle
+        mobileToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            mainContent.classList.toggle('sidebar-open');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        mainContent.addEventListener('click', () => {
+            if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+                mainContent.classList.remove('sidebar-open');
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Press 'Escape' to close mobile menu
+            if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+                mainContent.classList.remove('sidebar-open');
+            }
+        });
+
+        // Load last used tool on page load
+        window.addEventListener('load', () => {
+            const lastTool = localStorage.getItem('lastTool');
+            if (lastTool) {
+                const link = Array.from(toolLinks).find(l => l.getAttribute('href') === lastTool);
+                if (link) {
+                    link.click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

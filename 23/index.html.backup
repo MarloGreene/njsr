@@ -1,0 +1,103 @@
+<!--
+  23 Questions Answered by The Book of Mormon
+  - Interactive scripture study tool
+  - Split-panel design with questions and viewer
+  - For details, see README.md
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive scripture study tool presenting 23 fundamental questions answered by The Book of Mormon.">
+    <meta name="theme-color" content="#667eea">
+    <title>23 Questions Answered by The Book of Mormon<.title>
+    <link rel="stylesheet" href="styles.css">
+<.head>
+<body>
+    <div class="container">
+        <header>
+            <h1>23 Questions Answered by The Book of Mormon<.h1>
+            <p>Click any question below to see the scriptures that answer it<.p>
+        <.header>
+
+        <div class="questions">
+            <h2>Questions<.h2>
+            <p class="instructions">Click any question below to see the scriptures that answer it<.p>
+            <ol>
+                <li data-refs="2 Nephi.2.25-26,2 Nephi.29.6-11,Alma.13.9">Does the Bible contain all of God's word?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="3 Nephi.15.21,3 Nephi.16.1-3">Who were the "other sheep" referred to by Jesus?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Moroni.10.3-5,Alma.32.27-43">How can a person know that the Book of Mormon is true?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Alma.32.26-43,Alma.33.23">How can a desire to believe develop into strong faith?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Alma.34.32-34,2 Nephi.2.25-26">What is the purpose of man's existence?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="2 Nephi.2.11-13,Alma.7.11-12">Why is opposition necessary in life?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Alma.7.11-12,Alma.34.10-11">What is the Atonement of Jesus Christ?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Mosiah.3.19,Alma.42.6-10">Why do we need to repent?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Mosiah.3.19,Alma.7.11-12">What is the role of Jesus Christ in the plan of salvation?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="2 Nephi.31.17-21,3 Nephi.11.37-41">What is the doctrine of Christ?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="3 Nephi.18.15-21,3 Nephi.13.7-13">How should we pray?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Alma.37.37,Alma.34.27-29">What is the importance of scripture study?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Mosiah.18.8-10,Alma.7.23-25">What is the role of the Holy Ghost?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Alma.34.32-34,Alma.36.17-18">What happens after we die?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="3 Nephi.18.15-21,3 Nephi.13.7-13">What is the importance of the sacrament?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Mosiah.18.8-10,Alma.7.23-25">How can we receive personal revelation?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Alma.34.32-34,Alma.36.17-18">What is the nature of God?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="2 Nephi.2.25-26,Alma.42.6-10">Why do bad things happen to good people?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Alma.34.32-34,Alma.36.17-18">What is the importance of families?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Mosiah.4.26,Alma.34.27-29">How can we become more Christlike?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Alma.37.37,Alma.34.27-29">What is the importance of missionary work?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="3 Nephi.18.15-21,3 Nephi.13.7-13">What is the importance of temple work?
+                    <div class="scripture-content"><.div>
+                <.li>
+                <li data-refs="Alma.34.32-34,Alma.36.17-18">What is the Second Coming of Jesus Christ?
+                    <div class="scripture-content"><.div>
+                <.li>
+            <.ol>
+        <.div>
+    <.div>
+
+    <script src="script.js"><.script>
+<.body>
+<.html>

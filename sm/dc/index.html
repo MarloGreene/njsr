@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctrine & Covenants Matrix</title>
+    <link rel="stylesheet" href="dnc-matrix.css">
+</head>
+<body>
+    <canvas id="matrixCanvas"></canvas>
+    
+    <div class="verse-popup" id="versePopup">
+        <div class="popup-content">
+            <button class="close-btn" id="closeBtn">×</button>
+            <div class="verse-reference" id="verseReference"></div>
+            <div class="verse-text" id="verseText"></div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button class="control-btn" id="toggleBtn">Pause</button>
+        <label class="speed-label">
+            Speed:
+            <input type="range" id="speedSlider" min="10" max="100" value="50" class="speed-slider">
+        </label>
+        <span style="margin-left:1rem;font-size:0.75rem;opacity:0.6;">D&C Matrix &middot; /sm/ &middot; MIT &copy; njsr.org</span>
+    </div>
+
+    <div class="loading" id="loading">Loading verses...</div>
+
+    <script src="dnc-matrix.js"></script>
+</body>
+</html>

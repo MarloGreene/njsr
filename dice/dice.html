@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Roller</title>
+    <link rel="stylesheet" href="dice.css">
+</head>
+<body>
+    <div class="container">
+        <div class="dice-card">
+            <h1 class="title">🎲 Dice Roller 🎲</h1>
+            
+            <!-- 2x2 Grid Layout -->
+            <div class="grid-layout">
+                <!-- Top Left: Dice Selection -->
+                <div class="grid-item dice-palette">
+                    <h2 class="section-title">Dice Selection</h2>
+                    <p class="palette-subtitle">Drag dice to the tower below</p>
+                    <div class="draggable-dice-container">
+                            <div class="draggable-die" data-sides="4" draggable="true">
+                                <svg viewBox="0 0 100 100" class="die-svg d4">
+                                    <polygon points="50,10 90,90 10,90" class="die-face"/>
+                                    <text x="50" y="70" class="die-number">d4</text>
+                                </svg>
+                            </div>
+                            <div class="draggable-die" data-sides="6" draggable="true">
+                                <svg viewBox="0 0 100 100" class="die-svg d6">
+                                    <rect x="20" y="20" width="60" height="60" class="die-face"/>
+                                    <text x="50" y="58" class="die-number">d6</text>
+                                </svg>
+                            </div>
+                            <div class="draggable-die" data-sides="8" draggable="true">
+                                <svg viewBox="0 0 100 100" class="die-svg d8">
+                                    <polygon points="50,15 85,50 50,85 15,50" class="die-face"/>
+                                    <text x="50" y="58" class="die-number">d8</text>
+                                </svg>
+                            </div>
+                            <div class="draggable-die" data-sides="10" draggable="true">
+                                <svg viewBox="0 0 100 100" class="die-svg d10">
+                                    <polygon points="50,10 80,35 80,65 50,90 20,65 20,35" class="die-face"/>
+                                    <text x="50" y="58" class="die-number">d10</text>
+                                </svg>
+                            </div>
+                            <div class="draggable-die" data-sides="12" draggable="true">
+                                <svg viewBox="0 0 100 100" class="die-svg d12">
+                                    <polygon points="50,10 75,20 85,40 85,60 75,80 50,90 25,80 15,60 15,40 25,20" class="die-face"/>
+                                    <text x="50" y="58" class="die-number">d12</text>
+                                </svg>
+                            </div>
+                            <div class="draggable-die" data-sides="20" draggable="true">
+                                <svg viewBox="0 0 100 100" class="die-svg d20">
+                                    <polygon points="50,5 70,25 85,25 90,45 80,65 65,80 35,80 20,65 10,45 15,25 30,25" class="die-face"/>
+                                    <text x="50" y="58" class="die-number">d20</text>
+                                </svg>
+                            </div>
+                            <div class="draggable-die" data-sides="100" draggable="true">
+                                <svg viewBox="0 0 100 100" class="die-svg d100">
+                                    <circle cx="50" cy="50" r="40" class="die-face"/>
+                                    <text x="50" y="58" class="die-number">d100</text>
+                                </svg>
+                            </div>
+                        </div>
+                </div>
+                
+                <!-- Top Right: Quick d20 Roller -->
+                <div class="grid-item quick-d20">
+                    <h2 class="section-title">⚡ Quick d20 Roll</h2>
+                    <div class="d20-display" id="d20Display">
+                        <svg viewBox="0 0 120 120" class="d20-svg" id="d20Svg">
+                            <polygon points="60,5 80,25 95,25 100,45 90,65 75,80 45,80 30,65 20,45 25,25 40,25" class="die-face d20-face"/>
+                            <text x="60" y="70" class="d20-result-text" id="d20ResultText">?</text>
+                        </svg>
+                    </div>
+                    
+                    <div class="quick-rolls">
+                        <div class="quick-roll-item">
+                            <label class="quick-label">🗡️ One-Handed</label>
+                            <div class="quick-roll-controls">
+                                <input type="number" id="oneHandedModifier" class="quick-modifier-input" placeholder="0" value="0">
+                                <button class="quick-roll-btn onehanded-btn" id="oneHandedRollBtn">Roll</button>
+                            </div>
+                        </div>
+                        <div class="quick-roll-item">
+                            <label class="quick-label">⚔️ Two-Handed</label>
+                            <div class="quick-roll-controls">
+                                <input type="number" id="twoHandedModifier" class="quick-modifier-input" placeholder="0" value="0">
+                                <button class="quick-roll-btn twohanded-btn" id="twoHandedRollBtn">Roll</button>
+                            </div>
+                        </div>
+                        <div class="quick-roll-item">
+                            <label class="quick-label">🏹 Ranged</label>
+                            <div class="quick-roll-controls">
+                                <input type="number" id="rangedModifier" class="quick-modifier-input" placeholder="0" value="0">
+                                <button class="quick-roll-btn ranged-btn" id="rangedRollBtn">Roll</button>
+                            </div>
+                        </div>
+                        <div class="quick-roll-item">
+                            <label class="quick-label">🎯 Initiative</label>
+                            <div class="quick-roll-controls">
+                                <input type="number" id="initiativeModifier" class="quick-modifier-input" placeholder="0" value="0">
+                                <button class="quick-roll-btn initiative-btn" id="initiativeRollBtn">Roll</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="d20-modifier">
+                        <label for="d20Modifier" class="modifier-label">Custom:</label>
+                        <input type="number" id="d20Modifier" class="d20-modifier-input" placeholder="0" value="0">
+                    </div>
+                    <button class="d20-roll-btn" id="d20RollBtn">Roll d20</button>
+                    <div class="d20-result" id="d20Result"></div>
+                </div>
+                
+                <!-- Bottom Left: Dice Tower -->
+                <div class="grid-item dice-tower" id="diceTower">
+                    <h2 class="section-title">🗼 Dice Tower</h2>
+                    <div class="tower-header">
+                        <span>Drop dice here</span>
+                        <button class="tower-clear-btn" id="clearTowerBtn" style="display: none;">Clear</button>
+                    </div>
+                    <div class="tower-dice-list" id="towerDiceList"></div>
+                    <div class="tower-modifier">
+                        <label for="towerModifier" class="tower-modifier-label">Modifier:</label>
+                        <input type="number" id="towerModifier" class="tower-modifier-input" placeholder="0" value="0">
+                    </div>
+                    <button class="roll-all-btn" id="rollAllBtn" style="display: none;">🎲 Roll All Dice</button>
+                </div>
+                
+                <!-- Bottom Right: Results Mat -->
+                <div class="grid-item results-mat" id="resultsMat">
+                    <h2 class="section-title">📊 Results Mat</h2>
+                    <div class="mat-dice-results" id="matDiceResults">
+                        <div class="mat-empty">Roll dice to see results</div>
+                    </div>
+                    <div class="mat-total" id="matTotal"></div>
+                </div>
+            </div>
+            
+            <div class="history-section">
+                <div class="history-header">
+                    <h2 class="section-title">Roll History</h2>
+                    <button class="clear-btn" id="clearBtn">Clear</button>
+                </div>
+                <div class="history-list" id="historyList">
+                    <div class="empty-state">No rolls yet</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="margin-top:2rem;padding:1.5rem;background:#1a1a2e;border-top:1px solid #333;text-align:center;font-size:0.85rem;color:#888;">
+        <p style="margin:0 0 0.5rem;color:#ccc;"><strong>Dice Roller</strong> &middot; /dice/</p>
+        <p style="margin:0 0 0.5rem;">Polyhedral dice simulator with drag-and-drop tower for tabletop gaming.</p>
+        <p style="margin:0;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+    </footer>
+
+    <script src="dice.js"></script>
+</body>
+</html>

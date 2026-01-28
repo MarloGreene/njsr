@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker - Cash</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 Expense Tracker</h1>
+            <p class="subtitle">Track your spending and manage your budget</p>
+        </header>
+
+        <!-- Add Expense Form -->
+        <section class="add-expense">
+            <h2>Add New Expense</h2>
+            <form id="expenseForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" placeholder="e.g., Coffee, Groceries, Gas" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount ($)</label>
+                        <input type="number" id="amount" step="0.01" min="0.01" placeholder="0.00" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" required>
+                            <option value="">Select category</option>
+                            <option value="food">🍽️ Food & Dining</option>
+                            <option value="transport">🚗 Transportation</option>
+                            <option value="shopping">🛍️ Shopping</option>
+                            <option value="entertainment">🎬 Entertainment</option>
+                            <option value="bills">💡 Bills & Utilities</option>
+                            <option value="health">🏥 Health & Medical</option>
+                            <option value="education">📚 Education</option>
+                            <option value="travel">✈️ Travel</option>
+                            <option value="other">📝 Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Expense</button>
+            </form>
+        </section>
+
+        <!-- Summary Cards -->
+        <section class="summary">
+            <div class="summary-cards">
+                <div class="card total-expenses">
+                    <h3>Total Expenses</h3>
+                    <div class="amount" id="totalAmount">$0.00</div>
+                    <div class="period">This Month</div>
+                </div>
+                <div class="card monthly-budget">
+                    <h3>Monthly Budget</h3>
+                    <div class="amount" id="budgetAmount">$0.00</div>
+                    <button class="btn btn-secondary btn-sm" id="setBudgetBtn">Set Budget</button>
+                </div>
+                <div class="card remaining">
+                    <h3>Remaining</h3>
+                    <div class="amount" id="remainingAmount">$0.00</div>
+                    <div class="status" id="budgetStatus">No budget set</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filters and Search -->
+        <section class="filters">
+            <div class="filter-controls">
+                <div class="search-group">
+                    <input type="text" id="searchInput" placeholder="Search expenses...">
+                    <select id="filterCategory">
+                        <option value="">All Categories</option>
+                        <option value="food">🍽️ Food & Dining</option>
+                        <option value="transport">🚗 Transportation</option>
+                        <option value="shopping">🛍️ Shopping</option>
+                        <option value="entertainment">🎬 Entertainment</option>
+                        <option value="bills">💡 Bills & Utilities</option>
+                        <option value="health">🏥 Health & Medical</option>
+                        <option value="education">📚 Education</option>
+                        <option value="travel">✈️ Travel</option>
+                        <option value="other">📝 Other</option>
+                    </select>
+                </div>
+                <div class="date-filters">
+                    <select id="filterPeriod">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="year">This Year</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Expenses List -->
+        <section class="expenses-list">
+            <div class="list-header">
+                <h2>Recent Expenses</h2>
+                <div class="list-actions">
+                    <button class="btn btn-secondary" id="exportBtn">Export CSV</button>
+                    <button class="btn btn-danger" id="clearAllBtn">Clear All</button>
+                </div>
+            </div>
+
+            <div id="expensesContainer">
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-icon">📊</div>
+                    <h3>No expenses yet</h3>
+                    <p>Add your first expense above to get started tracking your spending.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Breakdown -->
+        <section class="category-breakdown">
+            <h2>Spending by Category</h2>
+            <div id="categoryChart">
+                <div class="chart-placeholder">
+                    <div class="chart-icon">📈</div>
+                    <p>Add some expenses to see your spending breakdown</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modals -->
+    <div id="budgetModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Set Monthly Budget</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="budgetForm">
+                    <div class="form-group">
+                        <label for="budgetInput">Monthly Budget ($)</label>
+                        <input type="number" id="budgetInput" step="0.01" min="0" placeholder="0.00" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Budget</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer style="margin-top:2rem;padding:1.5rem;background:#f5f5f5;border-top:1px solid #ddd;text-align:center;font-size:0.85rem;color:#666;">
+        <p style="margin:0 0 0.5rem;color:#333;"><strong>Expense Tracker</strong> &middot; /cash/</p>
+        <p style="margin:0 0 0.5rem;">Track spending and manage your budget. All data stored locally.</p>
+        <p style="margin:0;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

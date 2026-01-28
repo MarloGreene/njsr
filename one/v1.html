@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ministering Memory Helper</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💝 Ministering Memory Helper</h1>
+            <p class="tagline">Keeping love intentional, not transactional</p>
+        </header>
+
+        <div class="add-section">
+            <button id="addNewBtn" class="btn-primary">+ Add Someone New</button>
+        </div>
+
+        <div id="peopleList" class="people-list"></div>
+
+        <!-- Modal for adding/editing -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Add Someone New</h2>
+                    <button class="close-btn" id="closeModal">&times;</button>
+                </div>
+                <form id="personForm">
+                    <div class="form-group">
+                        <label for="familyName">Family Name</label>
+                        <input type="text" id="familyName" required placeholder="The Smith Family">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastContact">Last Contact Date</label>
+                        <input type="date" id="lastContact" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="whatsHeavy">What's heavy right now?</label>
+                        <textarea id="whatsHeavy" rows="3" placeholder="What they're going through, prayers needed..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nextNudge">Next gentle nudge</label>
+                        <textarea id="nextNudge" rows="2" placeholder="Ideas for next time... a card, a text, a visit..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
+                        <button type="submit" class="btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

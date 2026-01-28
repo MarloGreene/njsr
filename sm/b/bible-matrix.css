@@ -1,0 +1,248 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #000;
+    overflow: hidden;
+    font-family: 'Courier New', monospace;
+    color: #fff;
+}
+
+#matrixCanvas {
+    display: block;
+    background: #000;
+    cursor: pointer;
+}
+
+.loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #0f0;
+    font-size: 1.5rem;
+    text-align: center;
+    z-index: 1000;
+}
+
+.controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    border: 1px solid #0f0;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    z-index: 100;
+    opacity: 0.3;
+    transition: opacity 0.3s;
+}
+
+.controls:hover {
+    opacity: 1;
+}
+
+.control-btn {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    background: #0f0;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Courier New', monospace;
+}
+
+.control-btn:hover {
+    background: #0d0;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.speed-label {
+    color: #0f0;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.speed-slider {
+    width: 100px;
+    height: 6px;
+    border-radius: 5px;
+    background: #222;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.speed-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #0f0;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+.speed-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #0f0;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+/* Verse Popup */
+.verse-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.verse-popup.show {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.popup-content {
+    background: #000;
+    border: 2px solid #0f0;
+    border-radius: 15px;
+    padding: 2.5rem;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+    position: relative;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(0, 255, 0, 0.2);
+    border: 1px solid #0f0;
+    color: #0f0;
+    font-size: 2rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.close-btn:hover {
+    background: rgba(0, 255, 0, 0.4);
+    transform: rotate(90deg);
+}
+
+.verse-reference {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #0f0;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+}
+
+.verse-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #0f0;
+    font-family: 'Courier New', monospace;
+}
+
+/* Scrollbar styling */
+.popup-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.popup-content::-webkit-scrollbar-track {
+    background: #000;
+    border-radius: 10px;
+}
+
+.popup-content::-webkit-scrollbar-thumb {
+    background: #0f0;
+    border-radius: 10px;
+}
+
+.popup-content::-webkit-scrollbar-thumb:hover {
+    background: #0d0;
+}
+
+@media (max-width: 600px) {
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+        top: 10px;
+        right: 10px;
+        padding: 0.75rem;
+    }
+    
+    .speed-label {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .speed-slider {
+        width: 100%;
+    }
+    
+    .popup-content {
+        margin: 1rem;
+        padding: 2rem;
+        max-width: calc(100% - 2rem);
+    }
+    
+    .verse-text {
+        font-size: 1rem;
+    }
+}

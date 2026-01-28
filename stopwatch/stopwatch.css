@@ -1,0 +1,197 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+}
+
+.stopwatch-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.title {
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+.time-display {
+    text-align: center;
+    font-size: 3.5rem;
+    font-weight: 300;
+    font-family: 'Courier New', monospace;
+    color: #1e3c72;
+    background: #f5f7fa;
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    letter-spacing: 0.05em;
+}
+
+.controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.btn {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-primary {
+    background: #4CAF50;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #45a049;
+}
+
+.btn-primary.running {
+    background: #ff9800;
+}
+
+.btn-primary.running:hover {
+    background: #e68900;
+}
+
+.btn-secondary {
+    background: #2196F3;
+    color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: #0b7dda;
+}
+
+.btn-danger {
+    background: #f44336;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #da190b;
+}
+
+.splits-section {
+    margin-top: 2rem;
+}
+
+.splits-title {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.splits-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border-radius: 10px;
+    background: #f9f9f9;
+}
+
+.empty-state {
+    padding: 2rem;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+}
+
+.split-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    transition: background 0.2s ease;
+}
+
+.split-item:last-child {
+    border-bottom: none;
+}
+
+.split-item:hover {
+    background: #f0f0f0;
+}
+
+.split-number {
+    font-weight: 600;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.split-time {
+    font-family: 'Courier New', monospace;
+    color: #1e3c72;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.split-delta {
+    font-size: 0.85rem;
+    color: #999;
+    margin-left: 0.5rem;
+}
+
+/* Scrollbar styling */
+.splits-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.splits-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.splits-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.splits-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

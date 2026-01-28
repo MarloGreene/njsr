@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LDS Scripture Search & Highlighter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <div class="nav-controls">
+                <select id="volumeSelect" class="nav-select">
+                    <option value="">All Volumes</option>
+                </select>
+                <select id="bookSelect" class="nav-select">
+                    <option value="">All Books</option>
+                </select>
+                <select id="chapterSelect" class="nav-select">
+                    <option value="">All Chapters</option>
+                </select>
+                <select id="verseSelect" class="nav-select">
+                    <option value="">All Verses</option>
+                </select>
+            </div>
+            <div class="nav-actions">
+                <div class="inline-controls">
+                    <span class="control-label">Font:</span>
+                    <button id="decreaseFontBtn" title="Decrease Font Size">−</button>
+                    <span id="fontSizeDisplay">16px</span>
+                    <button id="increaseFontBtn" title="Increase Font Size">+</button>
+                    <span class="control-separator">|</span>
+                    <span class="control-label">Columns:</span>
+                    <button id="decreaseColumnsBtn" title="Decrease Columns">−</button>
+                    <span id="columnCountDisplay">2</span>
+                    <button id="increaseColumnsBtn" title="Increase Columns">+</button>
+                </div>
+                <button id="prevPageBtn" title="Previous Page (← or A)">←</button>
+                <span id="pageIndicator">Page 1</span>
+                <button id="nextPageBtn" title="Next Page (→ or D)">→</button>
+            </div>
+        </nav>
+
+        <header>
+            <h1>📖 LDS Scripture Search & Highlighter</h1>
+        </header>
+
+        <div class="search-section">
+            <div class="search-controls">
+                <input type="text" id="searchInput" placeholder="Search scriptures..." autocomplete="off" autofocus>
+                <button id="searchBtn">Search</button>
+                <button id="clearSearchBtn">Clear</button>
+            </div>
+            <div class="filters">
+                <div class="filter-group">
+                    <strong>Volumes:</strong>
+                    <label><input type="checkbox" class="volume-filter" id="filterOT" checked> Old Testament</label>
+                    <label><input type="checkbox" class="volume-filter" id="filterNT" checked> New Testament</label>
+                    <label><input type="checkbox" class="volume-filter" id="filterBOM" checked> Book of Mormon</label>
+                    <label><input type="checkbox" class="volume-filter" id="filterDC" checked> D&C</label>
+                    <label><input type="checkbox" class="volume-filter" id="filterPGP" checked> Pearl of Great Price</label>
+                </div>
+                <div class="filter-group">
+                    <label><input type="checkbox" id="caseSensitive"> Case sensitive</label>
+                    <label><input type="checkbox" id="wholeWord"> Whole words only</label>
+                    <label>Max results: <select id="maxResults">
+                        <option value="100">100</option>
+                        <option value="500" selected>500</option>
+                        <option value="1000">1000</option>
+                        <option value="5000">5000</option>
+                    </select></label>
+                </div>
+            </div>
+            <div id="stats" class="stats">Loading scriptures...</div>
+        </div>
+
+        <!-- Highlight Palette Row -->
+        <div class="palette-bar">
+            <div class="palette-section">
+                <label class="palette-label">Highlight Color:</label>
+                <div class="palette-colors-inline" id="paletteColors">
+                    <!-- Colors will be added by JS -->
+                </div>
+                <button id="helpBtn" class="help-btn" title="How to use this app">?</button>
+            </div>
+            <div class="palette-actions-inline">
+                <button id="highlightNextBtn" class="inline-btn" title="Highlight the next search result">Highlight Next</button>
+                <button id="highlightAllPageBtn" class="inline-btn" title="Highlight all search results on current page">Highlight All on Page</button>
+                <button id="highlightAllMatchesBtn" class="inline-btn" title="Highlight all search results across all pages">Highlight All Matches</button>
+                <button id="clearHighlightsBtn" class="inline-btn" title="Remove all highlights">Clear All</button>
+                <button id="exportHighlightsBtn" class="inline-btn" title="Download your highlights as JSON">Export</button>
+                <button id="importHighlightsBtn" class="inline-btn" title="Restore highlights from JSON file">Import</button>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <main id="contentArea" class="content-area"></main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p><strong>LDS Scripture Search & Highlighter</strong> &middot; /ssah/</p>
+                <p>Privacy-focused tool for studying sacred texts. Click verses to highlight, drag to select phrases.</p>
+                <p>All data stored locally. MIT License &copy; njsr.org 2002-2026</p>
+            </div>
+        </footer>
+
+        <!-- Import Modal -->
+        <div id="importModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Import Highlights</h2>
+                    <button class="close-btn" id="closeImportBtn">×</button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="importTextarea" placeholder="Paste your JSON highlights here..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirmImportBtn" class="primary-btn">Import</button>
+                    <button id="cancelImportBtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Modal -->
+        <div id="helpModal" class="modal hidden">
+            <div class="modal-content help-modal">
+                <div class="modal-header">
+                    <h2>📖 How to Use Scripture Search & Highlighter</h2>
+                    <button class="close-btn" id="closeHelpBtn">×</button>
+                </div>
+                <div class="modal-body help-content">
+                    <section>
+                        <h3>🔍 Searching Scriptures</h3>
+                        <ul>
+                            <li><strong>Type to search:</strong> Results appear as you type (real-time search)</li>
+                            <li><strong>Volume filters:</strong> Check/uncheck to search specific volumes</li>
+                            <li><strong>Advanced options:</strong> Use case-sensitive or whole word matching</li>
+                            <li><strong>Navigation:</strong> Use dropdowns to browse by Volume → Book → Chapter → Verse</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>🎨 Highlighting Verses</h3>
+                        <ul>
+                            <li><strong>Click any verse:</strong> Highlights with selected color, click again to cycle through colors, click 5th time to remove</li>
+                            <li><strong>Select a color:</strong> Click a color swatch in the palette to make it active</li>
+                            <li><strong>Drag to select text:</strong> Highlight specific words or phrases within verses</li>
+                            <li><strong>Colors persist:</strong> All highlights automatically save to your browser</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>⚡ Quick Actions</h3>
+                        <ul>
+                            <li><strong>Highlight Next:</strong> Jump to and highlight the next search result</li>
+                            <li><strong>Highlight All on Page:</strong> Highlight all search results on current page</li>
+                            <li><strong>Highlight All Matches:</strong> Highlight all search results (all pages)</li>
+                            <li><strong>Clear All:</strong> Remove all highlights and phrase selections</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>⌨️ Keyboard Shortcuts</h3>
+                        <ul>
+                            <li><strong>← or A:</strong> Previous page</li>
+                            <li><strong>→ or D:</strong> Next page</li>
+                            <li><strong>Enter:</strong> Execute search</li>
+                            <li><strong>ESC:</strong> Close modal</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>💾 Saving & Sharing</h3>
+                        <ul>
+                            <li><strong>Export:</strong> Download your highlights as a JSON file</li>
+                            <li><strong>Import:</strong> Restore highlights from a previously exported file</li>
+                            <li><strong>Privacy:</strong> All data stays on your device, nothing is sent to servers</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>⚙️ Customization</h3>
+                        <ul>
+                            <li><strong>Font size:</strong> Use +/- buttons to adjust (12-24px)</li>
+                            <li><strong>Columns:</strong> Change column count for book-like reading (1-6 columns)</li>
+                            <li><strong>Settings persist:</strong> Your preferences are automatically saved</li>
+                        </ul>
+                    </section>
+                </div>
+                <div class="modal-footer">
+                    <button id="closeHelpFooterBtn" class="primary-btn">Got it!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Information</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌐 Network Information</h1>
+            <p class="subtitle">Comprehensive network and IP address details</p>
+        </header>
+
+        <main id="main-grid">
+            <!-- Public IPv4 Section -->
+            <section class="info-card">
+                <h2>📡 Public IPv4 Address</h2>
+                <div class="ip-display">
+                    <span id="ipv4" class="ip-value loading">Loading...</span>
+                    <button class="copy-btn" onclick="copyToClipboard('ipv4')" title="Copy to clipboard">📋</button>
+                </div>
+                <div class="details" id="ipv4-details">
+                    <div class="detail-row"><span class="label">ISP:</span> <span id="ipv4-isp" class="loading">—</span></div>
+                    <div class="detail-row"><span class="label">Location:</span> <span id="ipv4-location" class="loading">—</span></div>
+                    <div class="detail-row"><span class="label">Coordinates:</span> <span id="ipv4-coords" class="loading">—</span></div>
+                    <div class="detail-row"><span class="label">Timezone:</span> <span id="ipv4-timezone" class="loading">—</span></div>
+                    <div class="detail-row"><span class="label">AS Number:</span> <span id="ipv4-asn" class="loading">—</span></div>
+                </div>
+            </section>
+
+            <!-- Public IPv6 Section -->
+            <section class="info-card">
+                <h2>📡 Public IPv6 Address</h2>
+                <div class="ip-display">
+                    <span id="ipv6" class="ip-value loading">Loading...</span>
+                    <button class="copy-btn" onclick="copyToClipboard('ipv6')" title="Copy to clipboard">📋</button>
+                </div>
+                <div class="details" id="ipv6-details">
+                    <div class="detail-row"><span class="label">ISP:</span> <span id="ipv6-isp" class="loading">—</span></div>
+                    <div class="detail-row"><span class="label">Location:</span> <span id="ipv6-location" class="loading">—</span></div>
+                    <div class="detail-row"><span class="label">Coordinates:</span> <span id="ipv6-coords" class="loading">—</span></div>
+                    <div class="detail-row"><span class="label">AS Number:</span> <span id="ipv6-asn" class="loading">—</span></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Toggle Button -->
+        <div class="toggle-container">
+            <button id="toggleBtn" class="toggle-btn" onclick="toggleDetails()">
+                <span id="toggleText">Show More Information</span>
+                <span id="toggleIcon">▼</span>
+            </button>
+        </div>
+
+        <!-- Collapsible Details Section -->
+        <div id="detailsSection" class="details-section collapsed">
+            <div class="details-grid">
+                <!-- Local Network Information -->
+                <section class="info-card">
+                    <h2>🏠 Local Network</h2>
+                    <div class="details" id="local-details">
+                        <div class="detail-row"><span class="label">Local IP(s):</span> <span id="local-ips" class="loading">Detecting...</span></div>
+                        <div class="detail-row"><span class="label">Connection:</span> <span id="connection-type">—</span></div>
+                        <div class="detail-row"><span class="label">Browser:</span> <span id="browser-info">—</span></div>
+                        <div class="detail-row"><span class="label">Platform:</span> <span id="platform-info">—</span></div>
+                    </div>
+                </section>
+
+                <!-- Hardware Information -->
+                <section class="info-card">
+                    <h2>🖥️ Hardware Info</h2>
+                    <div class="details">
+                        <div class="detail-row"><span class="label">CPU Cores:</span> <span id="cpu-cores">—</span></div>
+                        <div class="detail-row"><span class="label">Device Memory:</span> <span id="device-memory">—</span></div>
+                        <div class="detail-row"><span class="label">Max Touch Points:</span> <span id="touch-points">—</span></div>
+                        <div class="detail-row"><span class="label">Battery Status:</span> <span id="battery-status">—</span></div>
+                    </div>
+                </section>
+
+                <!-- Display Information -->
+                <section class="info-card">
+                    <h2>📺 Display Info</h2>
+                    <div class="details">
+                        <div class="detail-row"><span class="label">Resolution:</span> <span id="screen-resolution">—</span></div>
+                        <div class="detail-row"><span class="label">Color Depth:</span> <span id="color-depth">—</span></div>
+                        <div class="detail-row"><span class="label">Pixel Ratio:</span> <span id="pixel-ratio">—</span></div>
+                        <div class="detail-row"><span class="label">Orientation:</span> <span id="orientation">—</span></div>
+                    </div>
+                </section>
+
+                <!-- Browser Capabilities -->
+                <section class="info-card">
+                    <h2>🌐 Browser Features</h2>
+                    <div class="details">
+                        <div class="detail-row"><span class="label">Language:</span> <span id="language">—</span></div>
+                        <div class="detail-row"><span class="label">Cookies:</span> <span id="cookies-enabled">—</span></div>
+                        <div class="detail-row"><span class="label">Do Not Track:</span> <span id="dnt">—</span></div>
+                        <div class="detail-row"><span class="label">Storage Quota:</span> <span id="storage-quota">—</span></div>
+                    </div>
+                </section>
+
+                <!-- WebGL Fingerprint -->
+                <section class="info-card">
+                    <h2>🎮 WebGL Info</h2>
+                    <div class="details">
+                        <div class="detail-row"><span class="label">Vendor:</span> <span id="webgl-vendor">—</span></div>
+                        <div class="detail-row"><span class="label">Renderer:</span> <span id="webgl-renderer">—</span></div>
+                        <div class="detail-row"><span class="label">Version:</span> <span id="webgl-version">—</span></div>
+                        <div class="detail-row"><span class="label">Hash:</span> <span id="webgl-hash">—</span></div>
+                    </div>
+                </section>
+
+                <!-- Canvas Fingerprint -->
+                <section class="info-card">
+                    <h2>🎨 Canvas Fingerprint</h2>
+                    <div class="details">
+                        <div class="detail-row"><span class="label">Hash:</span> <span id="canvas-hash">—</span></div>
+                        <div class="detail-row"><span class="label">Supported:</span> <span id="canvas-supported">—</span></div>
+                    </div>
+                </section>
+
+                <!-- Audio Context -->
+                <section class="info-card">
+                    <h2>🔊 Audio Fingerprint</h2>
+                    <div class="details">
+                        <div class="detail-row"><span class="label">Context:</span> <span id="audio-context">—</span></div>
+                        <div class="detail-row"><span class="label">Hash:</span> <span id="audio-hash">—</span></div>
+                    </div>
+                </section>
+
+                <!-- Media Devices -->
+                <section class="info-card">
+                    <h2>📹 Media Devices</h2>
+                    <div class="details">
+                        <div class="detail-row"><span class="label">Camera:</span> <span id="has-camera">—</span></div>
+                        <div class="detail-row"><span class="label">Microphone:</span> <span id="has-microphone">—</span></div>
+                        <div class="detail-row"><span class="label">Speakers:</span> <span id="has-speakers">—</span></div>
+                    </div>
+                </section>
+
+                <!-- Security & Privacy -->
+                <section class="info-card">
+                    <h2>🔒 Security Info</h2>
+                    <div class="details">
+                        <div class="detail-row"><span class="label">WebRTC:</span> <span id="webrtc-status">—</span></div>
+                        <div class="detail-row"><span class="label">IP Leak Risk:</span> <span id="webrtc-leak">—</span></div>
+                        <div class="detail-row"><span class="label">Protocol:</span> <span id="protocol">—</span></div>
+                        <div class="detail-row"><span class="label">Referrer:</span> <span id="referrer">—</span></div>
+                    </div>
+                </section>
+
+                <!-- Fonts Detection -->
+                <section class="info-card">
+                    <h2>🔤 Font Detection</h2>
+                    <div class="details">
+                        <div class="detail-row"><span class="label">Common Fonts:</span> <span id="fonts-detected">—</span></div>
+                        <div class="detail-row"><span class="label">Font Hash:</span> <span id="font-hash">—</span></div>
+                    </div>
+                </section>
+
+                <!-- Timezone & Locale -->
+                <section class="info-card">
+                    <h2>🌍 Locale Info</h2>
+                    <div class="details">
+                        <div class="detail-row"><span class="label">Timezone:</span> <span id="timezone">—</span></div>
+                        <div class="detail-row"><span class="label">Timezone Offset:</span> <span id="timezone-offset">—</span></div>
+                        <div class="detail-row"><span class="label">Languages:</span> <span id="languages">—</span></div>
+                    </div>
+                </section>
+
+                <!-- Plugins & Extensions -->
+                <section class="info-card">
+                    <h2>🔌 Plugins Info</h2>
+                    <div class="details">
+                        <div class="detail-row"><span class="label">Plugin Count:</span> <span id="plugin-count">—</span></div>
+                        <div class="detail-row"><span class="label">PDF Viewer:</span> <span id="pdf-viewer">—</span></div>
+                        <div class="detail-row"><span class="label">Ad Blocker:</span> <span id="ad-blocker">—</span></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>Network Information</strong> &middot; /ip2/</p>
+            <p>Last updated: <span id="timestamp">—</span></p>
+            <button class="refresh-btn" onclick="location.reload()">🔄 Refresh All Data</button>
+            <p style="margin-top:1rem;font-size:0.8rem;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

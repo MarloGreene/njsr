@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1704067200000,
+    "text": "Proverbs 3:5-6 - \"Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.\"\n\nThis really hit me today. I've been trying to control every little detail of the job search, refreshing my email every 5 minutes, worrying about things I can't change. This verse is a reminder to do my part (apply, network, prepare) but then trust the process. The path will become clear when it's supposed to. Need to remember this when the anxiety kicks in.",
+    "timestamp": "2024-01-01T10:00:00.000Z",
+    "location": "37.77°, -122.42°",
+    "color": "soft-lavender"
+  },
+  {
+    "id": 1704153600000,
+    "text": "IMPORTANT: Check on Marcus tomorrow! He mentioned his mom's surgery is this week and he's been overwhelmed trying to juggle work + hospital visits. His driveway was buried under 8 inches of snow when I drove by tonight - need to swing by in the morning with the shovel before he even wakes up. Also text him about meals - maybe coordinate with Sarah to set up a meal train? He's always there for everyone else, time to show up for him. Prayer: strength for his mom's recovery, peace for Marcus during this stressful time, and that he feels supported by his community.",
+    "timestamp": "2024-01-02T14:30:00.000Z",
+    "location": null,
+    "color": "soft-pink"
+  },
+  {
+    "id": 1704240000000,
+    "text": "💡 WEB APP IDEA: \"Context Keeper\" - A micro tool for developers that saves your mental state when you switch contexts.\n\nThe problem: You're deep in debugging a gnarly API issue, 5 browser tabs open, terminal running specific commands, have a mental model of the data flow... then Slack pings, urgent meeting, context switch. Two hours later you're back and have NO idea where you were.\n\nThe solution: One-click \"save context\" that captures:\n- Current open files in editor (with line numbers)\n- Terminal commands in history\n- Browser tabs (URLs)\n- A quick voice/text note about \"what I was doing\"\n- Time tracker integration\n\nThen when you return, one click restores everything + shows your notes. Could integrate with VS Code, use local storage, maybe even AI to summarize your progress from git commits.\n\nBuilt with: Electron or VS Code extension, simple DB (SQLite?), maybe use OpenAI API for the smart summary feature.\n\nMVP: Just the note-taking + file tracking. Ship it in a weekend!\n\nWhy this matters: Context switching costs devs 20+ minutes per switch according to studies. This could save hours per week.\n\nNext steps: Sketch out the UI, check if VS Code extension API supports what I need.",
+    "timestamp": "2024-01-03T09:15:00.000Z",
+    "location": "40.71°, -74.01°",
+    "color": "yellow"
+  },
+  {
+    "id": 1704326400000,
+    "text": "Return library books by Friday!!!",
+    "timestamp": "2024-01-04T16:45:00.000Z",
+    "location": null,
+    "color": "red"
+  },
+  {
+    "id": 1704412800000,
+    "text": "ESSAY DRAFT: \"The Kindest Celebrities in an Unkind Industry\"\n\nIntroduction:\nIn an era where celebrity culture often celebrates excess, drama, and controversy, there exists a quieter cohort of famous individuals who have made kindness their brand. Not the performative, Instagram-story kind of kindness, but genuine, consistent, transformative generosity that has changed lives. This essay examines five celebrities who have redefined what it means to use fame for good, and what we can learn from their approach to compassion.\n\nKeanu Reeves: The Reluctant Saint\nReeves has become almost mythological in his ordinariness. Stories circulate constantly: giving up his subway seat, taking pay cuts so costume designers could be paid more, running a private cancer foundation for years without publicity, buying Harley Davidsons for his stunt team. But what makes Reeves truly remarkable is his apparent discomfort with praise. In interviews, he deflects, changes subjects, seems genuinely confused by adoration. This isn't strategic humility - it's a man who simply believes treating others well is baseline human behavior, not heroism.\n\nDolly Parton: Radical Generosity as Legacy\nParton's Imagination Library has gifted over 200 million books to children. She funded Moderna's COVID vaccine research with a million-dollar donation. She pays her theme park employees above market wages. But ask Dolly about any of this and she'll crack a joke about her wigs or her figure. Her kindness is so woven into her identity that she can't separate the two. \"If you see someone without a smile, give them one of yours,\" she says, and has apparently taken this literally for seven decades.\n\nTom Hanks: Normalcy as Resistance\nIn Hollywood's ecosystem of manufactured personas, Hanks weaponizes normalcy. He photobombs weddings, buys reporters coffee, sends encouraging letters to strangers. His kindness seems almost boring in its consistency - which is precisely the point. In an industry that rewards volatility, Hanks has made reliability his signature. Every interaction, every interview, every fan encounter reinforces a simple truth: you can be extraordinarily talented and extraordinarily kind simultaneously.\n\nConclusion (draft):\nWhat unites these individuals isn't just their generosity, but their apparent inability to be otherwise. They haven't learned kindness as a PR strategy - it's embedded in their character so deeply that fame simply amplified what was already there. The lesson isn't that we should all be celebrities who give away millions. It's that kindness is a practice, not a performance. It's daily, unglamorous, and often invisible. And maybe that's exactly what makes it transformative.\n\nNotes for revision:\n- Need stronger transition between Reeves and Parton sections\n- Consider adding Taylor Swift's financial support of fans?\n- Conclusion feels rushed - expand on \"practice not performance\" idea\n- Maybe add counterexamples? (No, too negative - keep it positive)\n- Check facts on Dolly's vaccine donation amount",
+    "timestamp": "2024-01-05T11:20:00.000Z",
+    "location": "34.05°, -118.24°",
+    "color": "soft-peach"
+  },
+  {
+    "id": 1704499200000,
+    "text": "GROCERY LIST:\n- Eggs (the good ones, pasture-raised)\n- Oat milk (NOT the sweetened kind this time)\n- Spinach x2\n- Bell peppers (red, yellow, orange for fajitas)\n- Chicken breast\n- Black beans (dried, not canned - cheaper)\n- Avocados x3\n- Sourdough bread\n- Coffee beans (dark roast)\n- Greek yogurt\n- Blueberries if on sale\n- Garlic (can never have too much)\n- Onions\n- Tomatoes\n- That fancy cheese Sarah mentioned???\n- Dark chocolate (72% minimum)\n- Sparkling water\n- Trash bags\n- Dish soap\n\nDON'T FORGET: Reusable bags in the car!",
+    "timestamp": "2024-01-06T08:00:00.000Z",
+    "location": null,
+    "color": "green"
+  },
+  {
+    "id": 1704585600000,
+    "text": "NOVEL BACK COVER DRAFT - \"The Lighthouse Keeper's Daughter\"\n\nWhen Mercy Sullivan returns to Cragstone Island after fifteen years, she expects to find the lighthouse exactly as she left it - weathered, solitary, keeping its vigil over the Atlantic. What she doesn't expect is to find her father's journal, hidden in the lamp room, documenting decades of conversations with ships that were never there.\n\nAs a neuroscientist specializing in memory disorders, Mercy knows the signs of dementia. But the journal entries are too specific, too detailed, too impossible to dismiss. Ships that sank a century ago. Sailors speaking in dead languages. Coordinates that lead to nothing but empty ocean - until Mercy starts looking deeper.\n\nWith the help of Finn Wheeler, the taciturn marine historian who's spent his career studying maritime disasters, Mercy begins to unravel a mystery that spans generations. Every lighthouse keeper on Cragstone has kept a journal. Every journal tells the same impossible story. And every keeper has disappeared on the same date - August 17th.\n\nIt's August 3rd.\n\nAs Mercy races to understand her father's fate before the island claims her too, she must confront the question that haunts every scientific mind: what do you do when the impossible becomes undeniable?\n\n\"Part ghost story, part scientific thriller, THE LIGHTHOUSE KEEPER'S DAUGHTER examines the spaces where logic ends and faith begins. Greer's prose is as atmospheric as the windswept island she creates, and Mercy Sullivan is that rare protagonist who thinks her way through supernatural circumstances without losing her sense of wonder. A stunning debut that will haunt you long after the last page.\" - [Hopefully a real author blurb here]\n\n\"Fans of THE HISTORIAN and MEXICAN GOTHIC will devour this literary page-turner. Greer has announced herself as a major new voice in speculative fiction.\" - [Another real person hopefully]\n\nNOTES:\n- Too long? Trim the middle paragraph?\n- Does \"impossible becomes undeniable\" land or is it too cheesy?\n- Need to emphasize the father-daughter relationship more?\n- Maybe mention it's set in Maine specifically?\n- Query: Is this marketed as literary fiction or thriller? Affects cover copy tone.",
+    "timestamp": "2024-01-07T13:40:00.000Z",
+    "location": "51.51°, -0.13°",
+    "color": "soft-teal"
+  },
+  {
+    "id": 1704672000000,
+    "text": "Weird dream last night about a library where all the books rearranged themselves based on what you needed to read, not what you wanted to read. Unsettling but kind of brilliant?",
+    "timestamp": "2024-01-08T17:55:00.000Z",
+    "location": null,
+    "color": "soft-lavender"
+  },
+  {
+    "id": 1704758400000,
+    "text": "Coffee meeting with Jamie went really well! She loved the portfolio, said the design work showed \"real understanding of user psychology\" which is exactly what I was going for. She's going to intro me to their UX lead next week. This could actually happen. Trying not to get too excited but... this could actually happen. 🤞",
+    "timestamp": "2024-01-09T10:10:00.000Z",
+    "location": "48.86°, 2.35°",
+    "color": "soft-mint"
+  },
+  {
+    "id": 1704844800000,
+    "text": "3am thoughts: What if we're all just characters in someone else's journal entry? What if every time we do something kind or creative or brave, we're actually being written into existence by someone who needs to believe those things are possible? What if that's what consciousness is - the universe writing itself into being, one thought at a time?\n\nOkay going back to sleep now. But actually though. What if.",
+    "timestamp": "2024-01-10T15:25:00.000Z",
+    "location": null,
+    "color": "soft-gray"
+  }
+]

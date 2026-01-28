@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scripture Matrix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            font-family: 'Courier New', monospace;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.9);
+            border-bottom: 1px solid #333;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #0f0;
+            text-shadow: 0 0 10px #0f0;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            padding: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .preview {
+            background: #000;
+            border: 2px solid;
+            border-radius: 10px;
+            padding: 0.75rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .preview:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px currentColor;
+        }
+
+        .preview.bible {
+            border-color: #0f0;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        .preview.bom {
+            border-color: #6699ff;
+            box-shadow: 0 0 20px rgba(102, 153, 255, 0.3);
+        }
+
+        .preview.pogp {
+            border-color: #FAF0E6;
+            box-shadow: 0 0 20px rgba(250, 240, 230, 0.3);
+        }
+
+        .preview.dc {
+            border-color: #C19A6B;
+            box-shadow: 0 0 20px rgba(193, 154, 107, 0.3);
+        }
+
+        .preview-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .preview.bible .preview-title { color: #0f0; }
+        .preview.bom .preview-title { color: #6699ff; }
+        .preview.pogp .preview-title { color: #FAF0E6; }
+        .preview.dc .preview-title { color: #C19A6B; }
+
+        .preview-desc {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .matrix-text {
+            font-size: 0.8rem;
+            line-height: 1.2;
+            opacity: 0.7;
+            white-space: pre-wrap;
+        }
+
+        .preview.bible .matrix-text { color: #0f0; }
+        .preview.bom .matrix-text { color: #6699ff; }
+        .preview.pogp .matrix-text { color: #FAF0E6; }
+        .preview.dc .matrix-text { color: #C19A6B; }
+
+        .footer {
+            text-align: center;
+            padding: 1rem;
+            color: #666;
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.9);
+            border-top: 1px solid #333;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>SCRIPTURE MATRIX</h1>
+        <p class="subtitle">Choose your scripture set for the matrix animation</p>
+    </div>
+
+    <div class="grid">
+        <a href="b/" class="preview bible">
+            <div>
+                <div class="preview-title">BIBLE</div>
+                <div class="preview-desc">King James Version</div>
+                <div class="matrix-text">In the beginning was the Word,
+and the Word was with God,
+and the Word was God.</div>
+            </div>
+        </a>
+
+        <a href="bom/" class="preview bom">
+            <div>
+                <div class="preview-title">BOOK OF MORMON</div>
+                <div class="preview-desc">Ancient American scripture</div>
+                <div class="matrix-text">I, Nephi, having been born
+of goodly parents, therefore
+I was taught somewhat in
+all the learning of my father</div>
+            </div>
+        </a>
+
+        <a href="pogp/" class="preview pogp">
+            <div>
+                <div class="preview-title">PEARL OF GREAT PRICE</div>
+                <div class="preview-desc">Additional scripture and history</div>
+                <div class="matrix-text">The Pearl of Great Price
+is a selection of choice
+items of great worth</div>
+            </div>
+        </a>
+
+        <a href="dc/" class="preview dc">
+            <div>
+                <div class="preview-title">DOCTRINE & COVENANTS</div>
+                <div class="preview-desc">Modern revelation</div>
+                <div class="matrix-text">Hearken, O ye people of
+my church, to whom the
+kingdom has been given</div>
+            </div>
+        </a>
+    </div>
+
+    <div class="footer">
+        Scripture Matrix &middot; /sm/ &middot; MIT &copy; njsr.org
+    </div>
+</body>
+</html>

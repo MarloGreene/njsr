@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>tTracker — Tinnitus Tracking and Logger</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>tTracker :: Track Your Tinnitus Episodes</h1>
+    <p class="subtitle">Press ← or → when tinnitus starts; press same again when it stops. <br />Everything stays local and private. Export to CSV, view stats below.</p>
+
+    <section class="controls">
+      <button id="leftBtn" class="big-btn left">Left<br/><span class="state">Inactive</span><span class="timer"></span></button>
+      <div class="center-controls">
+        <button id="exportCsv">Export CSV</button>
+        <button id="clearAll">Clear All</button>
+      </div>
+      <button id="rightBtn" class="big-btn right">Right<br/><span class="state">Inactive</span><span class="timer"></span></button>
+    </section>
+
+    <div class="fold" id="fold-tinnitus">
+      <button class="fold-toggle" aria-expanded="false">▶ What is tinnitus?</button>
+      <div class="fold-content" hidden>
+        <p>Tinnitus is the perception of sound (for example ringing, buzzing, or hissing) in the ears or head without an external external sound source. It may be intermittent or continuous and varies in intensity.</p>
+
+        <p><strong>Common situations or experiences that can lead to or worsen tinnitus:</strong></p>
+        <ul>
+          <li><strong>Exposure to loud noise</strong> — prolonged or repeated loud sounds, or a single very loud event (military service, concerts, firearms, heavy machinery).</li>
+          <li><strong>Age-related hearing changes</strong> — gradual changes in the inner ear often increase tinnitus with age.</li>
+          <li><strong>Ototoxic medications</strong> — some antibiotics, chemotherapy agents, and large doses of aspirin or other drugs may affect hearing.</li>
+          <li><strong>Ear conditions</strong> — impacted earwax, ear infections, or middle-ear problems can trigger tinnitus.</li>
+          <li><strong>Head or neck injury</strong> — trauma may affect nerves, blood flow, or structures involved in hearing.</li>
+          <li><strong>Medical or vascular issues</strong> — high blood pressure, vascular disorders, TMJ problems, or metabolic conditions can contribute.</li>
+          <li><strong>Stress, fatigue, and sleep loss</strong> — these can make tinnitus more noticeable or harder to ignore.</li>
+        </ul>
+
+        <p>If your tinnitus is new, changing, or concerning, consider consulting a healthcare professional or audiologist for evaluation and personalised advice.</p>
+      </div>
+    </div>
+
+    <section class="log">
+      <h2>Events</h2>
+      <div id="emptyHint" class="hint">No events yet — start by pressing an arrow key or the buttons above.</div>
+      <table id="eventsTable">
+        <thead>
+          <tr><th>Side</th><th>Start</th><th>End</th><th>Duration</th><th>Note</th><th></th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="visuals">
+      <h2>Visual Summary</h2>
+      <div class="visual-grid">
+        <div class="visual-card">
+          <div class="vis-head" id="vis-day">
+            <!-- svg mannequin head: left ear id left-day-ear, right ear id right-day-ear -->
+            <svg viewBox="0 0 200 200" width="160" height="160" aria-hidden="true">
+              <g transform="translate(100,100)">
+                <circle cx="0" cy="0" r="56" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
+                <path id="left-day-ear" d="M-56,-8 C-74,-18 -74,18 -56,8 C-66,0 -66,0 -56,-8" fill="#2b3340" />
+                <path id="right-day-ear" d="M56,-8 C74,-18 74,18 56,8 C66,0 66,0 56,-8" fill="#2b3340" />
+                <circle cx="0" cy="0" r="36" fill="rgba(255,255,255,0.02)" />
+              </g>
+            </svg>
+          </div>
+          <div class="vis-label">Past Day<br/><span class="vis-count" id="count-day">0</span></div>
+        </div>
+
+        <div class="visual-card">
+          <div class="vis-head" id="vis-week">
+            <svg viewBox="0 0 200 200" width="160" height="160" aria-hidden="true">
+              <g transform="translate(100,100)">
+                <circle cx="0" cy="0" r="56" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
+                <path id="left-week-ear" d="M-56,-8 C-74,-18 -74,18 -56,8 C-66,0 -66,0 -56,-8" fill="#2b3340" />
+                <path id="right-week-ear" d="M56,-8 C74,-18 74,18 56,8 C66,0 66,0 56,-8" fill="#2b3340" />
+                <circle cx="0" cy="0" r="36" fill="rgba(255,255,255,0.02)" />
+              </g>
+            </svg>
+          </div>
+          <div class="vis-label">Past Week<br/><span class="vis-count" id="count-week">0</span></div>
+        </div>
+
+        <div class="visual-card">
+          <div class="vis-head" id="vis-month">
+            <svg viewBox="0 0 200 200" width="160" height="160" aria-hidden="true">
+              <g transform="translate(100,100)">
+                <circle cx="0" cy="0" r="56" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
+                <path id="left-month-ear" d="M-56,-8 C-74,-18 -74,18 -56,8 C-66,0 -66,0 -56,-8" fill="#2b3340" />
+                <path id="right-month-ear" d="M56,-8 C74,-18 74,18 56,8 C66,0 66,0 56,-8" fill="#2b3340" />
+                <circle cx="0" cy="0" r="36" fill="rgba(255,255,255,0.02)" />
+              </g>
+            </svg>
+          </div>
+          <div class="vis-label">Past Month<br/><span class="vis-count" id="count-month">0</span></div>
+        </div>
+      </div>
+      <div class="vis-legend"><strong>Legend:</strong> darker = more episodes (scaled per view)</div>
+    </section>
+
+    <section class="trigger-stats">
+      <h2>Trigger Stats</h2>
+      <div id="triggerStats" class="trigger-list">
+        <!-- populated by JS: shows counts and percentages for triggers -->
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div><strong>tTracker</strong> &middot; /tt/ &middot; Tinnitus episode logger</div>
+      <div style="margin-top:4px;">Keyboard: <strong>←</strong> = left, <strong>→</strong> = right. Works offline, no account.</div>
+      <div style="margin-top:6px;color:var(--muted);font-size:12px;">We're not doctors — this tool is for personal logging only and is not medical advice. If you're concerned about your tinnitus, please consult a healthcare professional or audiologist.</div>
+      <div style="margin-top:6px;color:var(--muted);font-size:11px;">MIT License &copy; njsr.org 2002-2026</div>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

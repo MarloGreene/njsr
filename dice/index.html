@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Roller - Modern Polyhedral Dice Simulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.1rem;
+        }
+
+        .dice-roller {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            grid-template-rows: auto;
+            gap: 0;
+            min-height: 600px;
+        }
+
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #f0f0f0;
+        }
+
+        .center-column {
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #f0f0f0;
+        }
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .section:not(:last-child) {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dice-palette {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .die {
+            width: 100%;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .die:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .die:active {
+            transform: translateY(-2px);
+        }
+
+        .die.d4 { background: linear-gradient(135deg, #ff6b6b, #ee5a52); }
+        .die.d6 { background: linear-gradient(135deg, #4ecdc4, #44a08d); }
+        .die.d8 { background: linear-gradient(135deg, #45b7d1, #3a9fbf); }
+        .die.d10 { background: linear-gradient(135deg, #96ceb4, #7fb89c); }
+        .die.d12 { background: linear-gradient(135deg, #ffeaa7, #f5d76e); }
+        .die.d20 { background: linear-gradient(135deg, #a29bfe, #8c7ae6); }
+        .die.d100 { background: linear-gradient(135deg, #fd79a8, #e84393); }
+        .die.modifier-btn { background: linear-gradient(135deg, #6c5ce7, #5a4fcf); }
+
+        .modifier-btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8px;
+        }
+
+        .modifier-arrow {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .modifier-arrow:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+
+        .modifier-arrow:active {
+            transform: scale(0.95);
+        }
+
+        .modifier-btn .die-text {
+            flex: 1;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .quick-roll-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .quick-modifier-arrow {
+            background: rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.3);
+            color: #333;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            min-width: 24px;
+        }
+
+        .quick-modifier-arrow:hover {
+            background: rgba(0,0,0,0.2);
+            border-color: rgba(0,0,0,0.5);
+            transform: scale(1.05);
+        }
+
+        .quick-modifier-arrow:active {
+            transform: scale(0.95);
+        }
+
+        .die-text {
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .quick-rolls {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .quick-roll {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .quick-roll:hover {
+            border-color: #667eea;
+            background: #f0f2ff;
+        }
+
+        .quick-roll-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .quick-label-input {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .quick-roll-input {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .quick-roll-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-roll-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .dice-tower {
+            min-height: 120px;
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            background: #fafafa;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .dice-tower.drag-over {
+            border-color: #667eea;
+            background: #f0f2ff;
+            transform: scale(1.02);
+        }
+
+        .tower-dice {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tower-die {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .tower-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .modifier-input {
+            width: 80px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .tower-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .roll-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .roll-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .clear-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .clear-btn:hover {
+            background: #c82333;
+        }
+
+        .center-column .section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .results {
+            flex: 1;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            text-align: left;
+            overflow-y: auto;
+        }
+
+        .results.empty {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .date-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #495057;
+            margin: 15px 0 8px 0;
+            padding: 8px 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+
+        .result-item {
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border-left: 3px solid #667eea;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            position: relative;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 0.85rem;
+        }
+
+        .result-total {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #28a745;
+        }
+
+        .result-dice {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .result-die {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            font-size: 0.8rem;
+        }
+
+        .result-die .die {
+            width: 24px;
+            height: 24px;
+            font-size: 8px;
+        }
+
+        .result-die .die .die-text {
+            font-size: 8px;
+        }
+
+        .result-timestamp {
+            position: absolute;
+            bottom: 6px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: #adb5bd;
+            font-weight: 400;
+            opacity: 0.7;
+        }
+
+        .total {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #28a745;
+            margin-top: 10px;
+        }
+
+        .clear-history-btn {
+            width: 100%;
+            padding: 10px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .clear-history-btn:hover {
+            background: #5a6268;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1024px) {
+            .dice-roller {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+                min-height: auto;
+            }
+
+            .left-column, .center-column, .right-column {
+                border-right: none !important;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .right-column {
+                border-bottom: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .quick-rolls {
+                grid-template-columns: 1fr;
+            }
+
+            .dice-palette {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .die {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        /* Animations */
+        @keyframes roll {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(90deg); }
+            50% { transform: rotate(180deg); }
+            75% { transform: rotate(270deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .rolling {
+            animation: roll 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🎲 Dice Roller</h1>
+            <p class="subtitle">Modern polyhedral dice simulator for tabletop gaming</p>
+        </div>
+
+        <div class="dice-roller">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Dice Selection -->
+                <div class="section">
+                    <h2 class="section-title">🎯 Dice Selection</h2>
+                    <div class="dice-palette">
+                        <div class="die modifier-btn" id="modifierBtn">
+                            <button class="modifier-arrow modifier-down" id="modifierDown">▼</button>
+                            <span class="die-text" id="modifierDisplay">+0</span>
+                            <button class="modifier-arrow modifier-up" id="modifierUp">▲</button>
+                        </div>
+                        <div class="die d6" data-sides="6">
+                            <span class="die-text">d6</span>
+                        </div>
+                        <div class="die d8" data-sides="8">
+                            <span class="die-text">d8</span>
+                        </div>
+                        <div class="die d10" data-sides="10">
+                            <span class="die-text">d10</span>
+                        </div>
+                        <div class="die d12" data-sides="12">
+                            <span class="die-text">d12</span>
+                        </div>
+                        <div class="die d20" data-sides="20">
+                            <span class="die-text">d20</span>
+                        </div>
+                        <div class="die d100" data-sides="100">
+                            <span class="die-text">d100</span>
+                        </div>
+                        <div class="die d4" data-sides="4">
+                            <span class="die-text">d4</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dice Tower -->
+                <div class="section">
+                    <h2 class="section-title">🗼 Dice Tower</h2>
+                    <div class="dice-tower" id="diceTower">
+                        <div class="tower-dice" id="towerDice"></div>
+                        <div class="tower-controls">
+                            <input type="number" class="modifier-input" id="towerModifier" placeholder="Modifier" value="0">
+                            <button class="tower-btn roll-btn" id="rollTowerBtn" style="display: none;">🎲 Roll All</button>
+                            <button class="tower-btn clear-btn" id="clearTowerBtn" style="display: none;">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Column -->
+            <div class="center-column">
+                <!-- Roll History -->
+                <div class="section">
+                    <h2 class="section-title">📜 Roll History</h2>
+                    <div class="results empty" id="results">
+                        <div>Roll some dice to see results here</div>
+                    </div>
+                    <button class="clear-history-btn" id="clearHistoryBtn">Clear History</button>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Quick Rolls -->
+                <div class="section">
+                    <h2 class="section-title">⚡ Quick Rolls</h2>
+                    <div class="quick-rolls">
+                        <div class="quick-roll">
+                            <label class="quick-roll-label">🗡️ One-Handed Attack</label>
+                            <input type="text" class="quick-label-input" id="oneHandedLabel" placeholder="Weapon/Spell" value="Longsword">
+                            <div class="quick-roll-controls">
+                                <button class="quick-modifier-arrow quick-mod-down" id="oneHandedDown">▼</button>
+                                <button class="quick-roll-btn" id="oneHandedBtn">Roll d20</button>
+                                <button class="quick-modifier-arrow quick-mod-up" id="oneHandedUp">▲</button>
+                            </div>
+                        </div>
+                        <div class="quick-roll">
+                            <label class="quick-roll-label">⚔️ Two-Handed Attack</label>
+                            <input type="text" class="quick-label-input" id="twoHandedLabel" placeholder="Weapon/Spell" value="Greatsword">
+                            <div class="quick-roll-controls">
+                                <button class="quick-modifier-arrow quick-mod-down" id="twoHandedDown">▼</button>
+                                <button class="quick-roll-btn" id="twoHandedBtn">Roll d20</button>
+                                <button class="quick-modifier-arrow quick-mod-up" id="twoHandedUp">▲</button>
+                            </div>
+                        </div>
+                        <div class="quick-roll">
+                            <label class="quick-roll-label">🏹 Ranged Attack</label>
+                            <input type="text" class="quick-label-input" id="rangedLabel" placeholder="Weapon/Spell" value="Longbow">
+                            <div class="quick-roll-controls">
+                                <button class="quick-modifier-arrow quick-mod-down" id="rangedDown">▼</button>
+                                <button class="quick-roll-btn" id="rangedBtn">Roll d20</button>
+                                <button class="quick-modifier-arrow quick-mod-up" id="rangedUp">▲</button>
+                            </div>
+                        </div>
+                        <div class="quick-roll">
+                            <label class="quick-roll-label">🎯 Initiative</label>
+                            <input type="text" class="quick-label-input" id="initiativeLabel" placeholder="Weapon/Spell" value="Initiative">
+                            <div class="quick-roll-controls">
+                                <button class="quick-modifier-arrow quick-mod-down" id="initiativeDown">▼</button>
+                                <button class="quick-roll-btn" id="initiativeBtn">Roll d20</button>
+                                <button class="quick-modifier-arrow quick-mod-up" id="initiativeUp">▲</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2026 Dice Roller - Modern tabletop gaming tool</p>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let rollHistory = JSON.parse(localStorage.getItem('diceHistory')) || [];
+        let towerDice = [];
+let resultsHistory = JSON.parse(localStorage.getItem('resultsHistory')) || [];
+        let currentModifier = 0;
+        let oneHandedModifier = 0;
+        let twoHandedModifier = 0;
+        let rangedModifier = 0;
+        let initiativeModifier = 0;
+        const dice = document.querySelectorAll('.die');
+        const diceTower = document.getElementById('diceTower');
+        const towerDiceEl = document.getElementById('towerDice');
+        const towerModifier = document.getElementById('towerModifier');
+        const rollTowerBtn = document.getElementById('rollTowerBtn');
+        const clearTowerBtn = document.getElementById('clearTowerBtn');
+        const results = document.getElementById('results');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+        // Quick roll elements
+        const oneHandedBtn = document.getElementById('oneHandedBtn');
+        const oneHandedLabel = document.getElementById('oneHandedLabel');
+        const oneHandedUp = document.getElementById('oneHandedUp');
+        const oneHandedDown = document.getElementById('oneHandedDown');
+        const twoHandedBtn = document.getElementById('twoHandedBtn');
+        const twoHandedLabel = document.getElementById('twoHandedLabel');
+        const twoHandedUp = document.getElementById('twoHandedUp');
+        const twoHandedDown = document.getElementById('twoHandedDown');
+        const rangedBtn = document.getElementById('rangedBtn');
+        const rangedLabel = document.getElementById('rangedLabel');
+        const rangedUp = document.getElementById('rangedUp');
+        const rangedDown = document.getElementById('rangedDown');
+        const initiativeBtn = document.getElementById('initiativeBtn');
+        const initiativeLabel = document.getElementById('initiativeLabel');
+        const initiativeUp = document.getElementById('initiativeUp');
+        const initiativeDown = document.getElementById('initiativeDown');
+
+        // Utility functions
+        function rollDie(sides) {
+            return Math.floor(Math.random() * sides) + 1;
+        }
+
+        function formatTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+
+        function addToHistory(description, result) {
+            rollHistory.unshift({
+                description,
+                result,
+                time: formatTime()
+            });
+
+            if (rollHistory.length > 20) {
+                rollHistory = rollHistory.slice(0, 20);
+            }
+
+            localStorage.setItem('diceHistory', JSON.stringify(rollHistory));
+            // History is now handled by renderResults
+        }
+
+        function clearHistory() {
+            if (rollHistory.length === 0 && resultsHistory.length === 0) return;
+
+            if (confirm('Clear all roll history?')) {
+                rollHistory = [];
+                resultsHistory = [];
+                localStorage.removeItem('diceHistory');
+                localStorage.removeItem('resultsHistory');
+                renderResults();
+            }
+        }
+
+        // Dice click handlers
+        dice.forEach(die => {
+            if (!die.classList.contains('modifier-btn')) {
+                die.addEventListener('click', () => {
+                    const sides = parseInt(die.dataset.sides);
+                    rollSingleDie(sides);
+                });
+
+                // Drag functionality
+                die.draggable = true;
+                die.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', die.dataset.sides);
+                });
+            }
+        });
+
+        // Modifier button handlers
+        const modifierUp = document.getElementById('modifierUp');
+        const modifierDown = document.getElementById('modifierDown');
+        const modifierDisplay = document.getElementById('modifierDisplay');
+        
+        modifierUp.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event bubbling
+            currentModifier++;
+            updateModifierDisplay();
+        });
+
+        modifierDown.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event bubbling
+            currentModifier--;
+            updateModifierDisplay();
+        });
+
+        function updateModifierDisplay() {
+            const sign = currentModifier >= 0 ? '+' : '';
+            modifierDisplay.textContent = `${sign}${currentModifier}`;
+        }
+
+        function rollSingleDie(sides) {
+            const result = rollDie(sides) + currentModifier;
+            const desc = currentModifier !== 0 ? `d${sides}${currentModifier >= 0 ? '+' : ''}${currentModifier}` : `d${sides}`;
+            showResult([{ sides, result: result - currentModifier }], currentModifier, desc, 'Single Die');
+            addToHistory(desc, result);
+        }
+
+        // Tower functionality
+        diceTower.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            diceTower.classList.add('drag-over');
+        });
+
+        diceTower.addEventListener('dragleave', () => {
+            diceTower.classList.remove('drag-over');
+        });
+
+        diceTower.addEventListener('drop', (e) => {
+            e.preventDefault();
+            diceTower.classList.remove('drag-over');
+
+            const sides = parseInt(e.dataTransfer.getData('text/plain'));
+            addDieToTower(sides);
+        });
+
+        function addDieToTower(sides) {
+            towerDice.push(sides);
+            renderTower();
+        }
+
+        function renderTower() {
+            towerDiceEl.innerHTML = '';
+
+            towerDice.forEach((sides, index) => {
+                const dieEl = document.createElement('div');
+                dieEl.className = `tower-die d${sides}`;
+                dieEl.textContent = `d${sides}`;
+                dieEl.addEventListener('click', () => removeDieFromTower(index));
+                towerDiceEl.appendChild(dieEl);
+            });
+
+            rollTowerBtn.style.display = towerDice.length > 0 ? 'block' : 'none';
+            clearTowerBtn.style.display = towerDice.length > 0 ? 'block' : 'none';
+        }
+
+        function removeDieFromTower(index) {
+            towerDice.splice(index, 1);
+            renderTower();
+        }
+
+        function clearTower() {
+            towerDice = [];
+            renderTower();
+            clearResults();
+        }
+
+        function rollTower() {
+            if (towerDice.length === 0) return;
+
+            const modifier = parseInt(towerModifier.value) || 0;
+            const rollResults = towerDice.map(sides => ({
+                sides,
+                result: rollDie(sides)
+            }));
+
+            const diceTotal = rollResults.reduce((sum, r) => sum + r.result, 0);
+            const total = diceTotal + modifier;
+
+            const diceDesc = towerDice.reduce((acc, sides) => {
+                acc[sides] = (acc[sides] || 0) + 1;
+                return acc;
+            }, {});
+
+            const desc = Object.entries(diceDesc)
+                .map(([sides, count]) => `${count}d${sides}`)
+                .join(' + ');
+
+            showResult(rollResults, modifier, desc, 'Tower Roll');
+            addToHistory(modifier !== 0 ? `${desc} ${modifier >= 0 ? '+' : ''}${modifier}` : desc, total);
+        }
+
+        function showResult(rollResults, modifier, description, label = 'Roll') {
+            // Add to results history
+            const diceTotal = rollResults.reduce((sum, r) => sum + r.result, 0);
+            const finalTotal = diceTotal + modifier;
+
+            resultsHistory.unshift({
+                label,
+                rollResults,
+                modifier,
+                description,
+                total: finalTotal,
+                timestamp: Date.now()
+            });
+
+            // Keep only last 8 results
+            if (resultsHistory.length > 8) {
+                resultsHistory = resultsHistory.slice(0, 8);
+            }
+
+            localStorage.setItem('resultsHistory', JSON.stringify(resultsHistory));
+            renderResults();
+        }
+
+        function renderResults() {
+            if (resultsHistory.length === 0) {
+                results.classList.add('empty');
+                results.innerHTML = '<div>Roll some dice to see results here</div>';
+                return;
+            }
+
+            results.classList.remove('empty');
+            results.innerHTML = '';
+
+            // Group results by date
+            const groupedResults = {};
+            resultsHistory.forEach(result => {
+                const date = new Date(result.timestamp);
+                const dateKey = date.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                if (!groupedResults[dateKey]) {
+                    groupedResults[dateKey] = [];
+                }
+                groupedResults[dateKey].push(result);
+            });
+
+            // Display grouped results
+            Object.keys(groupedResults).forEach(dateKey => {
+                // Add date header
+                const dateHeader = document.createElement('div');
+                dateHeader.className = 'date-header';
+                dateHeader.textContent = dateKey;
+                results.appendChild(dateHeader);
+
+                // Add results for this date
+                groupedResults[dateKey].forEach(result => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'result-item';
+
+                    // Header line with label and total
+                    let headerHtml = '<div class="result-header">';
+                    headerHtml += `<span class="result-label">${result.label}</span>`;
+                    headerHtml += '<span class="result-total">';
+
+                    if (result.modifier !== 0) {
+                        const modSign = result.modifier >= 0 ? '+' : '';
+                        const diceSum = result.rollResults.reduce((sum, r) => sum + r.result, 0);
+                        headerHtml += `${diceSum}${modSign}${result.modifier}=${result.total}`;
+                    } else {
+                        headerHtml += result.total;
+                    }
+                    headerHtml += '</span></div>';
+
+                    // Dice line
+                    let diceHtml = '<div class="result-dice">';
+                    result.rollResults.forEach(({ sides, result: dieResult }) => {
+                        diceHtml += `
+                            <div class="result-die">
+                                <div class="die d${sides}">
+                                    <span class="die-text">d${sides}</span>
+                                </div>
+                                <span class="result-value">${dieResult}</span>
+                            </div>
+                        `;
+                    });
+                    diceHtml += '</div>';
+
+                    resultItem.innerHTML = headerHtml + diceHtml;
+
+                    // Add timestamp in bottom right
+                    const timestamp = new Date(result.timestamp);
+                    const timeString = timestamp.toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: true
+                    });
+
+                    const timestampEl = document.createElement('div');
+                    timestampEl.className = 'result-timestamp';
+                    timestampEl.textContent = timeString;
+                    resultItem.appendChild(timestampEl);
+
+                    results.appendChild(resultItem);
+                });
+            });
+        }
+
+        function clearResults() {
+            resultsHistory = [];
+            renderResults();
+        }
+
+        // Quick roll functions
+        function quickRoll(type, modifier, labelInput) {
+            const customLabel = labelInput.value.trim() || type;
+            const result = rollDie(20) + modifier;
+
+            let desc = 'd20';
+            if (modifier !== 0) {
+                desc = `d20${modifier >= 0 ? '+' : ''}${modifier}`;
+            }
+
+            showResult([{ sides: 20, result: result - modifier }], modifier, desc, customLabel);
+            addToHistory(`${customLabel}: ${desc}`, result);
+        }
+
+        // Update button text functions
+        function updateOneHandedButton() {
+            const sign = oneHandedModifier >= 0 ? '+' : '';
+            oneHandedBtn.textContent = oneHandedModifier === 0 ? 'Roll d20' : `Roll d20 ${sign}${oneHandedModifier}`;
+        }
+
+        function updateTwoHandedButton() {
+            const sign = twoHandedModifier >= 0 ? '+' : '';
+            twoHandedBtn.textContent = twoHandedModifier === 0 ? 'Roll d20' : `Roll d20 ${sign}${twoHandedModifier}`;
+        }
+
+        function updateRangedButton() {
+            const sign = rangedModifier >= 0 ? '+' : '';
+            rangedBtn.textContent = rangedModifier === 0 ? 'Roll d20' : `Roll d20 ${sign}${rangedModifier}`;
+        }
+
+        function updateInitiativeButton() {
+            const sign = initiativeModifier >= 0 ? '+' : '';
+            initiativeBtn.textContent = initiativeModifier === 0 ? 'Roll d20' : `Roll d20 ${sign}${initiativeModifier}`;
+        }
+
+        // Event listeners
+        rollTowerBtn.addEventListener('click', rollTower);
+        clearTowerBtn.addEventListener('click', clearTower);
+        clearHistoryBtn.addEventListener('click', clearHistory);
+
+        oneHandedBtn.addEventListener('click', () => quickRoll('One-Handed', oneHandedModifier, oneHandedLabel));
+        oneHandedUp.addEventListener('click', () => {
+            oneHandedModifier++;
+            updateOneHandedButton();
+        });
+        oneHandedDown.addEventListener('click', () => {
+            oneHandedModifier--;
+            updateOneHandedButton();
+        });
+        
+        twoHandedBtn.addEventListener('click', () => quickRoll('Two-Handed', twoHandedModifier, twoHandedLabel));
+        twoHandedUp.addEventListener('click', () => {
+            twoHandedModifier++;
+            updateTwoHandedButton();
+        });
+        twoHandedDown.addEventListener('click', () => {
+            twoHandedModifier--;
+            updateTwoHandedButton();
+        });
+        
+        rangedBtn.addEventListener('click', () => quickRoll('Ranged', rangedModifier, rangedLabel));
+        rangedUp.addEventListener('click', () => {
+            rangedModifier++;
+            updateRangedButton();
+        });
+        rangedDown.addEventListener('click', () => {
+            rangedModifier--;
+            updateRangedButton();
+        });
+        
+        initiativeBtn.addEventListener('click', () => quickRoll('Initiative', initiativeModifier, initiativeLabel));
+        initiativeUp.addEventListener('click', () => {
+            initiativeModifier++;
+            updateInitiativeButton();
+        });
+        initiativeDown.addEventListener('click', () => {
+            initiativeModifier--;
+            updateInitiativeButton();
+        });
+
+        // Initialize
+        renderResults();
+        updateModifierDisplay();
+        updateOneHandedButton();
+        updateTwoHandedButton();
+        updateRangedButton();
+        updateInitiativeButton();
+    </script>
+</body>
+</html>

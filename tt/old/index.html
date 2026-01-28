@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tinnitus Tracker — Prototype</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div id="app">
+      <header class="top">
+        <h1>Tinnitus Tracker</h1>
+        <div class="summary" id="summary"></div>
+      </header>
+
+      <section class="controls">
+        <div class="hint" id="keyboard-hint">💡 Try your keyboard: press ← for left, → for right</div>
+
+        <div class="mobile-buttons">
+          <button id="btn-left" class="ear-btn left">← Left</button>
+          <button id="btn-right" class="ear-btn right">Right →</button>
+        </div>
+
+        <div id="active-banner" class="active-banner hidden"></div>
+      </section>
+
+      <section class="actions">
+        <button id="export-btn" class="primary">Export CSV</button>
+        <button id="clear-btn" class="danger">Clear All Data</button>
+      </section>
+
+      <section id="export-reminder" class="export-reminder hidden">
+        You've logged 10+ episodes — remember to export your data.
+        <button id="dismiss-reminder">Dismiss</button>
+      </section>
+
+      <main>
+        <section id="episodes" class="episodes"></section>
+      </main>
+
+      <footer class="footer">
+        <small>All data stays in your browser. Export regularly.</small>
+      </footer>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

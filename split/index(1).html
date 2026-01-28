@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Stopwatch</title>
+</head>
+<body>
+    <h1>Simple Stopwatch</h1>
+    <div id="timer">00:00:00.000</div>
+    <div>
+        <button id="start-stop">Start</button>
+        <button id="split">Split</button>
+        <button id="reset">Reset</button>
+    </div>
+    <ul id="splits"></ul>
+    <div>
+        <p><strong>Keyboard Shortcuts:</strong></p>
+        <p>S: Start/Stop | Space: Split | R: Reset</p>
+    </div>
+    <script>
+        let startTime = null;
+        let elapsedTime = 0;
+        let timerInterval = null;
+        const timerDisplay = document.getElementById("timer");
+        const splitsList = document.getElementById("splits");
+        const startStopButton = document.getElementById("start-stop");
+        const splitButton = document.getElementById("split");
+        const resetButton = document.getElementById("reset");
+
+        function formatTime(ms) {
+            const date = new Date(ms);
+            const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+            const seconds = String(date.getUTCSeconds()).padStart(2, "0");
+            const milliseconds = String(date.getMilliseconds()).padStart(3, "0");
+            return `${minutes}:${seconds}.${milliseconds}`;
+        }
+
+        function updateTimer() {
+            const now = Date.now();
+            elapsedTime = now - startTime;
+            timerDisplay.textContent = formatTime(elapsedTime);
+        }
+
+        startStopButton.addEventListener("click", () => {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                startStopButton.textContent = "Start";
+            } else {
+                startTime = Date.now() - elapsedTime;
+                timerInterval = setInterval(updateTimer, 10);
+                startStopButton.textContent = "Stop";
+            }
+        });
+
+        splitButton.addEventListener("click", () => {
+            if (timerInterval) {
+                const splitTime = formatTime(elapsedTime);
+                const splitItem = document.createElement("li");
+                splitItem.textContent = splitTime;
+                splitsList.appendChild(splitItem);
+            }
+        });
+
+        resetButton.addEventListener("click", () => {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            elapsedTime = 0;
+            startTime = null;
+            timerDisplay.textContent = "00:00:00.000";
+            splitsList.innerHTML = "";
+            startStopButton.textContent = "Start";
+        });
+
+        document.addEventListener("keydown", (event) => {
+            switch (event.key.toLowerCase()) {
+                case "s": // Start/Stop
+                    startStopButton.click();
+                    break;
+                case " ": // Split
+                    event.preventDefault(); // Prevent scrolling
+                    splitButton.click();
+                    break;
+                case "r": // Reset
+                    resetButton.click();
+                    break;
+                default:
+                    break;
+            }
+        });
+    </script>
+
+    <footer style="margin-top:2rem;padding:1rem;text-align:center;font-size:0.85rem;color:#666;">
+        <p style="margin:0 0 0.5rem;"><strong>Simple Stopwatch</strong> &middot; /split/</p>
+        <p style="margin:0 0 0.5rem;">Basic timing with split functionality. Keys: S=Start/Stop, Space=Split, R=Reset</p>
+        <p style="margin:0;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+    </footer>
+</body>
+</html>
+

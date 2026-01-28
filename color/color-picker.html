@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Picker</title>
+    <link rel="stylesheet" href="color-picker.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Color Picker</h1>
+            <button class="btn btn-eye" id="eyeDropper">
+                <span class="eye-icon">👁️</span> Pick from Screen
+            </button>
+        </div>
+        
+        <div class="picker-area">
+            <div class="main-picker">
+                <canvas id="saturationCanvas" width="300" height="300"></canvas>
+                <div class="picker-cursor" id="satCursor"></div>
+            </div>
+            
+            <div class="sliders">
+                <div class="slider-group">
+                    <label>Hue</label>
+                    <div class="slider-track hue-slider">
+                        <input type="range" id="hueSlider" min="0" max="360" value="220">
+                    </div>
+                </div>
+                
+                <div class="slider-group">
+                    <label>Opacity</label>
+                    <div class="slider-track opacity-slider">
+                        <input type="range" id="opacitySlider" min="0" max="100" value="100">
+                    </div>
+                    <span class="slider-value" id="opacityValue">100%</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="color-display-section">
+            <div class="display-box">
+                <div class="color-preview" id="colorPreview"></div>
+                <div class="preview-label">New Color</div>
+            </div>
+        </div>
+        
+        <div class="color-inputs">
+            <div class="input-group">
+                <label>HEX</label>
+                <div class="input-with-copy">
+                    <input type="text" id="hexInput" value="#667EEA" maxlength="7">
+                    <button class="btn-copy" onclick="copyValue('hexInput')">Copy</button>
+                </div>
+            </div>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>R</label>
+                    <input type="number" id="rInput" min="0" max="255" value="102">
+                </div>
+                <div class="input-group">
+                    <label>G</label>
+                    <input type="number" id="gInput" min="0" max="255" value="126">
+                </div>
+                <div class="input-group">
+                    <label>B</label>
+                    <input type="number" id="bInput" min="0" max="255" value="234">
+                </div>
+            </div>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>H</label>
+                    <input type="number" id="hInput" min="0" max="360" value="229">
+                    <span class="unit">°</span>
+                </div>
+                <div class="input-group">
+                    <label>S</label>
+                    <input type="number" id="sInput" min="0" max="100" value="79">
+                    <span class="unit">%</span>
+                </div>
+                <div class="input-group">
+                    <label>L</label>
+                    <input type="number" id="lInput" min="0" max="100" value="66">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="swatches">
+            <div class="swatches-header">
+                <span>Color History</span>
+                <button class="btn-clear" id="clearHistory">Clear</button>
+            </div>
+            <div class="swatch-grid" id="swatchGrid">
+                <div class="empty-swatches">Pick colors to build history</div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="margin-top:2rem;padding:1.5rem;background:#1a1a2e;border-top:1px solid #333;text-align:center;font-size:0.85rem;color:#888;">
+        <p style="margin:0 0 0.5rem;color:#ccc;"><strong>Color Picker</strong> &middot; /color/</p>
+        <p style="margin:0 0 0.5rem;">Advanced color selection with screen sampling. History saved locally.</p>
+        <p style="margin:0;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+    </footer>
+
+    <script src="color-picker.js"></script>
+</body>
+</html>

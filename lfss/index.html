@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lightning Fast Scripture Search</title>
+    <link rel="stylesheet" href="scripture-search.css">
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ Lightning Fast Scripture Search 📖</h1>
+        
+        <div class="search-box">
+            <div class="search-controls">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Start typing to search all scriptures..."
+                    autocomplete="off"
+                    autofocus>
+                <button id="lockButton" class="lock-button" style="display: none;">🔒 Lock Results</button>
+            </div>
+            <div id="lockedFilters" class="locked-filters" style="display: none;"></div>
+            <div class="stats" id="stats">Loading scriptures...</div>
+        </div>
+
+        <div class="options">
+            <div class="option-group">
+                <strong>Volumes:</strong>
+                <label>
+                    <input type="checkbox" class="volume-filter" id="filterBible" checked>
+                    Bible
+                </label>
+                <label>
+                    <input type="checkbox" class="volume-filter" id="filterBoM" checked>
+                    Book of Mormon
+                </label>
+                <label>
+                    <input type="checkbox" class="volume-filter" id="filterDC" checked>
+                    D&C
+                </label>
+                <label>
+                    <input type="checkbox" class="volume-filter" id="filterPGP" checked>
+                    Pearl of Great Price
+                </label>
+            </div>
+            <div class="option-group">
+                <label>
+                    <input type="checkbox" id="caseSensitive">
+                    Case sensitive
+                </label>
+                <label>
+                    <input type="checkbox" id="wholeWord">
+                    Whole words only
+                </label>
+                <label>
+                    Max results: 
+                    <select id="maxResults">
+                        <option value="100">100</option>
+                        <option value="500" selected>500</option>
+                        <option value="1000">1000</option>
+                        <option value="5000">5000</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+
+        <div id="lockedResultsPreview" class="locked-results-preview" style="display: none;">
+            <div class="preview-header">
+                <h3>🔒 Locked Results</h3>
+                <button id="togglePreview" class="toggle-preview">▼ Hide</button>
+            </div>
+            <div id="lockedResultsContent" class="locked-results-content"></div>
+        </div>
+
+        <div class="locked-verses-section" id="lockedVersesSection" style="display: none;">
+            <div class="section-header">
+                <h3>📌 Locked Verses</h3>
+                <button id="clearLockedVerses" class="clear-button">Clear All</button>
+            </div>
+            <div id="lockedVersesList" class="verses-list"></div>
+        </div>
+
+        <div class="favorites-section" id="favoritesSection" style="display: none;">
+            <div class="section-header">
+                <h3>⭐ Favorite Verses</h3>
+                <div class="section-actions">
+                    <button id="exportFavorites" class="action-button">📥 Export</button>
+                    <button id="clearFavorites" class="clear-button">Clear All</button>
+                </div>
+            </div>
+            <div id="favoritesList" class="verses-list"></div>
+        </div>
+
+        <div class="current-search-header" id="currentSearchHeader" style="display: none;">
+            <h3>🔍 Current Search</h3>
+        </div>
+
+        <div id="results" class="results"></div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <p class="footer-title">⚡ Lightning Fast Scripture Search</p>
+                <p class="footer-text">Search through 41,995 verses from the standard works instantly</p>
+                <p class="footer-text">Lock search results • Pin notable verses • Save favorites • Export anytime</p>
+                <p class="footer-text">All data saved locally • No server required • Complete privacy</p>
+            </div>
+            <div class="footer-section">
+                <p class="footer-stat">📚 Bible • Book of Mormon • D&C • Pearl of Great Price</p>
+                <p class="footer-text">Built with care for scripture study &middot; /lfss/</p>
+                <p class="footer-text">MIT License &copy; njsr.org 2002-2026</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripture-search.js"></script>
+</body>
+</html>

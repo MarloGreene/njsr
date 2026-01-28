@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metronome</title>
+    <link rel="stylesheet" href="metronome.css">
+</head>
+<body>
+    <div class="container">
+        <div class="metronome-card">
+            <h1 class="title">Metronome</h1>
+            
+            <div class="visual-beat" id="visualBeat"></div>
+            
+            <div class="bpm-display" id="bpmDisplay">120</div>
+            <div class="bpm-label">BPM</div>
+            
+            <div class="slider-container">
+                <input type="range" id="bpmSlider" min="40" max="240" value="120" class="bpm-slider">
+                <div class="slider-marks">
+                    <span>40</span>
+                    <span>120</span>
+                    <span>240</span>
+                </div>
+            </div>
+            
+            <div class="presets">
+                <button class="preset-btn" data-bpm="60">Largo (60)</button>
+                <button class="preset-btn" data-bpm="120">Moderato (120)</button>
+                <button class="preset-btn" data-bpm="140">Dubstep (140)</button>
+                <button class="preset-btn" data-bpm="180">Presto (180)</button>
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" id="startStopBtn">Start</button>
+            </div>
+        </div>
+    </div>
+
+    <footer style="margin-top:2rem;padding:1.5rem;background:#1a1a2e;border-top:1px solid #333;text-align:center;font-size:0.85rem;color:#888;">
+        <p style="margin:0 0 0.5rem;color:#ccc;"><strong>Metronome</strong> &middot; /click/</p>
+        <p style="margin:0 0 0.5rem;">Interactive musical metronome with BPM presets.</p>
+        <p style="margin:0;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+    </footer>
+
+    <script src="metronome.js"></script>
+</body>
+</html>

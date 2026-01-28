@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <link rel="stylesheet" href="stopwatch.css">
+</head>
+<body>
+    <div class="container">
+        <div class="stopwatch-card">
+            <h1 class="title">Stopwatch</h1>
+            
+            <div class="time-display" id="timeDisplay">00:00:00.00</div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" id="startStopBtn">Start</button>
+                <button class="btn btn-secondary" id="splitBtn" disabled>Split</button>
+                <button class="btn btn-danger" id="resetBtn">Reset</button>
+            </div>
+            
+            <div class="splits-section">
+                <h2 class="splits-title">Splits</h2>
+                <div class="splits-list" id="splitsList">
+                    <div class="empty-state">No splits recorded yet</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="margin-top:2rem;padding:1.5rem;background:#f5f5f5;border-top:1px solid #ddd;text-align:center;font-size:0.85rem;color:#666;">
+        <p style="margin:0 0 0.5rem;color:#333;"><strong>Stopwatch</strong> &middot; /stopwatch/</p>
+        <p style="margin:0 0 0.5rem;">Polished timing application with split functionality.</p>
+        <p style="margin:0;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+    </footer>
+
+    <script src="stopwatch.js"></script>
+</body>
+</html>

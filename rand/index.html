@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Random Generator</h1>
+        <div class="options">
+            <label>Password Length: <input type="number" id="password-length" min="8" max="32" value="12"></label>
+            <label>Passphrase Words: <input type="number" id="passphrase-words" min="2" max="8" value="4"></label>
+        </div>
+        <div class="generator" id="number-generator">
+            <h2>Random Number</h2>
+            <p id="random-number" class="clickable">Generating...</p>
+        </div>
+        <div class="generator" id="password-generator">
+            <h2>Random Password</h2>
+            <p id="random-password" class="clickable">Generating...</p>
+        </div>
+        <div class="generator" id="passphrase-generator">
+            <h2>Random Passphrase</h2>
+            <p id="random-passphrase" class="clickable">Generating...</p>
+        </div>
+        <div class="generator" id="uuid-generator">
+            <h2>Random UUID</h2>
+            <p id="random-uuid" class="clickable">Generating...</p>
+        </div>
+        <div class="buttons">
+            <button id="regenerate-btn">Regenerate All</button>
+            <button id="copy-all-btn">Copy All</button>
+        </div>
+    </div>
+    <div id="toast" class="toast">Copied to clipboard!</div>
+    <script src="script.js"></script>
+</body>
+</html>

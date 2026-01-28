@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>njsr.org - Web Tools</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+        .search-container {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .search-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 25px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .search-input:focus {
+            border-color: #3498db;
+        }
+        .phase-section {
+            margin-bottom: 40px;
+        }
+        .phase-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e1e8ed;
+            padding-bottom: 10px;
+        }
+        .tools-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .tool-row {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 8px;
+            padding: 16px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            border: 1px solid #e1e8ed;
+            text-decoration: none;
+            color: inherit;
+        }
+        .tool-row:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+            text-decoration: none;
+            color: inherit;
+        }
+        .tool-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .tool-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+        .tool-path {
+            font-size: 14px;
+            color: #666;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+        .tool-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0;
+        }
+        .tool-description {
+            color: #666;
+            line-height: 1.6;
+            font-size: 15px;
+            margin: 0;
+        }
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-style: italic;
+        }
+        .phase-link {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #3498db;
+            text-decoration: none;
+        }
+        .phase-link:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .tool-row {
+                padding: 12px 16px;
+            }
+            .tool-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            .tool-path {
+                font-size: 13px;
+            }
+            .tool-title {
+                font-size: 16px;
+            }
+            .tool-description {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>njsr.org</h1>
+        <p class="subtitle">Privacy-first web tools</p>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search all tools..." id="searchInput">
+        </div>
+
+        <div class="phase-section">
+            <div class="phase-title">Beta Tools</div>
+            <div class="tools-list" id="betaList">
+                <a href="sh/" class="tool-row" data-title="scripture highlighter" data-description="lds scripture reader with highlighting">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">sh/</div>
+                            <div class="tool-title">Scripture Highlighter</div>
+                        </div>
+                        <div class="tool-description">LDS scripture reader with highlighting</div>
+                    </div>
+                </a>
+            </div>
+            <a href="beta/" class="phase-link">View all beta tools →</a>
+        </div>
+
+        <div class="phase-section">
+            <div class="phase-title">Alpha Tools</div>
+            <div class="tools-list" id="alphaList">
+                <a href="23/" class="tool-row" data-title="23 questions answered by the book of mormon" data-description="educational scripture quiz">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">23/</div>
+                            <div class="tool-title">23 Questions Answered by The Book of Mormon</div>
+                        </div>
+                        <div class="tool-description">Educational scripture quiz</div>
+                    </div>
+                </a>
+                <a href="bg/" class="tool-row" data-title="background gradient generator" data-description="css gradient background creator with live preview">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">bg/</div>
+                            <div class="tool-title">Background Gradient Generator</div>
+                        </div>
+                        <div class="tool-description">CSS gradient background creator with live preview</div>
+                    </div>
+                </a>
+                <a href="bom/" class="tool-row" data-title="book of mormon reader" data-description="a web-based scripture reader for the book of mormon">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">bom/</div>
+                            <div class="tool-title">Book of Mormon Reader</div>
+                        </div>
+                        <div class="tool-description">A web-based scripture reader for The Book of Mormon</div>
+                    </div>
+                </a>
+                <a href="buddy/" class="tool-row" data-title="buddy letter assistant" data-description="va ptsd claim support letter generator">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">buddy/</div>
+                            <div class="tool-title">Buddy Letter Assistant</div>
+                        </div>
+                        <div class="tool-description">VA PTSD claim support letter generator</div>
+                    </div>
+                </a>
+                <a href="cal/" class="tool-row" data-title="calendar" data-description="simple yearly calendar display">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">cal/</div>
+                            <div class="tool-title">Calendar</div>
+                        </div>
+                        <div class="tool-description">Simple yearly calendar display</div>
+                    </div>
+                </a>
+                <a href="cash/" class="tool-row" data-title="expense tracker" data-description="track spending, manage budget, and analyze expenses">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">cash/</div>
+                            <div class="tool-title">Expense Tracker</div>
+                        </div>
+                        <div class="tool-description">Track spending, manage budget, and analyze expenses</div>
+                    </div>
+                </a>
+                <a href="click/" class="tool-row" data-title="metronome" data-description="interactive musical metronome with bpm controls">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">click/</div>
+                            <div class="tool-title">Metronome</div>
+                        </div>
+                        <div class="tool-description">Interactive musical metronome with BPM controls</div>
+                    </div>
+                </a>
+                <a href="color/" class="tool-row" data-title="color picker" data-description="advanced color selection with screen sampling">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">color/</div>
+                            <div class="tool-title">Color Picker</div>
+                        </div>
+                        <div class="tool-description">Advanced color selection with screen sampling</div>
+                    </div>
+                </a>
+                <a href="colors/" class="tool-row" data-title="color palette generator" data-description="random palette creation with save/lock features">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">colors/</div>
+                            <div class="tool-title">Color Palette Generator</div>
+                        </div>
+                        <div class="tool-description">Random palette creation with save/lock features</div>
+                    </div>
+                </a>
+                <a href="countdown/" class="tool-row" data-title="countdown timer" data-description="event countdown with date/time setting">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">countdown/</div>
+                            <div class="tool-title">Countdown Timer</div>
+                        </div>
+                        <div class="tool-description">Event countdown with date/time setting</div>
+                    </div>
+                </a>
+                <a href="degrees/" class="tool-row" data-title="six degrees of kevin bacon" data-description="actor connection finder using imdb data">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">degrees/</div>
+                            <div class="tool-title">Six Degrees of Kevin Bacon</div>
+                        </div>
+                        <div class="tool-description">Actor connection finder using IMDb data</div>
+                    </div>
+                </a>
+                <a href="dice/" class="tool-row" data-title="dice roller" data-description="polyhedral dice simulator with drag-and-drop tower">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">dice/</div>
+                            <div class="tool-title">Dice Roller</div>
+                        </div>
+                        <div class="tool-description">Polyhedral dice simulator with drag-and-drop tower</div>
+                    </div>
+                </a>
+                <a href="eb/" class="tool-row" data-title="eb" data-description="tool description needed">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">eb/</div>
+                            <div class="tool-title">eb</div>
+                        </div>
+                        <div class="tool-description">Tool description needed</div>
+                    </div>
+                </a>
+                <a href="ip/" class="tool-row" data-title="ip information dashboard" data-description="network and browser fingerprinting info">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">ip/</div>
+                            <div class="tool-title">IP Information Dashboard</div>
+                        </div>
+                        <div class="tool-description">Network and browser fingerprinting info</div>
+                    </div>
+                </a>
+                <a href="ip2/" class="tool-row" data-title="network information" data-description="ipv4/ipv6 address details">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">ip2/</div>
+                            <div class="tool-title">Network Information</div>
+                        </div>
+                        <div class="tool-description">IPv4/IPv6 address details</div>
+                    </div>
+                </a>
+                <a href="lfss/" class="tool-row" data-title="lightning fast scripture search" data-description="high-performance scripture search engine">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">lfss/</div>
+                            <div class="tool-title">Lightning Fast Scripture Search</div>
+                        </div>
+                        <div class="tool-description">High-performance scripture search engine</div>
+                    </div>
+                </a>
+                <a href="matrix/" class="tool-row" data-title="matrix rain" data-description="animated falling character effect">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">matrix/</div>
+                            <div class="tool-title">Matrix Rain</div>
+                        </div>
+                        <div class="tool-description">Animated falling character effect</div>
+                    </div>
+                </a>
+                <a href="one/" class="tool-row" data-title="ministering memory helper" data-description="lds ministering assignment tracker">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">one/</div>
+                            <div class="tool-title">Ministering Memory Helper</div>
+                        </div>
+                        <div class="tool-description">LDS ministering assignment tracker</div>
+                    </div>
+                </a>
+                <a href="psa/" class="tool-row" data-title="ptsd symptom awareness tool" data-description="va disability rating calculator">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">psa/</div>
+                            <div class="tool-title">PTSD Symptom Awareness Tool</div>
+                        </div>
+                        <div class="tool-description">VA disability rating calculator</div>
+                    </div>
+                </a>
+                <a href="pw/" class="tool-row" data-title="password strength checker" data-description="password security analyzer">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">pw/</div>
+                            <div class="tool-title">Password Strength Checker</div>
+                        </div>
+                        <div class="tool-description">Password security analyzer</div>
+                    </div>
+                </a>
+                <a href="ql/" class="tool-row" data-title="ql" data-description="tool description needed">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">ql/</div>
+                            <div class="tool-title">ql</div>
+                        </div>
+                        <div class="tool-description">Tool description needed</div>
+                    </div>
+                </a>
+                <a href="qr/" class="tool-row" data-title="qr code generator" data-description="custom qr code creation and download">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">qr/</div>
+                            <div class="tool-title">QR Code Generator</div>
+                        </div>
+                        <div class="tool-description">Custom QR code creation and download</div>
+                    </div>
+                </a>
+                <a href="rand/" class="tool-row" data-title="rand" data-description="tool description needed">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">rand/</div>
+                            <div class="tool-title">rand</div>
+                        </div>
+                        <div class="tool-description">Tool description needed</div>
+                    </div>
+                </a>
+                <a href="rng/" class="tool-row" data-title="random password generator" data-description="secure password creation">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">rng/</div>
+                            <div class="tool-title">Random Password Generator</div>
+                        </div>
+                        <div class="tool-description">Secure password creation</div>
+                    </div>
+                </a>
+                <a href="sb/" class="tool-row" data-title="dynamic soundboard" data-description="php-powered audio clip player">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">sb/</div>
+                            <div class="tool-title">Dynamic Soundboard</div>
+                        </div>
+                        <div class="tool-description">PHP-powered audio clip player</div>
+                    </div>
+                </a>
+                <a href="sm/" class="tool-row" data-title="scripture matrix" data-description="matrix animation with bible verses">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">sm/</div>
+                            <div class="tool-title">Scripture Matrix</div>
+                        </div>
+                        <div class="tool-description">Matrix animation with Bible verses</div>
+                    </div>
+                </a>
+                <a href="split/" class="tool-row" data-title="simple stopwatch" data-description="basic timing with split functionality">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">split/</div>
+                            <div class="tool-title">Simple Stopwatch</div>
+                        </div>
+                        <div class="tool-description">Basic timing with split functionality</div>
+                    </div>
+                </a>
+                <a href="ss/" class="tool-row" data-title="lightning fast scripture search" data-description="scripture search (variant)">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">ss/</div>
+                            <div class="tool-title">Lightning Fast Scripture Search</div>
+                        </div>
+                        <div class="tool-description">Scripture search (variant)</div>
+                    </div>
+                </a>
+                <a href="ssah/" class="tool-row" data-title="lds scripture search & highlighter" data-description="advanced scripture study tool">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">ssah/</div>
+                            <div class="tool-title">LDS Scripture Search & Highlighter</div>
+                        </div>
+                        <div class="tool-description">Advanced scripture study tool</div>
+                    </div>
+                </a>
+                <a href="stopwatch/" class="tool-row" data-title="stopwatch" data-description="polished timing application">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">stopwatch/</div>
+                            <div class="tool-title">Stopwatch</div>
+                        </div>
+                        <div class="tool-description">Polished timing application</div>
+                    </div>
+                </a>
+                <a href="tarot/" class="tool-row" data-title="tarot card reader" data-description="mystical card reading application">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">tarot/</div>
+                            <div class="tool-title">Tarot Card Reader</div>
+                        </div>
+                        <div class="tool-description">Mystical card reading application</div>
+                    </div>
+                </a>
+                <a href="tt/" class="tool-row" data-title="ttracker" data-description="tinnitus episode logger">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">tt/</div>
+                            <div class="tool-title">tTracker</div>
+                        </div>
+                        <div class="tool-description">Tinnitus episode logger</div>
+                    </div>
+                </a>
+                <a href="url/" class="tool-row" data-title="url tools" data-description="encoder, decoder, and short url generator (paused">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">url/</div>
+                            <div class="tool-title">URL Tools</div>
+                        </div>
+                        <div class="tool-description">Encoder, decoder, and short URL generator (PAUSED</div>
+                    </div>
+                </a>
+                <a href="wc/" class="tool-row" data-title="text statistics" data-description="text analysis and counting tool">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">wc/</div>
+                            <div class="tool-title">Text Statistics</div>
+                        </div>
+                        <div class="tool-description">Text analysis and counting tool</div>
+                    </div>
+                </a>
+                <a href="write/" class="tool-row" data-title="just write" data-description="minimalist note-taking application">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">write/</div>
+                            <div class="tool-title">just write</div>
+                        </div>
+                        <div class="tool-description">Minimalist note-taking application</div>
+                    </div>
+                </a>
+                <a href="zenw/" class="tool-row" data-title="zen writer" data-description="distraction-free text editor">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">zenw/</div>
+                            <div class="tool-title">Zen Writer</div>
+                        </div>
+                        <div class="tool-description">Distraction-free text editor</div>
+                    </div>
+                </a>
+                <a href="zonk/" class="tool-row" data-title="va disability claim guide" data-description="veteran benefits resource">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">zonk/</div>
+                            <div class="tool-title">VA Disability Claim Guide</div>
+                        </div>
+                        <div class="tool-description">Veteran benefits resource</div>
+                    </div>
+                </a>
+                <a href="zsr/" class="tool-row" data-title="zsr" data-description="tool description needed">
+                    <div class="tool-content">
+                        <div class="tool-header">
+                            <div class="tool-path">zsr/</div>
+                            <div class="tool-title">zsr</div>
+                        </div>
+                        <div class="tool-description">Tool description needed</div>
+                    </div>
+                </a>
+            </div>
+            <a href="alpha/" class="phase-link">View all alpha tools →</a>
+        </div>
+
+    </div>
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const betaList = document.getElementById('betaList');
+        const alphaList = document.getElementById('alphaList');
+
+        function filterTools() {
+            const query = searchInput.value.toLowerCase();
+            const allRows = document.querySelectorAll('.tool-row');
+            allRows.forEach(row => {
+                const title = row.dataset.title;
+                const desc = row.dataset.description;
+                const visible = title.includes(query) || desc.includes(query);
+                row.style.display = visible ? 'flex' : 'none';
+            });
+        }
+
+        searchInput.addEventListener('input', filterTools);
+
+        // Focus search input on page load
+        searchInput.focus();
+    </script>
+</body>
+</html>

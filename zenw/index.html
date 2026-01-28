@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zen Writer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="toolbar">
+        <select id="file-select"></select>
+        <button id="new-file">New</button>
+        <button id="save-as">Save As</button>
+        <button id="theme-toggle">Light Mode</button>
+        <select id="font-family">
+            <option value="Arial">Arial</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Verdana">Verdana</option>
+        </select>
+        <input type="range" id="font-size" min="12" max="24" value="16">
+        <button id="export-btn">Export</button>
+        <input type="file" id="import-btn" accept=".txt,.md" style="display: none;">
+        <label for="import-btn" id="import-label">Import</label>
+    </div>
+    <textarea id="editor" placeholder="Start writing..."></textarea>
+
+    <footer style="position:fixed;bottom:0;left:0;right:0;padding:0.5rem;text-align:center;font-size:0.75rem;color:#666;background:rgba(255,255,255,0.9);">
+        <span><strong>Zen Writer</strong> &middot; /zenw/ &middot; Distraction-free writing &middot; MIT &copy; njsr.org 2002-2026</span>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

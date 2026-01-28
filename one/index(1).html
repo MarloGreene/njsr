@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A simple, scripture-based tool to help ministers track and remember those they serve in the Church of Jesus Christ of Latter-day Saints.">
+    <title>Ministering Memory Helper</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💝 Ministering Memory Helper 📜</h1>
+            <div class="tagline-scripture">
+                <p class="scripture-text">"By this shall all men know that ye are my disciples, if ye have love one to another."</p>
+                <p class="scripture-ref">— John 13:35</p>
+            </div>
+        </header>
+
+        <div class="add-section">
+            <button id="addNewBtn" class="btn-primary">+ Add Someone New</button>
+            <div class="subhead-scripture">
+                <p class="scripture-text">"When ye are in the service of your fellow beings ye are only in the service of your God."</p>
+                <p class="scripture-ref">— Mosiah 2:17</p>
+            </div>
+        </div>
+
+        <div id="statsBar" class="stats-bar" style="display: none;">
+            <div class="stat-item">
+                <span class="stat-number" id="totalCount">0</span>
+                <span class="stat-label">Total Families</span>
+            </div>
+            <div class="stat-item attention">
+                <span class="stat-number" id="attentionCount">0</span>
+                <span class="stat-label">Need Attention</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="recentCount">0</span>
+                <span class="stat-label">Contacted This Week</span>
+            </div>
+        </div>
+
+        <div id="searchBar" class="search-bar" style="display: none;">
+            <input type="text" id="searchInput" placeholder="🔍 Search families..." />
+            <button id="clearSearch" class="btn-secondary" style="display: none;">Clear</button>
+        </div>
+
+        <div id="peopleList" class="people-list"></div>
+
+        <!-- Modal for adding/editing -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Add Someone New</h2>
+                    <button class="close-btn" id="closeModal">&times;</button>
+                </div>
+                <form id="personForm">
+                    <div class="form-section-label">Basic Information</div>
+                    
+                    <div class="form-group">
+                        <label for="familyName">Family Name</label>
+                        <input type="text" id="familyName" required placeholder="The Smith Family">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastContact">Last Contact Date</label>
+                        <input type="date" id="lastContact" required>
+                        <small class="field-hint" id="sundayHint" style="display: none;">📅 Defaulted to most recent Sunday</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="whatsHeavy">What's heavy right now?</label>
+                        <textarea id="whatsHeavy" rows="3" placeholder="What they're going through, prayers needed..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nextNudge">Next gentle nudge</label>
+                        <textarea id="nextNudge" rows="2" placeholder="Ideas for next time... a card, a text, a visit..."></textarea>
+                    </div>
+
+                    <button type="button" id="toggleAdditionalDetails" class="toggle-details-link">
+                        + Add Contact & Family Details (Optional)
+                    </button>
+
+                    <div id="additionalDetails" class="additional-details" style="display: none;">
+                        <div class="form-section-label">Family Details</div>
+                        
+                        <div class="form-group">
+                            <label for="spouseName">Spouse Name(s)</label>
+                            <input type="text" id="spouseName" placeholder="John & Jane">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="spouseBirthday">Spouse Birthday(s)</label>
+                            <input type="text" id="spouseBirthday" placeholder="March 15, April 22">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="children">Children</label>
+                            <textarea id="children" rows="3" placeholder="Emma (age 12, birthday June 5)\nNoah (age 9, birthday Dec 18)"></textarea>
+                        </div>
+
+                        <div class="form-section-label">Contact Information</div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" placeholder="(555) 123-4567">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="family@example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <textarea id="address" rows="2" placeholder="123 Main St, City, State 12345"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
+                        <button type="submit" class="btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="import-export-section">
+            <p class="section-label">Manage Your Notes</p>
+            <div class="ie-buttons">
+                <button id="exportBtn" class="btn-secondary">📥 Export (JSON)</button>
+                <button id="exportTextBtn" class="btn-secondary">📄 Export (Text)</button>
+                <button id="importBtn" class="btn-secondary">📤 Import Notes</button>
+            </div>
+            <input type="file" id="importFile" accept=".json" style="display: none;">
+        </div>
+
+        <div class="footer-scripture">
+            <p class="scripture-text">"Remember the worth of souls is great in the sight of God."</p>
+            <p class="scripture-ref">— Doctrine & Covenants 18:10</p>
+        </div>
+
+        <footer>
+            <p><strong>Ministering Memory Helper</strong> &middot; /one/</p>
+            <p>Made with love for ministering • Church of Jesus Christ of Latter-day Saints</p>
+            <p class="privacy-note">🔒 All data is stored locally in your browser. Export regularly to back up your notes.</p>
+            <p style="margin-top:0.5rem;font-size:0.8rem;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

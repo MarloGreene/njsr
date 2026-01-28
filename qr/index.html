@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="qr.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📱 QR Code Generator</h1>
+        
+        <div class="card">
+            <div class="input-group">
+                <label>URL or Text</label>
+                <input type="text" id="qrContent" placeholder="Enter URL or text..." value="https://github.com">
+            </div>
+            
+            <div class="input-group">
+                <label>Color</label>
+                <input type="color" id="qrColor" value="#000000">
+            </div>
+            
+            <div class="input-group">
+                <label>Size: <span id="sizeValue">256</span>px</label>
+                <input type="range" id="qrSize" min="128" max="512" step="32" value="256">
+            </div>
+            
+            <div class="input-group">
+                <label>Error Correction: <span id="errorValue">Medium</span></label>
+                <input type="range" id="errorLevel" min="0" max="3" step="1" value="1">
+            </div>
+            
+            <div class="qr-preview" id="qrPreview">
+                <div class="placeholder">QR code will appear here</div>
+            </div>
+            
+            <button class="btn-download" id="downloadBtn" disabled>Download PNG</button>
+        </div>
+        
+        <div class="history-section" id="historySection" style="display: none;">
+            <div class="history-header">
+                <h2>📜 History</h2>
+                <button class="btn-clear" id="clearHistoryBtn">Clear All</button>
+            </div>
+            <div class="history-grid" id="historyGrid"></div>
+        </div>
+    </div>
+
+    <footer style="margin-top:2rem;padding:1.5rem;background:#1a1a2e;border-top:1px solid #333;text-align:center;font-size:0.85rem;color:#888;">
+        <p style="margin:0 0 0.5rem;color:#ccc;"><strong>QR Code Generator</strong> &middot; /qr/</p>
+        <p style="margin:0 0 0.5rem;">Create customizable QR codes for URLs and text. History saved locally.</p>
+        <p style="margin:0;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="qr.js"></script>
+</body>
+</html>

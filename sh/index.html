@@ -1,0 +1,163 @@
+<!--
+  LDS Scripture Highlighter
+  - Responsive, privacy-focused, vanilla JS/CSS/HTML
+  - Two-column scripture view, highlight palette, import/export
+  - For details, see README.md
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Privacy-focused scripture study tool with highlighting, search, and themes. All data stored locally.">
+    <meta name="theme-color" content="#faf8f3">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>Scripture Highlighter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation Bar -->
+        <nav class="nav-bar" role="navigation" aria-label="Scripture navigation">
+            <div class="nav-controls">
+                <select id="volumeSelect" class="nav-select" aria-label="Filter by volume">
+                    <option value="">All Volumes</option>
+                </select>
+                <select id="bookSelect" class="nav-select" aria-label="Filter by book">
+                    <option value="">All Books</option>
+                </select>
+                <select id="chapterSelect" class="nav-select" aria-label="Filter by chapter">
+                    <option value="">All Chapters</option>
+                </select>
+                <select id="verseSelect" class="nav-select" aria-label="Filter by verse">
+                    <option value="">All Verses</option>
+                </select>
+            </div>
+            <div class="nav-actions">
+                <div class="theme-selector" role="group" aria-label="Theme selection">
+                    <button class="theme-btn active" data-theme="light" title="Light theme" aria-label="Light theme"></button>
+                    <button class="theme-btn" data-theme="sepia" title="Sepia (aged paper)" aria-label="Sepia theme"></button>
+                    <button class="theme-btn" data-theme="dark" title="Dark theme" aria-label="Dark theme"></button>
+                    <button class="theme-btn" data-theme="night" title="Night (OLED)" aria-label="Night theme"></button>
+                </div>
+                <div class="inline-controls" role="group" aria-label="Display settings">
+                    <span class="control-label">Font:</span>
+                    <button id="decreaseFontBtn" title="Decrease Font Size" aria-label="Decrease font size">−</button>
+                    <span id="fontSizeDisplay" aria-live="polite">16px</span>
+                    <button id="increaseFontBtn" title="Increase Font Size" aria-label="Increase font size">+</button>
+                    <span class="control-separator">|</span>
+                    <span class="control-label">Columns:</span>
+                    <button id="decreaseColumnsBtn" title="Decrease Columns" aria-label="Decrease columns">−</button>
+                    <span id="columnCountDisplay" aria-live="polite">2</span>
+                    <button id="increaseColumnsBtn" title="Increase Columns" aria-label="Increase columns">+</button>
+                </div>
+                <button id="prevPageBtn" title="Previous Page (← or A key)" aria-label="Previous page">←</button>
+                <span id="pageIndicator" title="Keys: 1-9 colors, M mode, B single/multi-verse" aria-live="polite">Page 1</span>
+                <button id="nextPageBtn" title="Next Page (→ or D key)" aria-label="Next page">→</button>
+            </div>
+        </nav>
+
+        <!-- Highlight Palette Row -->
+        <div class="palette-bar">
+            <div class="palette-colors-inline">
+                <div id="paletteColors">
+                    <!-- Colors will be added by JS -->
+                </div>
+                <div class="drag-mode-toggle">
+                    <span class="toggle-label">Drag:</span>
+                    <button id="dragHighlightBtn" class="drag-mode-btn active" title="Highlight selected text (B to toggle)">highlight</button>
+                    <button id="dragBoxBtn" class="drag-mode-btn" title="Box outline selected text (B to toggle)">box</button>
+                </div>
+                <button id="undoBtn" class="inline-btn" title="Undo last action (Ctrl+Z)">Undo</button>
+                <button id="resetColorsBtn" class="inline-btn">Reset</button>
+            </div>
+            <div class="search-controls" role="search">
+                <input type="text" id="searchInput" placeholder="Search..." class="search-input" aria-label="Search scriptures">
+                <span id="searchCount" class="search-count" aria-live="polite"></span>
+                <button id="highlightPhrasesBtn" class="inline-btn search-btn hidden" title="Highlight all matching phrases">Mark Phrases</button>
+                <button id="highlightVersesBtn" class="inline-btn search-btn hidden" title="Highlight all verses containing matches">Mark Verses</button>
+                <button id="clearSearchBtn" class="inline-btn search-btn hidden" title="Clear search">Clear</button>
+            </div>
+            <div class="palette-actions-inline">
+                <button id="exportBtn" class="inline-btn">Export</button>
+                <button id="importBtn" class="inline-btn">Import</button>
+                <button id="clearBtn" class="inline-btn">Clear</button>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <main id="contentArea" class="content-area" role="main" aria-label="Scripture text"></main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p><strong>Scripture Highlighter</strong> &middot; Click to highlight &middot; Drag to select &middot; Custom colors &middot; Import/Export &middot; Light/Dark themes &middot; Keyboard navigation</p>
+                <p><a href="https://njsr.org" target="_blank" rel="noopener">njsr.org</a>: privacy focused, offline useful, weird web stuff since 2002 &middot; <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">MIT License</a></p>
+            </div>
+        </footer>
+
+        <!-- Import Modal -->
+        <div id="importModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="importModalTitle">
+            <div class="modal-content import-modal-wide">
+                <div class="modal-header">
+                    <h2 id="importModalTitle">Import Highlights</h2>
+                    <button class="close-btn" id="closeImportBtn" aria-label="Close">×</button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="importTextarea" placeholder="Paste your JSON highlights here..."></textarea>
+                    <div class="import-file-row">
+                        <span class="import-or">or</span>
+                        <input type="file" id="importFileInput" accept=".json,application/json" hidden>
+                        <button type="button" id="importFileBtn" class="inline-btn">Upload .json file</button>
+                    </div>
+
+                    <div id="importPreview" class="import-preview hidden">
+                        <div class="import-stats">
+                            <span id="importStatsNew">0 new</span>
+                            <span id="importStatsConflict">0 conflicts</span>
+                            <span id="importStatsTotal">0 total</span>
+                        </div>
+                    </div>
+
+                    <div id="importOptions" class="import-options hidden">
+                        <label class="import-option">
+                            <input type="radio" name="importStrategy" value="replace" checked>
+                            <div class="option-content">
+                                <strong>Replace All</strong>
+                                <span>Clear existing and import fresh</span>
+                            </div>
+                        </label>
+                        <label class="import-option">
+                            <input type="radio" name="importStrategy" value="addNew">
+                            <div class="option-content">
+                                <strong>Add New Only</strong>
+                                <span>Keep existing, add non-conflicting</span>
+                            </div>
+                        </label>
+                        <label class="import-option">
+                            <input type="radio" name="importStrategy" value="preferImport">
+                            <div class="option-content">
+                                <strong>Prefer Import</strong>
+                                <span>Keep existing, import wins conflicts</span>
+                            </div>
+                        </label>
+                        <label class="import-option">
+                            <input type="radio" name="importStrategy" value="layer">
+                            <div class="option-content">
+                                <strong>Layer Both</strong>
+                                <span>Stack colors on conflicts</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirmImportBtn" class="primary-btn">Import</button>
+                    <button id="cancelImportBtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

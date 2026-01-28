@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Generator v1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Background Gradient Generator</h1>
+    <div id="controls">
+        <label for="type">Type:</label>
+        <select id="type">
+            <option value="linear">Linear</option>
+            <option value="radial">Radial</option>
+            <option value="conic">Conic</option>
+        </select>
+        
+        <label for="color1">Color 1:</label>
+        <input type="color" id="color1" value="#ff0000">
+        
+        <label for="color2">Color 2:</label>
+        <input type="color" id="color2" value="#0000ff">
+        
+        <label for="angle">Angle:</label>
+        <input type="range" id="angle" min="0" max="360" value="0">
+        <span id="angleValue">0°</span>
+        
+        <label for="stripes">
+            <input type="checkbox" id="stripes"> Stripes
+        </label>
+    </div>
+    <div id="preview"></div>
+
+    <footer style="margin-top:2rem;padding:1rem;text-align:center;font-size:0.85rem;color:#666;">
+        <p style="margin:0 0 0.5rem;"><strong>Background Gradient Generator</strong> &middot; /bg/</p>
+        <p style="margin:0 0 0.5rem;">Create CSS gradients with live preview.</p>
+        <p style="margin:0;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

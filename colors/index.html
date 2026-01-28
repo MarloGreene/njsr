@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Palette Generator</title>
+    <link rel="stylesheet" href="palette.css">
+</head>
+<body>
+    <div class="palette-container" id="paletteContainer"></div>
+    
+    <div class="controls">
+        <button class="control-btn" id="generateBtn" title="Generate new palette (Spacebar)">
+            🎨 Generate
+        </button>
+        <button class="control-btn" id="saveBtn" title="Save current palette">
+            💾 Save Palette
+        </button>
+        <button class="control-btn" id="viewSavedBtn" title="View saved palettes">
+            📚 Saved (<span id="savedCount">0</span>)
+        </button>
+        <button class="control-btn" id="colorWheelBtn" title="View color wheel">
+            🎡 Color Wheel
+        </button>
+    </div>
+    
+    <div class="saved-modal" id="savedModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📚 Saved Palettes</h2>
+                <button class="close-btn" id="closeModal">✕</button>
+            </div>
+            <div class="saved-grid" id="savedGrid">
+                <div class="empty-state">No saved palettes yet</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="wheel-popup" id="wheelPopup" style="display: block;">
+        <div class="wheel-popup-header">
+            <h3>🎡 Color Wheel</h3>
+            <button class="wheel-close-btn" id="closeWheelPopup">×</button>
+        </div>
+        <canvas id="colorWheelCanvas" width="300" height="300"></canvas>
+        <div class="wheel-popup-hint">Opposite colors are complementary</div>
+    </div>
+    
+    <div class="hint">Press <kbd>Space</kbd> to generate • Click color to lock • Click hex to copy</div>
+
+    <footer style="margin-top:1rem;padding:1rem;text-align:center;font-size:0.8rem;color:#666;">
+        <span><strong>Color Palette Generator</strong> &middot; /colors/ &middot; MIT &copy; njsr.org 2002-2026</span>
+    </footer>
+
+    <script src="palette.js"></script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+    <title>just write.</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <h1>just write.</h1>
+                <div class="header-right">
+                    <button id="headerViewToggle" onclick="toggleView()" class="header-view-btn" title="Toggle view">
+                        📄 <span id="headerViewLabel">Compact View</span>
+                    </button>
+                    <button id="trashToggle" class="trash-toggle" onclick="toggleTrashView()" title="View trashed notes">🗑️ <span id="trashCount">0</span></button>
+                    <span id="entryCount" class="entry-count">0 notes</span>
+                    <button id="minimizeToggle" onclick="toggleMinimize()" class="minimize-btn" title="Minimize controls">
+                        <span id="minimizeLabel">Collapse</span> <span class="minimize-arrow">▲</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div id="collapsibleContent" class="collapsible-content">
+            <div class="controls">
+                <div class="view-controls">
+                    <button id="viewToggle" onclick="toggleView()" title="Toggle compact view">📄 Compact View</button>
+                    <button id="locationToggle" onclick="toggleLocation()" title="Enable location tracking">📍 Location Off</button>
+                </div>
+                <div class="export-controls">
+                    <button onclick="exportAsText()" title="Export as Text">📄 TXT</button>
+                    <button onclick="exportAsJSON()" title="Export as JSON">💾 JSON</button>
+                    <label class="import-btn" title="Import JSON">
+                        📂 Import
+                        <input type="file" id="importFile" accept=".json" onchange="importJSON(event)" style="display: none;">
+                    </label>
+                </div>
+            </div>
+
+            <div class="input-section">
+                <textarea 
+                    id="entryInput" 
+                    placeholder="Start typing..."
+                    rows="3"
+                    maxlength="50000"
+                ></textarea>
+                <div class="input-controls">
+                    <div class="color-picker">
+                        <button class="color-btn" data-color="none" title="No color"></button>
+                        <button class="color-btn" data-color="red" style="background: #ff6b6b;" title="Red"></button>
+                        <button class="color-btn" data-color="orange" style="background: #ffa06b;" title="Orange"></button>
+                        <button class="color-btn" data-color="yellow" style="background: #ffd93d;" title="Yellow"></button>
+                        <button class="color-btn" data-color="green" style="background: #6bcf7f;" title="Green"></button>
+                        <button class="color-btn" data-color="blue" style="background: #6bb6ff;" title="Blue"></button>
+                        <button class="color-btn" data-color="purple" style="background: #c06bff;" title="Purple"></button>
+                        <button class="color-btn" data-color="soft-pink" style="background: #ffb3ba;" title="Soft Pink"></button>
+                        <button class="color-btn" data-color="soft-peach" style="background: #ffdfba;" title="Soft Peach"></button>
+                        <button class="color-btn" data-color="soft-mint" style="background: #baffc9;" title="Soft Mint"></button>
+                        <button class="color-btn" data-color="soft-lavender" style="background: #d4b5f7;" title="Soft Lavender"></button>
+                        <button class="color-btn" data-color="soft-gray" style="background: #d5ccc9;" title="Soft Gray"></button>
+                        <button class="color-btn" data-color="soft-teal" style="background: #b4e7e7;" title="Soft Teal"></button>
+                    </div>
+                    <button id="saveBtn" onclick="saveEntry()">Save Entry</button>
+                </div>
+            </div>
+
+            <div class="search-section">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="🔍 Search entries..."
+                    oninput="filterEntries()"
+                />
+            </div>
+
+            <div class="sort-section">
+                <div class="sort-controls">
+                    <button onclick="sortEntries('newest')" title="Newest first">📅↓ Newest</button>
+                    <button onclick="sortEntries('oldest')" title="Oldest first">📅↑ Oldest</button>
+                    <button onclick="sortEntries('longest')" title="Longest first">📏↓ Longest</button>
+                    <button onclick="sortEntries('shortest')" title="Shortest first">📏↑ Shortest</button>
+                    <button onclick="sortEntries('color')" title="Sort by color">🎨 Color</button>
+                    <button onclick="shuffleEntries()" title="Shuffle">🔀 Shuffle</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="entriesContainer" class="entries-container"></div>
+
+        <div id="emptyState" class="empty-state">
+            <p>✨ Your journal is empty. Start typing above!</p>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Entry</h2>
+                <div class="modal-header-buttons">
+                    <button class="zen-mode-btn" onclick="toggleZenMode()" title="Toggle Zen Mode">🧘 Zen Mode</button>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <textarea id="modalEntryText" rows="8" maxlength="50000"></textarea>
+                <div class="modal-meta">
+                    <span id="modalDate"></span>
+                    <span id="modalLocation"></span>
+                </div>
+                <div class="modal-controls">
+                    <div class="color-picker">
+                        <button class="color-btn modal-color-btn" data-color="none" title="No color"></button>
+                        <button class="color-btn modal-color-btn" data-color="red" style="background: #ff6b6b;" title="Red"></button>
+                        <button class="color-btn modal-color-btn" data-color="orange" style="background: #ffa06b;" title="Orange"></button>
+                        <button class="color-btn modal-color-btn" data-color="yellow" style="background: #ffd93d;" title="Yellow"></button>
+                        <button class="color-btn modal-color-btn" data-color="green" style="background: #6bcf7f;" title="Green"></button>
+                        <button class="color-btn modal-color-btn" data-color="blue" style="background: #6bb6ff;" title="Blue"></button>
+                        <button class="color-btn modal-color-btn" data-color="purple" style="background: #c06bff;" title="Purple"></button>
+                        <button class="color-btn modal-color-btn" data-color="soft-pink" style="background: #ffb3ba;" title="Soft Pink"></button>
+                        <button class="color-btn modal-color-btn" data-color="soft-peach" style="background: #ffdfba;" title="Soft Peach"></button>
+                        <button class="color-btn modal-color-btn" data-color="soft-mint" style="background: #baffc9;" title="Soft Mint"></button>
+                        <button class="color-btn modal-color-btn" data-color="soft-lavender" style="background: #d4b5f7;" title="Soft Lavender"></button>
+                        <button class="color-btn modal-color-btn" data-color="soft-gray" style="background: #d5ccc9;" title="Soft Gray"></button>
+                        <button class="color-btn modal-color-btn" data-color="soft-teal" style="background: #b4e7e7;" title="Soft Teal"></button>
+                    </div>
+                    <div class="modal-buttons">
+                        <button onclick="closeModal()" class="btn-cancel">Cancel</button>
+                        <button onclick="saveModalEdit()" class="btn-save">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="padding:1rem;text-align:center;font-size:0.8rem;color:#888;background:#1a1a2e;border-top:1px solid #333;">
+        <span><strong>just write</strong> &middot; /write/ &middot; Minimalist journal. All data stored locally.</span><br>
+        <span style="opacity:0.7;">MIT License &copy; njsr.org 2002-2026</span>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
