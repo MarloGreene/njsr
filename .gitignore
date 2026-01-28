@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+*.un~
+
+# Temporary files
+tmp/
+*.tmp
+*.bak
+
+# Local environment
+.env
+.env.local
+
+# Database files (degrees tool)
+degrees/db/*.db
+
+# Migration script (no longer needed)
+migrate-to-flat.js

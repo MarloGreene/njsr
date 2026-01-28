@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>njsrMosaic</title>
+  <style>
+    :root{
+      --fall-1:#b86b4b;
+      --fall-2:#c88f5a;
+      --fall-3:#a24f3d;
+      --fall-4:#6e7b52;
+      --fall-5:#8a6f4e;
+
+      --spring-1:#f5d7de;
+      --spring-2:#d8e9f2;
+      --spring-3:#e7f0d5;
+      --spring-4:#f6eccf;
+      --spring-5:#e8d8f5;
+
+      --mil-blue:#1d3557;
+      --mil-green:#2f4f3e;
+      --mil-red:#7a1f1f;
+
+      --lead:#101114;
+      --lead-soft:#171a20;
+      --bg:#0b0c0f;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%; margin: 0;
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .mosaic {
+      position: fixed; inset: 0;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(12, 1fr);
+      gap: clamp(6px, 1.2vw, 14px);
+      padding: clamp(8px, 1.6vw, 18px);
+      background:
+        radial-gradient(1200px 900px at 10% 0%, #141621 0%, transparent 55%),
+        radial-gradient(1200px 1000px at 100% 20%, #11141d 0%, transparent 60%),
+        radial-gradient(1200px 1000px at 20% 100%, #0f1118 0%, transparent 60%),
+        var(--bg);
+      filter: saturate(1.05) contrast(1.02);
+    }
+
+    .tile {
+      position: relative;
+      border-radius: clamp(8px, 1.2vw, 18px);
+      border: clamp(2px, 0.4vw, 5px) solid var(--lead);
+      box-shadow:
+        inset 0 0 0 1px var(--lead-soft),
+        inset 0 12px 30px rgba(255,255,255,0.08),
+        inset 0 -18px 40px rgba(0,0,0,0.35),
+        0 10px 30px rgba(0,0,0,0.45);
+      overflow: hidden;
+      opacity: .98;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tile::after{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:
+        conic-gradient(from 0deg,
+          transparent 0 8%,
+          rgba(255,255,255,0.08) 10%,
+          transparent 16% 30%,
+          rgba(255,255,255,0.05) 32%,
+          transparent 40% 100%);
+      mix-blend-mode: screen;
+      transform: rotate(8deg);
+      pointer-events:none;
+    }
+
+    .tile::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(120px 80px at 20% 10%, rgba(255,255,255,0.10), transparent 60%),
+        radial-gradient(180px 140px at 80% 70%, rgba(0,0,0,0.25), transparent 70%),
+        repeating-radial-gradient(circle at 30% 40%, rgba(255,255,255,0.02) 0 2px, transparent 2px 5px);
+      opacity:.6;
+      pointer-events:none;
+    }
+
+    /* Text inside panes */
+    .pane-text {
+      position: relative;
+      z-index: 3;
+      font-size: clamp(1.4rem, 3vw, 3rem);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      color: black;
+      -webkit-text-stroke: 1px white;
+      text-shadow:
+        0 0 6px rgba(0,0,0,0.7),
+        0 2px 4px rgba(0,0,0,0.7);
+      pointer-events: none;
+      user-select: none;
+      text-align: center;
+      transform: translateY(-2px);
+    }
+
+    .w1{grid-column: span 1;} .w2{grid-column: span 2;}
+    .w3{grid-column: span 3;} .w4{grid-column: span 4;}
+    .w5{grid-column: span 5;} .w6{grid-column: span 6;}
+
+    .h1{grid-row: span 1;} .h2{grid-row: span 2;}
+    .h3{grid-row: span 3;} .h4{grid-row: span 4;}
+    .h5{grid-row: span 5;} .h6{grid-row: span 6;}
+
+    .skew-a{ transform: skewX(-2deg) skewY(1deg); }
+    .skew-b{ transform: skewX(1.5deg) skewY(-1deg); }
+    .skew-c{ transform: skewX(-1deg) skewY(-1.5deg); }
+    .skew-d{ transform: skewX(2deg) skewY(0.5deg); }
+
+    @media (max-width: 640px){
+      .mosaic{
+        grid-template-columns: repeat(8, 1fr);
+        grid-template-rows: repeat(14, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="mosaic">
+
+    <!-- (All the original tiles preserved — abbreviated to avoid scrolling hell) -->
+    <div class="tile w3 h4 skew-a" style="background:var(--fall-1)"></div>
+    <div class="tile w2 h2 skew-b" style="background:var(--spring-2)"></div>
+    <div class="tile w4 h3"        style="background:var(--fall-4)"></div>
+    <div class="tile w3 h2 skew-c" style="background:var(--spring-4)"></div>
+
+    <div class="tile w2 h4"        style="background:var(--spring-3)"></div>
+    <div class="tile w5 h3 skew-d" style="background:var(--fall-2)"></div>
+    <div class="tile w3 h3"        style="background:var(--spring-1)"></div>
+    <div class="tile w2 h2"        style="background:var(--mil-green)"></div>
+      <div class="pane-text">njsr.org</div>
+
+    <div class="tile w4 h4 skew-b" style="background:var(--spring-5)"></div>
+    <div class="tile w2 h3"        style="background:var(--fall-3)"></div>
+    <div class="tile w3 h2"        style="background:var(--spring-2)"></div>
+    <div class="tile w3 h3 skew-a" style="background:var(--fall-5)"></div>
+
+    <div class="tile w2 h2"        style="background:var(--mil-blue)"></div>
+    <div class="tile w3 h4"        style="background:var(--spring-4)"></div>
+    <div class="tile w5 h3 skew-c" style="background:var(--fall-2)"></div>
+
+    <div class="tile w3 h3"        style="background:var(--spring-3)"></div>
+    <div class="tile w2 h4 skew-d" style="background:var(--fall-1)"></div>
+      <div class="pane-text">incredible website.</div>
+    <div class="tile w4 h2"        style="background:var(--spring-1)"></div>
+    <div class="tile w3 h2"        style="background:var(--fall-4)"></div>
+
+    <div class="tile w6 h4 skew-b" style="background:var(--spring-2)"></div>
+    <div class="tile w2 h2"        style="background:var(--mil-red)"></div>
+    <div class="tile w4 h3"        style="background:var(--fall-5)"></div>
+
+    <div class="tile w3 h3 skew-a" style="background:var(--spring-4)"></div>
+    <div class="tile w2 h3"        style="background:var(--fall-3)"></div>
+    <div class="tile w4 h4 skew-c" style="background:var(--spring-5)"></div>
+
+    <div class="tile w2 h2"        style="background:var(--fall-2)"></div>
+    <div class="tile w3 h2 skew-d" style="background:var(--spring-3)"></div>
+    <div class="tile w4 h2" style="background:var(--spring-1)">ca. 2002-2026</div>
+    <div class="tile w3 h3"        style="background:var(--fall-1)"></div>
+    <div class="tile w4 h2"        style="background:var(--spring-1)"></div>
+
+    <div class="tile w2 h5 skew-b" style="background:var(--fall-4)"></div>
+    <div class="tile w5 h3"        style="background:var(--spring-2)"></div>
+
+    <!-- ★ THIS is your njsr.org tile (center-right placement) -->
+    <div class="tile w3 h3 skew-a has-text" style="background:var(--fall-2)">
+	    <!--<div class="pane-text">njsr.org</div>-->
+    </div>
+
+    <div class="tile w4 h3"        style="background:var(--spring-4)"></div>
+    <div class="tile w2 h2"        style="background:var(--mil-blue)"></div>
+    <div class="tile w3 h3 skew-c" style="background:var(--spring-3)"></div>
+    <div class="tile w3 h2"        style="background:var(--fall-5)"></div>
+
+    <div class="tile w6 h3 skew-d" style="background:var(--fall-1)"></div>
+    <div class="tile w3 h3"        style="background:var(--spring-5)"></div>
+    <div class="tile w3 h3"        style="background:var(--spring-1)"></div>
+
+  </main>
+</body>
+</html>
+

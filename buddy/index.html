@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; frame-ancestors 'none';">
+    <meta name="referrer" content="no-referrer">
+    <title>Buddy Letter Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Buddy Letter Generator</h1>
+            <p class="subtitle">Structured narrative engine for VA supporting statements</p>
+        </header>
+
+        <!-- Section Navigation -->
+        <nav class="section-nav">
+            <button class="nav-pill active" data-section="1" onclick="scrollToSection(1)">1. Relationship</button>
+            <button class="nav-pill" data-section="2" onclick="scrollToSection(2)">2. Context</button>
+            <button class="nav-pill" data-section="3" onclick="scrollToSection(3)">3. Exposures</button>
+            <button class="nav-pill" data-section="4" onclick="scrollToSection(4)">4. Symptoms</button>
+            <button class="nav-pill" data-section="5" onclick="scrollToSection(5)">5. Impact</button>
+            <button class="nav-pill" data-section="6" onclick="scrollToSection(6)">6. Review</button>
+            <button class="nav-pill expand-all" onclick="toggleAllSections()">Expand All</button>
+        </nav>
+
+        <main>
+            <div class="form-container">
+                <!-- Section 1: Relationship & Credibility -->
+                <section class="form-section expanded" id="section1" data-section="1">
+                    <div class="section-header" onclick="toggleSection(1)">
+                        <h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> <span id="section1Title">Your Relationship</span></h2>
+                        <svg class="collapse-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        <p class="section-intro" id="section1Intro">Establish your credibility as a witness. The stronger your connection, the more weight your letter carries.</p>
+                    </div>
+                    <div class="section-content">
+
+                    <!-- Statement Mode Toggle -->
+                    <div class="form-group mode-toggle-group">
+                        <label>What type of statement are you writing?</label>
+                        <div class="mode-toggle">
+                            <label class="mode-option">
+                                <input type="radio" name="statementMode" value="buddy" checked>
+                                <span class="mode-card">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                    <strong>Buddy Statement</strong>
+                                    <span>Writing about someone else's experiences</span>
+                                </span>
+                            </label>
+                            <label class="mode-option">
+                                <input type="radio" name="statementMode" value="self">
+                                <span class="mode-card">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                    <strong>Personal Statement</strong>
+                                    <span>Writing about your own experiences</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="yourNameGroup">
+                        <label for="yourName" id="yourNameLabel">Your Full Name</label>
+                        <input type="text" id="yourName" placeholder="e.g., John M. Smith" autocomplete="name">
+                    </div>
+
+                    <div class="form-group" id="veteranNameGroup">
+                        <label for="veteranName">Veteran's Full Name</label>
+                        <input type="text" id="veteranName" placeholder="e.g., James R. Johnson">
+                    </div>
+
+                    <div class="form-group" id="relationshipGroup">
+                        <label>Your Relationship to the Veteran</label>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-item">
+                                <input type="radio" name="relationship" value="served_together">
+                                <span class="checkmark"></span>
+                                <span>Served in same unit</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="radio" name="relationship" value="battle_buddy">
+                                <span class="checkmark"></span>
+                                <span>Battle buddy / team member</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="radio" name="relationship" value="squad_leader">
+                                <span class="checkmark"></span>
+                                <span>Squad leader / NCO</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="radio" name="relationship" value="platoon_leader">
+                                <span class="checkmark"></span>
+                                <span>Platoon leader / officer</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="radio" name="relationship" value="spouse">
+                                <span class="checkmark"></span>
+                                <span>Spouse / domestic partner</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="radio" name="relationship" value="family">
+                                <span class="checkmark"></span>
+                                <span>Family member</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="radio" name="relationship" value="coworker">
+                                <span class="checkmark"></span>
+                                <span>Coworker / colleague</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="radio" name="relationship" value="friend">
+                                <span class="checkmark"></span>
+                                <span>Close friend</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="knowDurationGroup">
+                        <label for="knowDuration">How long have you known the veteran?</label>
+                        <div class="inline-inputs">
+                            <input type="number" id="knowYears" min="0" max="60" placeholder="Years" class="small-input">
+                            <span>years</span>
+                            <input type="number" id="knowMonths" min="0" max="11" placeholder="Months" class="small-input">
+                            <span>months</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="contactFrequencyGroup">
+                        <label for="contactFrequency">How often did/do you have contact?</label>
+                        <select id="contactFrequency">
+                            <option value="">Select frequency...</option>
+                            <option value="daily">Daily (lived/worked together)</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="quarterly">Every few months</option>
+                            <option value="yearly">Yearly or less</option>
+                        </select>
+                    </div>
+
+                    <!-- Spartan Mode Quick Track (hidden by default) -->
+                    <div class="spartan-quick-track" id="spartanQuickTrack" style="display: none;">
+                        <div class="quick-track-content">
+                            <p><strong>Spartan Mode:</strong> Exposures pre-filled. Fill your names above, then:</p>
+                            <button type="button" class="btn-spartan" onclick="scrollToSection(3)">Review Exposures</button>
+                            <button type="button" class="btn-spartan" onclick="scrollToSection(5)">Add Specific Example</button>
+                        </div>
+                    </div>
+                    </div><!-- /.section-content -->
+                </section>
+
+                <!-- Section 2: Context & Timeframe -->
+                <section class="form-section collapsed" id="section2" data-section="2">
+                    <div class="section-header" onclick="toggleSection(2)">
+                        <h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Context & Timeframe</h2>
+                        <svg class="collapse-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        <p class="section-intro">When and where did you observe the veteran? This establishes the timeline for your observations.</p>
+                    </div>
+                    <div class="section-content">
+
+                    <div class="form-group">
+                        <label>Service Period Together (if applicable)</label>
+                        <div class="date-range">
+                            <div class="date-input">
+                                <label for="serviceStart">From</label>
+                                <input type="month" id="serviceStart">
+                            </div>
+                            <div class="date-input">
+                                <label for="serviceEnd">To</label>
+                                <input type="month" id="serviceEnd">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="unit">Unit/Organization (if military)</label>
+                        <input type="text" id="unit" placeholder="e.g., 1st Battalion, 506th Infantry Regiment">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Location(s)</label>
+                        <input type="text" id="location" placeholder="e.g., FOB Falcon, Baghdad, Iraq">
+                        <p class="field-note">Include deployment locations, bases, or geographic areas</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Theater of Operations (if applicable)</label>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="theater" value="oif">
+                                <span class="checkmark"></span>
+                                <span>OIF (Iraq)</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="theater" value="oef">
+                                <span class="checkmark"></span>
+                                <span>OEF (Afghanistan)</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="theater" value="oir">
+                                <span class="checkmark"></span>
+                                <span>OIR (ISIS)</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="theater" value="desert_storm">
+                                <span class="checkmark"></span>
+                                <span>Desert Storm/Shield</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="theater" value="vietnam">
+                                <span class="checkmark"></span>
+                                <span>Vietnam</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="theater" value="other">
+                                <span class="checkmark"></span>
+                                <span>Other deployment</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="theater" value="conus">
+                                <span class="checkmark"></span>
+                                <span>CONUS (stateside)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    </div><!-- /.section-content -->
+                </section>
+
+                <!-- Section 3: Exposure Description -->
+                <section class="form-section collapsed" id="section3" data-section="3">
+                    <div class="section-header" onclick="toggleSection(3)">
+                        <h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Traumatic Exposures</h2>
+                        <svg class="collapse-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        <p class="section-intro">What traumatic events did the veteran experience? Check all that apply - your informal descriptions will be converted to standard terminology.</p>
+                    </div>
+                    <div class="section-content">
+
+                    <div class="exposure-categories">
+                        <!-- Direct Combat -->
+                        <div class="exposure-category">
+                            <h3>Direct Combat</h3>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-item exposure-item" data-canonical="ied">
+                                    <input type="checkbox" name="exposure" value="ied">
+                                    <span class="checkmark"></span>
+                                    <span>IED / roadside bomb / blown up</span>
+                                </label>
+                                <label class="checkbox-item exposure-item" data-canonical="vbied">
+                                    <input type="checkbox" name="exposure" value="vbied">
+                                    <span class="checkmark"></span>
+                                    <span>VBIED / car bomb / SVBIED</span>
+                                </label>
+                                <label class="checkbox-item exposure-item" data-canonical="small_arms">
+                                    <input type="checkbox" name="exposure" value="small_arms">
+                                    <span class="checkmark"></span>
+                                    <span>Small arms fire / firefight / TIC</span>
+                                </label>
+                                <label class="checkbox-item exposure-item" data-canonical="indirect">
+                                    <input type="checkbox" name="exposure" value="indirect">
+                                    <span class="checkmark"></span>
+                                    <span>Mortar / rocket / IDF attack</span>
+                                </label>
+                                <label class="checkbox-item exposure-item" data-canonical="ambush">
+                                    <input type="checkbox" name="exposure" value="ambush">
+                                    <span class="checkmark"></span>
+                                    <span>Ambush / complex attack</span>
+                                </label>
+                                <label class="checkbox-item exposure-item" data-canonical="rpg">
+                                    <input type="checkbox" name="exposure" value="rpg">
+                                    <span class="checkmark"></span>
+                                    <span>RPG / rocket attack on vehicle</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Witnessing Trauma -->
+                        <div class="exposure-category">
+                            <h3>Witnessing Trauma</h3>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-item exposure-item" data-canonical="witness_death">
+                                    <input type="checkbox" name="exposure" value="witness_death">
+                                    <span class="checkmark"></span>
+                                    <span>Witnessed death of service member</span>
+                                </label>
+                                <label class="checkbox-item exposure-item" data-canonical="witness_injury">
+                                    <input type="checkbox" name="exposure" value="witness_injury">
+                                    <span class="checkmark"></span>
+                                    <span>Witnessed severe injury</span>
+                                </label>
+                                <label class="checkbox-item exposure-item" data-canonical="witness_civilian">
+                                    <input type="checkbox" name="exposure" value="witness_civilian">
+                                    <span class="checkmark"></span>
+                                    <span>Witnessed civilian casualties</span>
+                                </label>
+                                <label class="checkbox-item exposure-item" data-canonical="remains">
+                                    <input type="checkbox" name="exposure" value="remains">
+                                    <span class="checkmark"></span>
+                                    <span>Handled human remains</span>
+                                </label>
+                                <label class="checkbox-item exposure-item" data-canonical="lost_buddy">
+                                    <input type="checkbox" name="exposure" value="lost_buddy">
+                                    <span class="checkmark"></span>
+                                    <span>Lost a battle buddy / close friend KIA</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Other Exposures -->
+                        <div class="exposure-category">
+                            <h3>Other Exposures</h3>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-item exposure-item" data-canonical="mst">
+                                    <input type="checkbox" name="exposure" value="mst">
+                                    <span class="checkmark"></span>
+                                    <span>Military Sexual Trauma (MST)</span>
+                                </label>
+                                <label class="checkbox-item exposure-item" data-canonical="tbi">
+                                    <input type="checkbox" name="exposure" value="tbi">
+                                    <span class="checkmark"></span>
+                                    <span>Blast exposure / concussion / TBI</span>
+                                </label>
+                                <label class="checkbox-item exposure-item" data-canonical="convoy">
+                                    <input type="checkbox" name="exposure" value="convoy">
+                                    <span class="checkmark"></span>
+                                    <span>Convoy operations outside the wire</span>
+                                </label>
+                                <label class="checkbox-item exposure-item" data-canonical="qrf">
+                                    <input type="checkbox" name="exposure" value="qrf">
+                                    <span class="checkmark"></span>
+                                    <span>QRF / first responder to incident</span>
+                                </label>
+                                <label class="checkbox-item exposure-item" data-canonical="multiple_deploy">
+                                    <input type="checkbox" name="exposure" value="multiple_deploy">
+                                    <span class="checkmark"></span>
+                                    <span>Multiple combat deployments</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exposureDetails">Additional Details (optional)</label>
+                        <textarea id="exposureDetails" rows="4" placeholder="Describe specific incidents in your own words. The system will help you convert informal language to standard terminology."></textarea>
+                        <p class="field-note">Example: "got hit by an IED on Route Tampa" or "took small arms on every patrol"</p>
+                    </div>
+
+                    <!-- Normalization Suggestions Panel -->
+                    <div class="suggestion-panel" id="suggestionPanel" style="display: none;">
+                        <h4>Suggested Standardization</h4>
+                        <div id="suggestionContent"></div>
+                    </div>
+
+                    </div><!-- /.section-content -->
+                </section>
+
+                <!-- Section 4: Observed Symptoms -->
+                <section class="form-section collapsed" id="section4" data-section="4">
+                    <div class="section-header" onclick="toggleSection(4)">
+                        <h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> <span id="section4Title">What You Observed</span></h2>
+                        <svg class="collapse-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        <p class="section-intro" id="section4Intro">What changes did you personally witness in the veteran? Focus on observable behaviors, not diagnoses. Use "I observed..." language.</p>
+                    </div>
+                    <div class="section-content">
+
+                    <!-- Intrusion Symptoms -->
+                    <div class="symptom-category">
+                        <h3>Re-experiencing / Intrusion <span class="category-note">(nightmares, flashbacks, being triggered)</span></h3>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="nightmares">
+                                <span class="checkmark"></span>
+                                <span>Nightmares / disturbed sleep</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="flashbacks">
+                                <span class="checkmark"></span>
+                                <span>Flashbacks / dissociative episodes</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="triggered">
+                                <span class="checkmark"></span>
+                                <span>Visibly distressed by reminders</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="physical_reaction">
+                                <span class="checkmark"></span>
+                                <span>Physical reactions (sweating, shaking)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Avoidance Symptoms -->
+                    <div class="symptom-category">
+                        <h3>Avoidance <span class="category-note">(avoiding reminders, people, places)</span></h3>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="avoid_conversations">
+                                <span class="checkmark"></span>
+                                <span>Refuses to discuss service/deployment</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="avoid_places">
+                                <span class="checkmark"></span>
+                                <span>Avoids crowded places</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="avoid_people">
+                                <span class="checkmark"></span>
+                                <span>Avoids former friends/family</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="avoid_activities">
+                                <span class="checkmark"></span>
+                                <span>Stopped activities they once enjoyed</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Negative Mood/Cognition -->
+                    <div class="symptom-category">
+                        <h3>Negative Changes <span class="category-note">(mood, thinking, feelings)</span></h3>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="emotional_numb">
+                                <span class="checkmark"></span>
+                                <span>Emotionally numb / distant</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="negative_beliefs">
+                                <span class="checkmark"></span>
+                                <span>Negative beliefs ("I'm broken")</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="guilt_blame">
+                                <span class="checkmark"></span>
+                                <span>Excessive guilt / self-blame</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="loss_interest">
+                                <span class="checkmark"></span>
+                                <span>Lost interest in life</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="detached">
+                                <span class="checkmark"></span>
+                                <span>Detached from loved ones</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="no_positive">
+                                <span class="checkmark"></span>
+                                <span>Unable to feel positive emotions</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Arousal/Reactivity -->
+                    <div class="symptom-category">
+                        <h3>Hyperarousal <span class="category-note">(on edge, angry, jumpy)</span></h3>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="anger">
+                                <span class="checkmark"></span>
+                                <span>Anger outbursts / irritability</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="hypervigilant">
+                                <span class="checkmark"></span>
+                                <span>Hypervigilant / always scanning</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="startle">
+                                <span class="checkmark"></span>
+                                <span>Exaggerated startle response</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="sleep_problems">
+                                <span class="checkmark"></span>
+                                <span>Difficulty sleeping</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="concentration">
+                                <span class="checkmark"></span>
+                                <span>Difficulty concentrating</span>
+                            </label>
+                            <label class="checkbox-item symptom-item">
+                                <input type="checkbox" name="symptom" value="reckless">
+                                <span class="checkmark"></span>
+                                <span>Reckless / self-destructive behavior</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    </div><!-- /.section-content -->
+                </section>
+
+                <!-- Section 5: Functional Impact -->
+                <section class="form-section collapsed" id="section5" data-section="5">
+                    <div class="section-header" onclick="toggleSection(5)">
+                        <h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> <span id="section5Title">Functional Impact</span></h2>
+                        <svg class="collapse-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        <p class="section-intro" id="section5Intro">How have these symptoms affected the veteran's daily life? This section demonstrates the real-world consequences.</p>
+                    </div>
+                    <div class="section-content">
+
+                    <div class="impact-category">
+                        <h3>Occupational Impact</h3>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-item impact-item">
+                                <input type="checkbox" name="impact" value="job_loss">
+                                <span class="checkmark"></span>
+                                <span>Lost job(s) due to symptoms</span>
+                            </label>
+                            <label class="checkbox-item impact-item">
+                                <input type="checkbox" name="impact" value="job_difficulty">
+                                <span class="checkmark"></span>
+                                <span>Difficulty maintaining employment</span>
+                            </label>
+                            <label class="checkbox-item impact-item">
+                                <input type="checkbox" name="impact" value="conflict_coworkers">
+                                <span class="checkmark"></span>
+                                <span>Conflicts with coworkers/supervisors</span>
+                            </label>
+                            <label class="checkbox-item impact-item">
+                                <input type="checkbox" name="impact" value="reduced_performance">
+                                <span class="checkmark"></span>
+                                <span>Reduced work performance</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="impact-category">
+                        <h3>Social Impact</h3>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-item impact-item">
+                                <input type="checkbox" name="impact" value="relationship_strain">
+                                <span class="checkmark"></span>
+                                <span>Strained relationships</span>
+                            </label>
+                            <label class="checkbox-item impact-item">
+                                <input type="checkbox" name="impact" value="divorce">
+                                <span class="checkmark"></span>
+                                <span>Divorce / separation</span>
+                            </label>
+                            <label class="checkbox-item impact-item">
+                                <input type="checkbox" name="impact" value="isolation">
+                                <span class="checkmark"></span>
+                                <span>Social isolation</span>
+                            </label>
+                            <label class="checkbox-item impact-item">
+                                <input type="checkbox" name="impact" value="lost_friendships">
+                                <span class="checkmark"></span>
+                                <span>Lost friendships</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="impact-category">
+                        <h3>Daily Functioning</h3>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-item impact-item">
+                                <input type="checkbox" name="impact" value="self_care">
+                                <span class="checkmark"></span>
+                                <span>Difficulty with self-care</span>
+                            </label>
+                            <label class="checkbox-item impact-item">
+                                <input type="checkbox" name="impact" value="substance">
+                                <span class="checkmark"></span>
+                                <span>Increased alcohol/substance use</span>
+                            </label>
+                            <label class="checkbox-item impact-item">
+                                <input type="checkbox" name="impact" value="leave_house">
+                                <span class="checkmark"></span>
+                                <span>Difficulty leaving the house</span>
+                            </label>
+                            <label class="checkbox-item impact-item">
+                                <input type="checkbox" name="impact" value="routine_tasks">
+                                <span class="checkmark"></span>
+                                <span>Struggles with routine tasks</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="specificExample" id="specificExampleLabel">Specific Example (strongly recommended)</label>
+                        <textarea id="specificExample" rows="4" placeholder="Describe a specific incident you witnessed that illustrates the veteran's condition. E.g., 'I observed him drop to the ground and cover his head when a car backfired at the grocery store.'"></textarea>
+                        <p class="field-note" id="specificExampleNote">Specific, observable incidents are the most powerful evidence in a buddy letter.</p>
+                    </div>
+
+                    <div class="form-group" id="ongoingGroup">
+                        <label id="ongoingLabel">Is the condition ongoing?</label>
+                        <div class="radio-group" id="ongoingOptions">
+                            <label class="radio-item">
+                                <input type="radio" name="ongoing" value="yes" checked>
+                                <span id="ongoingYes">Yes, I still observe these symptoms</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="ongoing" value="worsened">
+                                <span id="ongoingWorsened">Yes, and they have worsened over time</span>
+                            </label>
+                            <label class="radio-item" id="ongoingNoContactItem">
+                                <input type="radio" name="ongoing" value="no_contact">
+                                <span>I'm no longer in regular contact</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    </div><!-- /.section-content -->
+                </section>
+
+                <!-- Section 6: Review & Output -->
+                <section class="form-section collapsed" id="section6" data-section="6">
+                    <div class="section-header" onclick="toggleSection(6)">
+                        <h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Your Buddy Letter</h2>
+                        <svg class="collapse-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        <p class="section-intro">Review your generated letter. You can edit the text directly before copying or printing.</p>
+                    </div>
+                    <div class="section-content">
+
+                    <div class="output-controls">
+                        <button type="button" class="btn-secondary" onclick="regenerateLetter()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                            Regenerate
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="copyLetter(event)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                            Copy
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="window.print()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                            Print
+                        </button>
+                    </div>
+
+                    <div class="letter-output">
+                        <div id="letterContent" contenteditable="true"></div>
+                    </div>
+
+                    <div class="letter-notes">
+                        <h4>Before You Submit</h4>
+                        <ul>
+                            <li>Review the letter for accuracy - every statement should be truthful</li>
+                            <li>Sign and date the letter</li>
+                            <li>Include your contact information</li>
+                            <li>Consider having it notarized for additional credibility</li>
+                            <li>Keep a copy for your records</li>
+                        </ul>
+                    </div>
+
+                    <div class="section-actions">
+                        <button type="button" class="btn-primary" onclick="resetForm()">Start New Letter</button>
+                    </div>
+                    </div><!-- /.section-content -->
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="tip-card">
+                    <h4>Writing Tips</h4>
+                    <div id="currentTip">
+                        <p>Use "I observed" or "I witnessed" language rather than assuming you know what the veteran felt or thought.</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h4>What Makes a Strong Buddy Letter</h4>
+                    <ul>
+                        <li><strong>Specificity:</strong> Concrete examples beat vague statements</li>
+                        <li><strong>First-hand:</strong> Only include what you personally witnessed</li>
+                        <li><strong>Timeline:</strong> Show when symptoms started and how they progressed</li>
+                        <li><strong>Observable:</strong> Focus on behaviors, not diagnoses</li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h4>Need Help?</h4>
+                    <p>Contact a Veterans Service Organization (VSO) for free assistance with your claim.</p>
+                    <a href="https://www.va.gov/vso/" target="_blank" rel="noopener" class="btn-link">Find a VSO</a>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="disclaimer">
+                <p style="margin-bottom:0.5rem;"><strong>Buddy Letter Generator</strong> &middot; /buddy/</p>
+                <h4>Important Disclaimer</h4>
+                <p><strong>This tool generates structured templates only.</strong> It does not provide legal advice and is not a substitute for professional assistance. All statements in your letter must be truthful and based on your personal observations.</p>
+                <p>The generated text is a starting point. You are responsible for reviewing and ensuring accuracy before signing and submitting.</p>
+                <p>We recommend working with an accredited VSO or attorney for complex claims.</p>
+                <p style="margin-top:1rem;opacity:0.7;">MIT License &copy; njsr.org 2002-2026</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

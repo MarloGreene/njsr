@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="zoomControls">
+        <button data-cols="2">2</button>
+        <button data-cols="4">4</button>
+        <button data-cols="6">6</button>
+        <button data-cols="8">8</button>
+    </div>
+    <div id="grid"></div>
+    <div id="modal" class="hidden">
+        <img id="fullImage" src="" alt="">
+        <button id="close">×</button>
+        <button id="prev">&lt;</button>
+        <button id="next">&gt;</button>
+        <div id="counter"></div>
+        <div id="filmstrip"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+<footer>
+    fotos by njsr, copyright 2002-2026 all rights reserved
+</footer>
