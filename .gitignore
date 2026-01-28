@@ -23,6 +23,10 @@ tmp/
 # Database files (degrees tool)
 degrees/db/*.db
 
+# Personal photos (foto tool)
+foto/img/
+foto/thumb/
+
 # Migration script (no longer needed)
 migrate-to-flat.js
 
