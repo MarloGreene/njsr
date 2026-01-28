@@ -1,6 +1,6 @@
 # njsr.org Web Tools
 
-A curated collection of 40+ privacy-first web tools, built with vanilla JavaScript.
+A curated collection of 36 privacy-first web tools, built with vanilla JavaScript.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![No Dependencies](https://img.shields.io/badge/dependencies-minimal-brightgreen.svg)]()
@@ -43,8 +43,6 @@ python -m http.server 8000
 | **Calendar** | Simple yearly calendar display | `/cal` |
 | **Countdown Timer** | Event countdown with date/time setting | `/countdown` |
 | **Stopwatch** | Polished timing application | `/stopwatch` |
-| **Simple Stopwatch** | Basic timing with split functionality | `/split` |
-| **Expense Tracker** | Budget management and expense analysis | `/cash` |
 | **QR Code Generator** | Custom QR code creation and download | `/qr` |
 
 ### Scripture & Religious
@@ -52,7 +50,6 @@ python -m http.server 8000
 |------|-------------|------|
 | **Book of Mormon Reader** | Web-based scripture reader | `/bom` |
 | **Scripture Highlighter** | LDS scripture reader with highlighting | `/sh` |
-| **Scripture Search & Highlighter** | Advanced scripture study tool | `/ssah` |
 | **Lightning Fast Scripture Search** | High-performance scripture search | `/lfss` |
 | **Scripture Matrix** | Matrix animation with Bible verses | `/sm` |
 | **23 Questions** | Book of Mormon educational quiz | `/23` |
@@ -63,7 +60,7 @@ python -m http.server 8000
 |------|-------------|------|
 | **Color Picker** | Advanced color selection with screen sampling | `/color` |
 | **Color Palette Generator** | Random palette creation with save/lock | `/colors` |
-| **Background Gradient Generator** | CSS gradient creator with live preview | `/bg` |
+| **Photo Gallery** | Image gallery with local storage | `/foto` |
 
 ### Security & Passwords
 | Tool | Description | Path |
@@ -92,7 +89,6 @@ python -m http.server 8000
 | **Tarot Card Reader** | Mystical card reading | `/tarot` |
 | **Matrix Rain** | Animated falling character effect | `/matrix` |
 | **Dynamic Soundboard** | Audio clip player (PHP) | `/sb` |
-| **Six Degrees of Kevin Bacon** | Actor connection finder (Node.js) | `/degrees` |
 
 ### Music
 | Tool | Description | Path |
@@ -101,18 +97,13 @@ python -m http.server 8000
 
 ## Technology Stack
 
-### Standard Tools (35+)
+### Standard Tools (35)
 - Pure HTML5/CSS3/JavaScript (ES6+)
 - localStorage for data persistence
 - No build process required
 - Zero external dependencies
 
 ### Special Tools
-
-**Six Degrees of Kevin Bacon** (`/degrees`)
-- Node.js + Express.js backend
-- SQLite database with better-sqlite3
-- Requires separate setup (see `/degrees/README.md`)
 
 **Dynamic Soundboard** (`/sb`)
 - PHP backend
@@ -131,14 +122,10 @@ njsr/
 ├── SECURITY.md             # Security policy
 ├── CONTRIBUTING.md         # Contribution guidelines
 │
-├── [tool-directories]/     # 40+ individual tools
-│   ├── index.html
-│   ├── script.js (if needed)
-│   └── README.md
-│
-├── stuff/                  # Storage (PDFs, ROMs, text files)
-├── textfiles/              # Open-source document repository
-└── tools/                  # Dashboard navigation
+└── [tool-directories]/     # 36 individual tools
+    ├── index.html
+    ├── script.js (if needed)
+    └── README.md
 ```
 
 ## Running the Documentation Generator
@@ -164,13 +151,6 @@ Simply upload to any static file host:
 ### Tools Requiring Backend
 
 **Soundboard (`/sb`)**: Requires PHP-enabled web server
-
-**Six Degrees (`/degrees`)**:
-```bash
-cd degrees
-npm install
-node server.js
-```
 
 ## Security
 
