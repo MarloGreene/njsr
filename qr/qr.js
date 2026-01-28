@@ -81,7 +81,13 @@ const historySection = document.getElementById('historySection');
 const historyGrid = document.getElementById('historyGrid');
 const clearHistoryBtn = document.getElementById('clearHistoryBtn');
 
-let history = JSON.parse(localStorage.getItem('qrHistory') || '[]');
+let history;
+try {
+    history = JSON.parse(localStorage.getItem('qrHistory') || '[]');
+} catch (e) {
+    console.error('Failed to parse qrHistory:', e);
+    history = [];
+}
 
 // Save to history
 function saveToHistory() {

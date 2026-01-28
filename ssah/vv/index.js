@@ -609,8 +609,12 @@ class ScriptureSearchHighlighter {
     loadSettings() {
         const saved = localStorage.getItem('scriptureSettings');
         if (saved) {
-            const data = JSON.parse(saved);
-            this.settings = { ...this.settings, ...data };
+            try {
+                const data = JSON.parse(saved);
+                this.settings = { ...this.settings, ...data };
+            } catch (e) {
+                console.error('Failed to parse scriptureSettings:', e);
+            }
         }
     }
 
@@ -621,9 +625,13 @@ class ScriptureSearchHighlighter {
     loadHighlights() {
         const saved = localStorage.getItem('scriptureHighlights');
         if (saved) {
-            const data = JSON.parse(saved);
-            this.highlights = data.highlights || {};
-            this.phraseHighlights = data.phraseHighlights || {};
+            try {
+                const data = JSON.parse(saved);
+                this.highlights = data.highlights || {};
+                this.phraseHighlights = data.phraseHighlights || {};
+            } catch (e) {
+                console.error('Failed to parse scriptureHighlights:', e);
+            }
         }
     }
 
@@ -633,6 +641,10 @@ class ScriptureSearchHighlighter {
             phraseHighlights: this.phraseHighlights
         };
         localStorage.setItem('scriptureHighlights', JSON.stringify(data));
+    }
+
+    escapeRegex(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 }
 

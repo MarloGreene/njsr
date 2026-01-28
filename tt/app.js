@@ -3,8 +3,20 @@ const STORAGE_ONGOING = 'ttracker.ongoing.v1';
 
 function $(id){return document.getElementById(id)}
 
-let events = JSON.parse(localStorage.getItem(STORAGE_EVENTS) || '[]');
-let ongoing = JSON.parse(localStorage.getItem(STORAGE_ONGOING) || '{}');
+let events;
+try {
+    events = JSON.parse(localStorage.getItem(STORAGE_EVENTS) || '[]');
+} catch (e) {
+    console.error('Failed to parse events:', e);
+    events = [];
+}
+let ongoing;
+try {
+    ongoing = JSON.parse(localStorage.getItem(STORAGE_ONGOING) || '{}');
+} catch (e) {
+    console.error('Failed to parse ongoing:', e);
+    ongoing = {};
+}
 
 const leftBtn = $('leftBtn');
 const rightBtn = $('rightBtn');

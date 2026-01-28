@@ -1,5 +1,11 @@
 const scriptures = {};
-const highlights = JSON.parse(localStorage.getItem('highlights')) || {};
+let highlights;
+try {
+    highlights = JSON.parse(localStorage.getItem('highlights')) || {};
+} catch (e) {
+    console.error('Failed to parse highlights:', e);
+    highlights = {};
+}
 const palette = ['#8B4513', '#A0522D', '#CD853F', '#D2691E', '#DEB887', '#F4A460', '#D2B48C'];
 let currentBook = localStorage.getItem('currentBook') || 'bom';
 let currentChapter = parseInt(localStorage.getItem('currentChapter')) || 1;

@@ -40,7 +40,7 @@
         if (preg_match('/\.(mp3|wav)$/i', $file)) {
           // Remove the file extension for the button label
           $label = pathinfo($file, PATHINFO_FILENAME);
-          echo "<button class='sound-button' data-file='$soundDir/$file'>$label</button>";
+          echo "<button class='sound-button' data-file='" . htmlspecialchars("$soundDir/$file", ENT_QUOTES, 'UTF-8') . "'>" . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . "</button>";
         }
       }
     ?>

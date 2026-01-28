@@ -8,7 +8,13 @@ const clearHistoryBtn = document.getElementById('clearHistoryBtn');
 
 // State
 let selectedSpread = 1;
-let history = JSON.parse(localStorage.getItem('tarotHistory') || '[]');
+let history;
+try {
+    history = JSON.parse(localStorage.getItem('tarotHistory') || '[]');
+} catch (e) {
+    console.error('Failed to parse tarotHistory:', e);
+    history = [];
+}
 
 // Tarot deck data
 const majorArcana = [

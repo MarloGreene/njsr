@@ -29,7 +29,13 @@ const rangedModifier = document.getElementById('rangedModifier');
 const initiativeRollBtn = document.getElementById('initiativeRollBtn');
 const initiativeModifier = document.getElementById('initiativeModifier');
 
-let rollHistory = JSON.parse(localStorage.getItem('diceHistory')) || [];
+let rollHistory;
+try {
+    rollHistory = JSON.parse(localStorage.getItem('diceHistory')) || [];
+} catch (e) {
+    console.error('Failed to parse diceHistory:', e);
+    rollHistory = [];
+}
 let towerDice = [];
 
 // Roll dice

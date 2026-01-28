@@ -10,7 +10,13 @@ const newFileBtn = document.getElementById('new-file');
 const saveAsBtn = document.getElementById('save-as');
 
 // Load files and current file
-let files = JSON.parse(localStorage.getItem('zenWriterFiles')) || {};
+let files;
+try {
+    files = JSON.parse(localStorage.getItem('zenWriterFiles')) || {};
+} catch (e) {
+    console.error('Failed to parse zenWriterFiles:', e);
+    files = {};
+}
 let currentFile = localStorage.getItem('zenWriterCurrentFile') || 'untitled.txt';
 
 if (!files[currentFile]) {

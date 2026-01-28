@@ -15,7 +15,13 @@ const colorWheelCanvas = document.getElementById('colorWheelCanvas');
 // State
 let currentPalette = [];
 let lockedColors = new Set();
-let savedPalettes = JSON.parse(localStorage.getItem('colorPalettes') || '[]');
+let savedPalettes;
+try {
+    savedPalettes = JSON.parse(localStorage.getItem('colorPalettes') || '[]');
+} catch (e) {
+    console.error('Failed to parse colorPalettes:', e);
+    savedPalettes = [];
+}
 
 // Generate random color
 function randomColor() {

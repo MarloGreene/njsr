@@ -10,7 +10,13 @@ let startTime = 0;
 let elapsedTime = 0;
 let timerInterval = null;
 let isRunning = false;
-let splits = JSON.parse(localStorage.getItem('stopwatchSplits')) || [];
+let splits;
+try {
+    splits = JSON.parse(localStorage.getItem('stopwatchSplits')) || [];
+} catch (e) {
+    console.error('Failed to parse stopwatchSplits:', e);
+    splits = [];
+}
 
 // Format time as HH:MM:SS.mm
 function formatTime(ms) {

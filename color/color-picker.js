@@ -22,7 +22,13 @@ let currentHue = 220;
 let currentSat = 100;
 let currentLight = 50;
 let currentOpacity = 100;
-let colorHistory = JSON.parse(localStorage.getItem('colorHistory')) || [];
+let colorHistory;
+try {
+    colorHistory = JSON.parse(localStorage.getItem('colorHistory')) || [];
+} catch (e) {
+    console.error('Failed to parse colorHistory:', e);
+    colorHistory = [];
+}
 
 // Draw saturation/lightness canvas
 function drawSaturationCanvas() {
