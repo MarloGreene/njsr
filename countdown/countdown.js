@@ -3,16 +3,28 @@ const eventNameInput = document.getElementById('eventName');
 const targetDateInput = document.getElementById('targetDate');
 const setBtn = document.getElementById('setBtn');
 const countdownsList = document.getElementById('countdownsList');
+const notifyBtn = document.getElementById('notifyBtn');
+const notifyIcon = document.getElementById('notifyIcon');
+const notifyText = document.getElementById('notifyText');
+const notifyStatus = document.getElementById('notifyStatus');
 
 // State
 let countdowns = [];
 let intervals = {};
+let notifiedCountdowns = new Set(); // Track which countdowns have already triggered notifications
+let notificationsEnabled = false;
 
 // Load saved countdowns
 function loadCountdowns() {
     try {
         const saved = localStorage.getItem('countdowns');
         countdowns = saved ? JSON.parse(saved) : [];
+
+        // Load notified countdowns
+        const notified = localStorage.getItem('notifiedCountdowns');
+        if (notified) {
+            notifiedCountdowns = new Set(JSON.parse(notified));
+        }
     } catch (e) {
         console.error('Failed to load countdowns:', e);
         countdowns = [];
@@ -22,6 +34,11 @@ function loadCountdowns() {
 // Save countdowns
 function saveCountdowns() {
     localStorage.setItem('countdowns', JSON.stringify(countdowns));
+}
+
+// Save notified countdowns
+function saveNotifiedCountdowns() {
+    localStorage.setItem('notifiedCountdowns', JSON.stringify([...notifiedCountdowns]));
 }
 
 // Generate unique ID
@@ -62,9 +79,54 @@ function deleteCountdown(id) {
         delete intervals[id];
     }
 
+    // Remove from notified set
+    notifiedCountdowns.delete(id);
+    saveNotifiedCountdowns();
+
     countdowns = countdowns.filter(c => c.id !== id);
     saveCountdowns();
     renderCountdowns();
+}
+
+// Check and send notification
+function checkNotification(countdown) {
+    if (!notificationsEnabled) return;
+    if (notifiedCountdowns.has(countdown.id)) return;
+
+    const targetDate = new Date(countdown.targetDate).getTime();
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    // Trigger notification when countdown reaches zero (within 1 second)
+    if (distance <= 0 && distance > -1000) {
+        sendNotification(countdown);
+        notifiedCountdowns.add(countdown.id);
+        saveNotifiedCountdowns();
+    }
+}
+
+// Send browser notification
+function sendNotification(countdown) {
+    if (!('Notification' in window)) return;
+    if (Notification.permission !== 'granted') return;
+
+    const notification = new Notification('Countdown Complete!', {
+        body: `"${countdown.name}" has reached its target time!`,
+        icon: '⏰',
+        tag: countdown.id,
+        requireInteraction: true
+    });
+
+    // Play a sound (if available)
+    try {
+        const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleQMIetXFnF4MAoq+rIMsAH+Zg2sZAIOIZlYqMmx4amNgdoaRjHxlRjEtQ1lqcmZUQjQ0RllodHdqWUg5NkJPV1xaT0M7OEJMUVVWUUpDQENITVFRTklGR0lMT09NSUZGR0pMTkxKR0dISUtLSkhGR0dJSkpJR0dHSElJSUhHR0dISUlIR0dHSElJSEdHR0hJSUhHR0dISElIR0dHSEhIR0dHR0hISEdHR0dISEhHR0dHSEhHR0dHR0hIR0dHR0dIR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0c=');
+        audio.play().catch(() => {}); // Ignore errors
+    } catch (e) {}
+
+    notification.onclick = () => {
+        window.focus();
+        notification.close();
+    };
 }
 
 // Update single countdown display
@@ -109,6 +171,9 @@ function updateCountdownDisplay(id) {
         element.classList.remove('counting-up');
         completeEl.classList.remove('show');
     }
+
+    // Check for notification
+    checkNotification(countdown);
 }
 
 // Render all countdowns
@@ -239,6 +304,11 @@ function editCountdown(id) {
 
         countdown.name = newName;
         countdown.targetDate = newDate;
+
+        // Reset notification for this countdown if date changed
+        notifiedCountdowns.delete(id);
+        saveNotifiedCountdowns();
+
         saveCountdowns();
         renderCountdowns();
     });
@@ -260,8 +330,74 @@ function editCountdown(id) {
     });
 }
 
+// Notification functions
+function initNotifications() {
+    if (!('Notification' in window)) {
+        notifyBtn.style.display = 'none';
+        notifyStatus.textContent = 'Notifications not supported';
+        return;
+    }
+
+    updateNotificationUI();
+}
+
+function updateNotificationUI() {
+    const permission = Notification.permission;
+
+    if (permission === 'granted') {
+        notificationsEnabled = true;
+        notifyBtn.classList.add('enabled');
+        notifyIcon.textContent = '🔔';
+        notifyText.textContent = 'Notifications On';
+        notifyStatus.textContent = 'You\'ll be notified when countdowns complete';
+    } else if (permission === 'denied') {
+        notificationsEnabled = false;
+        notifyBtn.classList.remove('enabled');
+        notifyIcon.textContent = '🔕';
+        notifyText.textContent = 'Notifications Blocked';
+        notifyStatus.textContent = 'Enable in browser settings';
+    } else {
+        notificationsEnabled = false;
+        notifyBtn.classList.remove('enabled');
+        notifyIcon.textContent = '🔔';
+        notifyText.textContent = 'Enable Notifications';
+        notifyStatus.textContent = '';
+    }
+}
+
+function toggleNotifications() {
+    if (!('Notification' in window)) {
+        alert('Your browser does not support notifications.');
+        return;
+    }
+
+    if (Notification.permission === 'granted') {
+        // Can't revoke, but we can toggle our internal state
+        notificationsEnabled = !notificationsEnabled;
+        if (notificationsEnabled) {
+            notifyBtn.classList.add('enabled');
+            notifyIcon.textContent = '🔔';
+            notifyText.textContent = 'Notifications On';
+            notifyStatus.textContent = 'You\'ll be notified when countdowns complete';
+        } else {
+            notifyBtn.classList.remove('enabled');
+            notifyIcon.textContent = '🔕';
+            notifyText.textContent = 'Notifications Off';
+            notifyStatus.textContent = 'Click to re-enable';
+        }
+    } else if (Notification.permission === 'denied') {
+        alert('Notifications are blocked. Please enable them in your browser settings.');
+    } else {
+        // Request permission
+        Notification.requestPermission().then(permission => {
+            updateNotificationUI();
+        });
+    }
+}
+
 // Event listeners
 setBtn.addEventListener('click', addCountdown);
+notifyBtn.addEventListener('click', toggleNotifications);
 
 eventNameInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') addCountdown();
@@ -273,6 +409,7 @@ targetDateInput.addEventListener('keypress', (e) => {
 
 // Initialize
 loadCountdowns();
+initNotifications();
 
 // Migrate old single countdown if exists
 const oldEvent = localStorage.getItem('countdownEvent');

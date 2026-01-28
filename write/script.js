@@ -9,6 +9,7 @@ let viewMode = 'sticky'; // 'list', 'pile', 'sticky', or 'compact'
 let searchQuery = '';
 let isMinimized = false;
 let isViewingTrash = false;
+let wordGoal = 0;
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,11 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
     loadViewMode();
     loadLocationPreference();
     loadMinimizeState();
+    loadWordGoal();
     renderEntries();
     updateTrashCount();
+    updateWordGoalProgress();
     focusInput();
     setupColorPicker();
     setupKeyboardShortcuts();
+    setupWordGoal();
 });
 
 // Focus input on load
@@ -204,7 +208,8 @@ function saveEntry() {
     entries.unshift(entry); // Add to beginning
     saveToLocalStorage();
     renderEntries();
-    
+    updateWordGoalProgress();
+
     // Clear input and reset
     input.value = '';
     resetColorPicker();
@@ -1067,3 +1072,96 @@ window.addEventListener('keydown', (e) => {
         closeModal();
     }
 });
+
+// Word Goal Functions
+function loadWordGoal() {
+    const saved = localStorage.getItem('wordGoal');
+    if (saved) {
+        wordGoal = parseInt(saved) || 0;
+        const input = document.getElementById('wordGoalInput');
+        if (input && wordGoal > 0) {
+            input.value = wordGoal;
+        }
+    }
+}
+
+function setupWordGoal() {
+    const setGoalBtn = document.getElementById('setGoalBtn');
+    const wordGoalInput = document.getElementById('wordGoalInput');
+
+    if (setGoalBtn) {
+        setGoalBtn.addEventListener('click', setWordGoal);
+    }
+
+    if (wordGoalInput) {
+        wordGoalInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') setWordGoal();
+        });
+    }
+}
+
+function setWordGoal() {
+    const input = document.getElementById('wordGoalInput');
+    const value = parseInt(input.value) || 0;
+
+    if (value < 0 || value > 100000) {
+        alert('Please enter a goal between 0 and 100,000 words.');
+        return;
+    }
+
+    wordGoal = value;
+    localStorage.setItem('wordGoal', wordGoal);
+    updateWordGoalProgress();
+}
+
+function getTodaysWordCount() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    let totalWords = 0;
+
+    entries.forEach(entry => {
+        const entryDate = new Date(entry.timestamp);
+        entryDate.setHours(0, 0, 0, 0);
+
+        if (entryDate.getTime() === today.getTime()) {
+            // Count words in this entry
+            const words = entry.text.trim().split(/\s+/);
+            totalWords += words.length === 1 && words[0] === '' ? 0 : words.length;
+        }
+    });
+
+    return totalWords;
+}
+
+function updateWordGoalProgress() {
+    const progressSection = document.getElementById('goalProgress');
+    const progressFill = document.getElementById('progressFill');
+    const currentWordsEl = document.getElementById('currentWords');
+    const goalWordsEl = document.getElementById('goalWords');
+    const progressPercentEl = document.getElementById('progressPercent');
+
+    if (!progressSection) return;
+
+    if (wordGoal <= 0) {
+        progressSection.style.display = 'none';
+        return;
+    }
+
+    progressSection.style.display = 'block';
+
+    const currentWords = getTodaysWordCount();
+    const percent = Math.min(100, Math.round((currentWords / wordGoal) * 100));
+
+    currentWordsEl.textContent = currentWords.toLocaleString();
+    goalWordsEl.textContent = wordGoal.toLocaleString();
+    progressPercentEl.textContent = percent;
+
+    progressFill.style.width = percent + '%';
+
+    if (percent >= 100) {
+        progressFill.classList.add('complete');
+    } else {
+        progressFill.classList.remove('complete');
+    }
+}

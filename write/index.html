@@ -41,9 +41,26 @@
                 </div>
             </div>
 
+            <div class="word-goal-section">
+                <div class="word-goal-header">
+                    <label for="wordGoalInput">Daily Word Goal:</label>
+                    <input type="number" id="wordGoalInput" min="0" max="100000" placeholder="500">
+                    <button id="setGoalBtn" class="set-goal-btn">Set</button>
+                </div>
+                <div class="word-goal-progress" id="goalProgress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span id="currentWords">0</span> / <span id="goalWords">0</span> words
+                        (<span id="progressPercent">0</span>%)
+                    </div>
+                </div>
+            </div>
+
             <div class="input-section">
-                <textarea 
-                    id="entryInput" 
+                <textarea
+                    id="entryInput"
                     placeholder="Start typing..."
                     rows="3"
                     maxlength="50000"

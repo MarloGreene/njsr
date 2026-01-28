@@ -148,12 +148,73 @@ body {
     color: #666;
 }
 
+/* Readability Section */
+.readability-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e0e0e0;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.readability-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.readability-box {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.readability-box.small {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.readability-score {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    font-family: 'Courier New', monospace;
+}
+
+.readability-label {
+    font-size: 0.9rem;
+    opacity: 0.95;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.readability-desc {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    font-style: italic;
+}
+
 @media (max-width: 600px) {
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .stat-value {
+        font-size: 2rem;
+    }
+
+    .readability-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .readability-score {
         font-size: 2rem;
     }
 }

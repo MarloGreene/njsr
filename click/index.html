@@ -31,6 +31,21 @@
                 <button class="preset-btn" data-bpm="140">Dubstep (140)</button>
                 <button class="preset-btn" data-bpm="180">Presto (180)</button>
             </div>
+
+            <div class="time-signatures">
+                <span class="time-sig-label">Time:</span>
+                <button class="time-sig-btn active" data-beats="4" data-subdivision="4">4/4</button>
+                <button class="time-sig-btn" data-beats="3" data-subdivision="4">3/4</button>
+                <button class="time-sig-btn" data-beats="6" data-subdivision="8">6/8</button>
+                <button class="time-sig-btn" data-beats="2" data-subdivision="4">2/4</button>
+            </div>
+
+            <div class="beat-indicator" id="beatIndicator">
+                <span class="beat-dot active" data-beat="1">1</span>
+                <span class="beat-dot" data-beat="2">2</span>
+                <span class="beat-dot" data-beat="3">3</span>
+                <span class="beat-dot" data-beat="4">4</span>
+            </div>
             
             <div class="controls">
                 <button class="btn btn-primary" id="startStopBtn">Start</button>

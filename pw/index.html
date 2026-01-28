@@ -13,6 +13,60 @@
     <div id="strength">Strength: </div>
     <div id="time">Estimated time to crack: </div>
 
+    <section class="info-section">
+        <h2>How does this work?</h2>
+
+        <details>
+            <summary>How is crack time calculated?</summary>
+            <p>We calculate the total number of possible passwords by raising the <strong>character set size</strong> to the power of your <strong>password length</strong>.</p>
+            <ul>
+                <li>Lowercase letters (a-z): 26 characters</li>
+                <li>Uppercase letters (A-Z): +26 characters</li>
+                <li>Numbers (0-9): +10 characters</li>
+                <li>Symbols (!@#$...): +32 characters</li>
+            </ul>
+            <p>For example, an 8-character password using all types has 94^8 = <strong>6 quadrillion</strong> combinations.</p>
+            <p>We then divide by <strong>10 billion guesses per second</strong> (a realistic estimate for modern GPU-based cracking) to get the time estimate.</p>
+        </details>
+
+        <details>
+            <summary>Is my password being stored or transmitted?</summary>
+            <p><strong>No.</strong> Everything happens right here in your browser using JavaScript. Your password never leaves your device.</p>
+            <p>Don't take our word for it — you can verify this yourself:</p>
+            <ul>
+                <li>Open your browser's Developer Tools (F12)</li>
+                <li>Go to the <strong>Network</strong> tab</li>
+                <li>Type a password and watch — no requests are made</li>
+                <li>Or view the <a href="script.js">source code</a> directly</li>
+            </ul>
+            <p>This page works completely offline after loading.</p>
+        </details>
+
+        <details>
+            <summary>Tips for strong passwords</summary>
+            <ul>
+                <li><strong>Length matters most</strong> — 16+ characters is ideal</li>
+                <li><strong>Mix character types</strong> — uppercase, lowercase, numbers, symbols</li>
+                <li><strong>Avoid common patterns</strong> — "Password123!" is easily guessed</li>
+                <li><strong>Use a passphrase</strong> — "correct horse battery staple" is strong and memorable</li>
+                <li><strong>Never reuse passwords</strong> — use a password manager</li>
+                <li><strong>Enable 2FA</strong> — adds protection even if password is compromised</li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Limitations of this tool</summary>
+            <p>This calculator assumes a <strong>brute-force attack</strong> against a random password. Real-world cracking is often faster because:</p>
+            <ul>
+                <li>Attackers use <strong>dictionary attacks</strong> with common passwords</li>
+                <li>They apply <strong>rules</strong> (e.g., replace 'a' with '@')</li>
+                <li>Leaked password databases help predict patterns</li>
+                <li>Weak hashing algorithms make cracking easier</li>
+            </ul>
+            <p>Use this as a general guide, not a guarantee.</p>
+        </details>
+    </section>
+
     <footer style="margin-top:2rem;padding:1rem;text-align:center;font-size:0.85rem;color:#666;">
         <p style="margin:0 0 0.5rem;"><strong>Password Strength Checker</strong> &middot; /pw/</p>
         <p style="margin:0 0 0.5rem;">Analyze password security. All processing done locally - nothing transmitted.</p>

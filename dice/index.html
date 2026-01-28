@@ -536,6 +536,57 @@
         .rolling {
             animation: roll 0.5s ease-in-out;
         }
+
+        /* Dice notation input */
+        .notation-input-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .notation-input {
+            flex: 1;
+            padding: 12px 16px;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            transition: border-color 0.2s;
+        }
+
+        .notation-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .notation-roll-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .notation-roll-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .notation-help {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .notation-help code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin: 0 2px;
+            font-family: 'Courier New', monospace;
+        }
     </style>
 </head>
 <body>
@@ -548,6 +599,18 @@
         <div class="dice-roller">
             <!-- Left Column -->
             <div class="left-column">
+                <!-- Dice Notation Parser -->
+                <div class="section">
+                    <h2 class="section-title">📝 Dice Notation</h2>
+                    <div class="notation-input-container">
+                        <input type="text" id="notationInput" class="notation-input" placeholder="e.g., 2d6+3, 4d6kh3, 1d20-2">
+                        <button class="notation-roll-btn" id="notationRollBtn">Roll</button>
+                    </div>
+                    <div class="notation-help">
+                        <span>Examples: <code>2d6</code> <code>1d20+5</code> <code>4d6kh3</code> <code>2d10kl1</code></span>
+                    </div>
+                </div>
+
                 <!-- Dice Selection -->
                 <div class="section">
                     <h2 class="section-title">🎯 Dice Selection</h2>
@@ -1051,6 +1114,215 @@ let resultsHistory = JSON.parse(localStorage.getItem('resultsHistory')) || [];
         initiativeDown.addEventListener('click', () => {
             initiativeModifier--;
             updateInitiativeButton();
+        });
+
+        // Dice notation parser
+        const notationInput = document.getElementById('notationInput');
+        const notationRollBtn = document.getElementById('notationRollBtn');
+
+        // Parse dice notation like "2d6+3", "4d6kh3", "1d20-2"
+        function parseDiceNotation(notation) {
+            notation = notation.toLowerCase().trim();
+            if (!notation) return null;
+
+            // Match patterns: XdY[kh/kl Z][+/-M]
+            // Examples: 2d6, 1d20+5, 4d6kh3, 2d10kl1+2
+            const regex = /^(\d*)d(\d+)(k[hl](\d+))?([+-]\d+)?$/;
+            const match = notation.match(regex);
+
+            if (!match) return null;
+
+            const count = parseInt(match[1]) || 1;
+            const sides = parseInt(match[2]);
+            const keepType = match[3] ? match[3].substring(0, 2) : null; // 'kh' or 'kl'
+            const keepCount = match[4] ? parseInt(match[4]) : null;
+            const modifier = match[5] ? parseInt(match[5]) : 0;
+
+            // Validate
+            if (count < 1 || count > 100) return null;
+            if (sides < 2 || sides > 1000) return null;
+            if (keepCount && (keepCount < 1 || keepCount > count)) return null;
+
+            return { count, sides, keepType, keepCount, modifier };
+        }
+
+        // Roll dice from notation
+        function rollFromNotation() {
+            const notation = notationInput.value.trim();
+            const parsed = parseDiceNotation(notation);
+
+            if (!parsed) {
+                alert('Invalid dice notation. Try formats like: 2d6, 1d20+5, 4d6kh3');
+                return;
+            }
+
+            const { count, sides, keepType, keepCount, modifier } = parsed;
+
+            // Roll all dice
+            let rolls = [];
+            for (let i = 0; i < count; i++) {
+                rolls.push({
+                    sides,
+                    result: rollDie(sides),
+                    kept: true
+                });
+            }
+
+            // Handle keep highest/lowest
+            if (keepType && keepCount) {
+                // Sort by result
+                const sorted = [...rolls].sort((a, b) =>
+                    keepType === 'kh' ? b.result - a.result : a.result - b.result
+                );
+
+                // Mark which ones to keep
+                rolls.forEach(r => r.kept = false);
+                for (let i = 0; i < keepCount; i++) {
+                    sorted[i].kept = true;
+                }
+            }
+
+            // Calculate total (only kept dice)
+            const keptRolls = rolls.filter(r => r.kept);
+            const diceTotal = keptRolls.reduce((sum, r) => sum + r.result, 0);
+            const total = diceTotal + modifier;
+
+            // Build description
+            let desc = `${count}d${sides}`;
+            if (keepType && keepCount) {
+                desc += `${keepType}${keepCount}`;
+            }
+            if (modifier !== 0) {
+                desc += modifier >= 0 ? `+${modifier}` : modifier;
+            }
+
+            // Show result with all dice (marking dropped ones)
+            const rollResults = rolls.map(r => ({
+                sides: r.sides,
+                result: r.result,
+                dropped: !r.kept
+            }));
+
+            showNotationResult(rollResults, modifier, desc, `Notation: ${notation}`);
+            addToHistory(desc, total);
+        }
+
+        // Show notation result (handles dropped dice)
+        function showNotationResult(rollResults, modifier, description, label) {
+            const keptRolls = rollResults.filter(r => !r.dropped);
+            const diceTotal = keptRolls.reduce((sum, r) => sum + r.result, 0);
+            const finalTotal = diceTotal + modifier;
+
+            resultsHistory.unshift({
+                label,
+                rollResults,
+                modifier,
+                description,
+                total: finalTotal,
+                timestamp: Date.now(),
+                hasDropped: rollResults.some(r => r.dropped)
+            });
+
+            if (resultsHistory.length > 8) {
+                resultsHistory = resultsHistory.slice(0, 8);
+            }
+
+            localStorage.setItem('resultsHistory', JSON.stringify(resultsHistory));
+            renderResultsWithDropped();
+        }
+
+        // Enhanced render that shows dropped dice
+        function renderResultsWithDropped() {
+            if (resultsHistory.length === 0) {
+                results.classList.add('empty');
+                results.innerHTML = '<div>Roll some dice to see results here</div>';
+                return;
+            }
+
+            results.classList.remove('empty');
+            results.innerHTML = '';
+
+            const groupedResults = {};
+            resultsHistory.forEach(result => {
+                const date = new Date(result.timestamp);
+                const dateKey = date.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                if (!groupedResults[dateKey]) {
+                    groupedResults[dateKey] = [];
+                }
+                groupedResults[dateKey].push(result);
+            });
+
+            Object.keys(groupedResults).forEach(dateKey => {
+                const dateHeader = document.createElement('div');
+                dateHeader.className = 'date-header';
+                dateHeader.textContent = dateKey;
+                results.appendChild(dateHeader);
+
+                groupedResults[dateKey].forEach(result => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'result-item';
+
+                    let headerHtml = '<div class="result-header">';
+                    headerHtml += `<span class="result-label">${result.label}</span>`;
+                    headerHtml += '<span class="result-total">';
+
+                    if (result.modifier !== 0) {
+                        const modSign = result.modifier >= 0 ? '+' : '';
+                        const keptRolls = result.rollResults.filter(r => !r.dropped);
+                        const diceSum = keptRolls.reduce((sum, r) => sum + r.result, 0);
+                        headerHtml += `${diceSum}${modSign}${result.modifier}=${result.total}`;
+                    } else {
+                        headerHtml += result.total;
+                    }
+                    headerHtml += '</span></div>';
+
+                    let diceHtml = '<div class="result-dice">';
+                    result.rollResults.forEach(({ sides, result: dieResult, dropped }) => {
+                        const droppedStyle = dropped ? 'opacity: 0.4; text-decoration: line-through;' : '';
+                        diceHtml += `
+                            <div class="result-die" style="${droppedStyle}">
+                                <div class="die d${sides}">
+                                    <span class="die-text">d${sides}</span>
+                                </div>
+                                <span class="result-value">${dieResult}</span>
+                            </div>
+                        `;
+                    });
+                    diceHtml += '</div>';
+
+                    resultItem.innerHTML = headerHtml + diceHtml;
+
+                    const timestamp = new Date(result.timestamp);
+                    const timeString = timestamp.toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: true
+                    });
+
+                    const timestampEl = document.createElement('div');
+                    timestampEl.className = 'result-timestamp';
+                    timestampEl.textContent = timeString;
+                    resultItem.appendChild(timestampEl);
+
+                    results.appendChild(resultItem);
+                });
+            });
+        }
+
+        // Override renderResults to use enhanced version
+        renderResults = renderResultsWithDropped;
+
+        // Event listeners for notation
+        notationRollBtn.addEventListener('click', rollFromNotation);
+        notationInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') rollFromNotation();
         });
 
         // Initialize

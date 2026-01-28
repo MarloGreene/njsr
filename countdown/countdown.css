@@ -283,6 +283,52 @@ body {
     50% { transform: scale(1.1); }
 }
 
+/* Notification section */
+.notification-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-notify {
+    width: auto;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+    background: #f5f5f5;
+    color: #555;
+    border: 2px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0;
+}
+
+.btn-notify:hover {
+    background: #e8e8e8;
+    border-color: #ccc;
+    transform: translateY(-1px);
+}
+
+.btn-notify.enabled {
+    background: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+}
+
+.btn-notify.enabled:hover {
+    background: #43A047;
+    border-color: #43A047;
+}
+
+.notify-status {
+    font-size: 0.85rem;
+    color: #888;
+}
+
 @media (max-width: 600px) {
     .time-blocks {
         grid-template-columns: repeat(4, 1fr);
@@ -307,5 +353,10 @@ body {
 
     .edit-form .input {
         font-size: 0.9rem;
+    }
+
+    .notification-section {
+        flex-direction: column;
+        align-items: stretch;
     }
 }
