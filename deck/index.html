@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Deck</title>
+    <link rel="icon" href="/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a472a 0%, #0d2818 100%);
+            min-height: 100vh;
+            padding: 1rem;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Control buttons */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4a90d9 0%, #357abd 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #5cb85c 0%, #449d44 100%);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f0ad4e 0%, #ec971f 100%);
+            color: #333;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #d9534f 0%, #c9302c 100%);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #5bc0de 0%, #31b0d5 100%);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Game area */
+        .game-area {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .game-area {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Player hands */
+        .player-area {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            min-height: 200px;
+        }
+
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .player-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .card-count {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .hand {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            min-height: 120px;
+            align-content: flex-start;
+        }
+
+        /* Center deck area */
+        .deck-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .deck-stack {
+            position: relative;
+            width: 80px;
+            height: 112px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .deck-stack:hover {
+            transform: scale(1.05);
+        }
+
+        .deck-card-back {
+            position: absolute;
+            width: 80px;
+            height: 112px;
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            border-radius: 8px;
+            border: 3px solid #fff;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+        }
+
+        .deck-card-back::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 5px,
+                rgba(255,255,255,0.05) 5px,
+                rgba(255,255,255,0.05) 10px
+            );
+        }
+
+        .deck-card-back:nth-child(1) { top: 0; left: 0; }
+        .deck-card-back:nth-child(2) { top: 2px; left: 2px; }
+        .deck-card-back:nth-child(3) { top: 4px; left: 4px; }
+
+        .deck-label {
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .deck-empty {
+            width: 80px;
+            height: 112px;
+            border: 3px dashed rgba(255,255,255,0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.8rem;
+        }
+
+        /* Discard pile */
+        .discard-area {
+            margin-top: 1rem;
+        }
+
+        .discard-pile {
+            min-height: 112px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Individual cards */
+        .card {
+            width: 70px;
+            height: 100px;
+            background: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%);
+            border-radius: 8px;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            padding: 4px;
+            font-family: 'Georgia', serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            user-select: none;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 4px 8px 16px rgba(0,0,0,0.4);
+            z-index: 10;
+        }
+
+        .card.red {
+            color: #c62828;
+        }
+
+        .card.black {
+            color: #212121;
+        }
+
+        .card-corner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1;
+        }
+
+        .card-corner.top {
+            align-self: flex-start;
+        }
+
+        .card-corner.bottom {
+            align-self: flex-end;
+            transform: rotate(180deg);
+            margin-top: auto;
+        }
+
+        .card-rank {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .card-suit {
+            font-size: 0.9rem;
+        }
+
+        .card-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+        }
+
+        /* Drawn card display */
+        .drawn-display {
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .drawn-display h2 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .drawn-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            min-height: 100px;
+            align-items: center;
+        }
+
+        .drawn-cards .card {
+            width: 80px;
+            height: 115px;
+        }
+
+        .drawn-cards .card-rank {
+            font-size: 1.2rem;
+        }
+
+        .drawn-cards .card-suit {
+            font-size: 1.1rem;
+        }
+
+        .drawn-cards .card-center {
+            font-size: 2.5rem;
+        }
+
+        .empty-message {
+            color: rgba(255,255,255,0.5);
+            font-style: italic;
+        }
+
+        /* Deal presets */
+        .deal-presets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            padding: 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .deal-presets-title {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        /* Card animation */
+        @keyframes dealCard {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) rotate(-10deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotate(0);
+            }
+        }
+
+        .card.dealt {
+            animation: dealCard 0.3s ease-out;
+        }
+
+        /* Stats */
+        .stats {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats span {
+            margin: 0 1rem;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        footer strong {
+            color: rgba(255,255,255,0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🃏 Card Deck</h1>
+
+        <div class="stats" id="stats">
+            <span>Deck: <strong id="deckCount">52</strong></span>
+            <span>Drawn: <strong id="drawnCount">0</strong></span>
+            <span>Discarded: <strong id="discardCount">0</strong></span>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-success" id="shuffleBtn">🔀 Shuffle</button>
+            <button class="btn btn-primary" id="drawBtn">Draw 1</button>
+            <button class="btn btn-primary" id="draw5Btn">Draw 5</button>
+            <button class="btn btn-warning" id="cutBtn">✂️ Cut</button>
+            <button class="btn btn-info" id="randomBtn">🎲 Random</button>
+            <button class="btn btn-danger" id="resetBtn">↺ Reset</button>
+        </div>
+
+        <div class="deal-presets">
+            <div class="deal-presets-title">Quick Deal</div>
+            <button class="btn btn-primary" id="pokerBtn">Poker (5)</button>
+            <button class="btn btn-primary" id="blackjackBtn">Blackjack (2+2)</button>
+            <button class="btn btn-primary" id="texasBtn">Texas Hold'em</button>
+            <button class="btn btn-primary" id="warBtn">War (26+26)</button>
+        </div>
+
+        <div class="drawn-display">
+            <h2>Drawn Cards</h2>
+            <div class="drawn-cards" id="drawnCards">
+                <span class="empty-message">Click the deck or use buttons to draw cards</span>
+            </div>
+            <div style="margin-top: 1rem;">
+                <button class="btn btn-warning" id="discardDrawnBtn">Discard All</button>
+                <button class="btn btn-info" id="toLeftBtn">→ Left Hand</button>
+                <button class="btn btn-info" id="toRightBtn">→ Right Hand</button>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <div class="player-area">
+                <div class="player-header">
+                    <span class="player-name">👤 Left Hand</span>
+                    <span class="card-count" id="leftCount">0 cards</span>
+                </div>
+                <div class="hand" id="leftHand"></div>
+                <button class="btn btn-warning" style="margin-top: 1rem;" id="discardLeftBtn">Discard Hand</button>
+            </div>
+
+            <div class="deck-area">
+                <div class="deck-label">Deck</div>
+                <div class="deck-stack" id="deckStack" title="Click to draw">
+                    <div class="deck-card-back"></div>
+                    <div class="deck-card-back"></div>
+                    <div class="deck-card-back"></div>
+                </div>
+
+                <div class="discard-area">
+                    <div class="deck-label">Discard</div>
+                    <div class="discard-pile" id="discardPile">
+                        <div class="deck-empty">Empty</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="player-area">
+                <div class="player-header">
+                    <span class="player-name">👤 Right Hand</span>
+                    <span class="card-count" id="rightCount">0 cards</span>
+                </div>
+                <div class="hand" id="rightHand"></div>
+                <button class="btn btn-warning" style="margin-top: 1rem;" id="discardRightBtn">Discard Hand</button>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>Card Deck</strong> · /deck/</p>
+            <p style="margin-top: 0.5rem;">Standard 52-card deck simulator. Click cards to select, use buttons to deal.</p>
+            <p style="margin-top: 0.5rem; opacity: 0.7;">MIT License © njsr.org 2002-2026</p>
+        </footer>
+    </div>
+
+    <script>
+        // Card data
+        const SUITS = ['♠', '♥', '♦', '♣'];
+        const SUIT_NAMES = { '♠': 'spades', '♥': 'hearts', '♦': 'diamonds', '♣': 'clubs' };
+        const RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+        const RED_SUITS = ['♥', '♦'];
+
+        // State
+        let deck = [];
+        let drawnCards = [];
+        let discardPile = [];
+        let leftHand = [];
+        let rightHand = [];
+
+        // DOM elements
+        const deckStack = document.getElementById('deckStack');
+        const drawnCardsEl = document.getElementById('drawnCards');
+        const discardPileEl = document.getElementById('discardPile');
+        const leftHandEl = document.getElementById('leftHand');
+        const rightHandEl = document.getElementById('rightHand');
+        const deckCountEl = document.getElementById('deckCount');
+        const drawnCountEl = document.getElementById('drawnCount');
+        const discardCountEl = document.getElementById('discardCount');
+        const leftCountEl = document.getElementById('leftCount');
+        const rightCountEl = document.getElementById('rightCount');
+
+        // Initialize deck
+        function createDeck() {
+            const newDeck = [];
+            for (const suit of SUITS) {
+                for (const rank of RANKS) {
+                    newDeck.push({ suit, rank, id: `${rank}${suit}` });
+                }
+            }
+            return newDeck;
+        }
+
+        // Fisher-Yates shuffle
+        function shuffle(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Create card element
+        function createCardElement(card, animated = false) {
+            const isRed = RED_SUITS.includes(card.suit);
+            const el = document.createElement('div');
+            el.className = `card ${isRed ? 'red' : 'black'}${animated ? ' dealt' : ''}`;
+            el.dataset.id = card.id;
+            el.innerHTML = `
+                <div class="card-corner top">
+                    <span class="card-rank">${card.rank}</span>
+                    <span class="card-suit">${card.suit}</span>
+                </div>
+                <span class="card-center">${card.suit}</span>
+                <div class="card-corner bottom">
+                    <span class="card-rank">${card.rank}</span>
+                    <span class="card-suit">${card.suit}</span>
+                </div>
+            `;
+            return el;
+        }
+
+        // Update all displays
+        function updateDisplay() {
+            // Stats
+            deckCountEl.textContent = deck.length;
+            drawnCountEl.textContent = drawnCards.length;
+            discardCountEl.textContent = discardPile.length;
+            leftCountEl.textContent = `${leftHand.length} card${leftHand.length !== 1 ? 's' : ''}`;
+            rightCountEl.textContent = `${rightHand.length} card${rightHand.length !== 1 ? 's' : ''}`;
+
+            // Deck stack
+            if (deck.length === 0) {
+                deckStack.innerHTML = '<div class="deck-empty">Empty</div>';
+            } else {
+                const layers = Math.min(3, Math.ceil(deck.length / 17));
+                deckStack.innerHTML = Array(layers).fill('<div class="deck-card-back"></div>').join('');
+            }
+
+            // Drawn cards
+            if (drawnCards.length === 0) {
+                drawnCardsEl.innerHTML = '<span class="empty-message">Click the deck or use buttons to draw cards</span>';
+            } else {
+                drawnCardsEl.innerHTML = '';
+                drawnCards.forEach((card, i) => {
+                    const el = createCardElement(card, true);
+                    el.style.animationDelay = `${i * 0.1}s`;
+                    drawnCardsEl.appendChild(el);
+                });
+            }
+
+            // Discard pile
+            if (discardPile.length === 0) {
+                discardPileEl.innerHTML = '<div class="deck-empty">Empty</div>';
+            } else {
+                discardPileEl.innerHTML = '';
+                const topCard = discardPile[discardPile.length - 1];
+                discardPileEl.appendChild(createCardElement(topCard));
+            }
+
+            // Left hand
+            leftHandEl.innerHTML = '';
+            leftHand.forEach(card => {
+                leftHandEl.appendChild(createCardElement(card));
+            });
+
+            // Right hand
+            rightHandEl.innerHTML = '';
+            rightHand.forEach(card => {
+                rightHandEl.appendChild(createCardElement(card));
+            });
+
+            // Update button states
+            document.getElementById('drawBtn').disabled = deck.length < 1;
+            document.getElementById('draw5Btn').disabled = deck.length < 5;
+            document.getElementById('cutBtn').disabled = deck.length < 2;
+            document.getElementById('discardDrawnBtn').disabled = drawnCards.length === 0;
+            document.getElementById('toLeftBtn').disabled = drawnCards.length === 0;
+            document.getElementById('toRightBtn').disabled = drawnCards.length === 0;
+            document.getElementById('discardLeftBtn').disabled = leftHand.length === 0;
+            document.getElementById('discardRightBtn').disabled = rightHand.length === 0;
+        }
+
+        // Draw cards from deck
+        function draw(count = 1) {
+            const drawn = deck.splice(0, Math.min(count, deck.length));
+            drawnCards.push(...drawn);
+            updateDisplay();
+            return drawn;
+        }
+
+        // Draw random card (not from top)
+        function drawRandom() {
+            if (deck.length === 0) return null;
+            const index = Math.floor(Math.random() * deck.length);
+            const [card] = deck.splice(index, 1);
+            drawnCards.push(card);
+            updateDisplay();
+            return card;
+        }
+
+        // Cut the deck
+        function cut() {
+            if (deck.length < 2) return;
+            const cutPoint = Math.floor(Math.random() * (deck.length - 1)) + 1;
+            deck = [...deck.slice(cutPoint), ...deck.slice(0, cutPoint)];
+            updateDisplay();
+        }
+
+        // Discard cards
+        function discardDrawn() {
+            discardPile.push(...drawnCards);
+            drawnCards = [];
+            updateDisplay();
+        }
+
+        function discardHand(hand, handArray) {
+            discardPile.push(...handArray);
+            return [];
+        }
+
+        // Move drawn to hand
+        function moveToHand(target) {
+            if (target === 'left') {
+                leftHand.push(...drawnCards);
+            } else {
+                rightHand.push(...drawnCards);
+            }
+            drawnCards = [];
+            updateDisplay();
+        }
+
+        // Reset everything
+        function reset() {
+            deck = shuffle(createDeck());
+            drawnCards = [];
+            discardPile = [];
+            leftHand = [];
+            rightHand = [];
+            updateDisplay();
+        }
+
+        // Deal presets
+        function dealPoker() {
+            reset();
+            drawnCards = deck.splice(0, 5);
+            updateDisplay();
+        }
+
+        function dealBlackjack() {
+            reset();
+            leftHand = [deck.shift(), deck.shift()];
+            rightHand = [deck.shift(), deck.shift()];
+            updateDisplay();
+        }
+
+        function dealTexasHoldem() {
+            reset();
+            // 2 cards each
+            leftHand = [deck.shift(), deck.shift()];
+            rightHand = [deck.shift(), deck.shift()];
+            // Burn and flop
+            discardPile.push(deck.shift());
+            drawnCards = [deck.shift(), deck.shift(), deck.shift()];
+            updateDisplay();
+        }
+
+        function dealWar() {
+            reset();
+            leftHand = deck.splice(0, 26);
+            rightHand = deck.splice(0, 26);
+            updateDisplay();
+        }
+
+        // Event listeners
+        document.getElementById('shuffleBtn').addEventListener('click', () => {
+            deck = shuffle(deck);
+            updateDisplay();
+        });
+
+        document.getElementById('drawBtn').addEventListener('click', () => draw(1));
+        document.getElementById('draw5Btn').addEventListener('click', () => draw(5));
+        document.getElementById('cutBtn').addEventListener('click', cut);
+        document.getElementById('randomBtn').addEventListener('click', drawRandom);
+        document.getElementById('resetBtn').addEventListener('click', reset);
+
+        document.getElementById('discardDrawnBtn').addEventListener('click', discardDrawn);
+        document.getElementById('toLeftBtn').addEventListener('click', () => moveToHand('left'));
+        document.getElementById('toRightBtn').addEventListener('click', () => moveToHand('right'));
+
+        document.getElementById('discardLeftBtn').addEventListener('click', () => {
+            leftHand = discardHand('left', leftHand);
+            updateDisplay();
+        });
+        document.getElementById('discardRightBtn').addEventListener('click', () => {
+            rightHand = discardHand('right', rightHand);
+            updateDisplay();
+        });
+
+        document.getElementById('pokerBtn').addEventListener('click', dealPoker);
+        document.getElementById('blackjackBtn').addEventListener('click', dealBlackjack);
+        document.getElementById('texasBtn').addEventListener('click', dealTexasHoldem);
+        document.getElementById('warBtn').addEventListener('click', dealWar);
+
+        deckStack.addEventListener('click', () => draw(1));
+
+        // Initialize
+        reset();
+    </script>
+</body>
+</html>

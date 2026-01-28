@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote of the Day</title>
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✦ Verse of the Day ✦</h1>
+            <p class="subtitle">Wisdom from the ages</p>
+        </header>
+
+        <div class="votd-badge" id="votdBadge">
+            <span>☀️</span>
+            <span>Today's Verse</span>
+        </div>
+
+        <div class="quote-card" id="quoteCard">
+            <div class="quote-text" id="quoteText">Loading...</div>
+            <div class="quote-source">
+                <span class="source-reference" id="sourceRef"></span>
+                <span class="source-category" id="sourceCat"></span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" id="newQuoteBtn">✨ New Verse</button>
+            <button class="btn btn-secondary" id="todayBtn">☀️ Today's Verse</button>
+            <button class="btn btn-secondary" id="copyBtn">📋 Copy</button>
+            <a class="btn btn-secondary" id="searchLink" href="/textfiles/" target="_blank">🔍 Search Full Text</a>
+        </div>
+
+        <div class="filters">
+            <div class="filter-label">Filter by Source</div>
+            <div id="filterButtons">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="favorites">★ Favorites</button>
+            </div>
+        </div>
+
+        <div class="stats" id="stats">
+            <span id="loadingStatus">Loading documents...</span>
+        </div>
+
+        <footer>
+            <p><strong>Verse of the Day</strong> · /quote/</p>
+            <p style="margin-top: 0.5rem;">Random wisdom from <a href="/textfiles/">textfiles/</a></p>
+            <p style="margin-top: 0.5rem;">MIT License © njsr.org 2002-2026</p>
+        </footer>
+    </div>
+
+    <div class="toast" id="toast">Copied to clipboard!</div>
+
+    <script src="favorites.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
