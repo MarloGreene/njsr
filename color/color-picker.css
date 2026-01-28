@@ -84,6 +84,12 @@ h1 {
     pointer-events: none;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
     transform: translate(-50%, -50%);
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.picker-cursor.locked {
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #667eea, 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Sliders */
@@ -174,6 +180,7 @@ h1 {
 }
 
 .color-preview {
+    position: relative;
     height: 80px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -184,6 +191,15 @@ h1 {
                 linear-gradient(-45deg, transparent 75%, #ccc 75%);
     background-size: 10px 10px;
     background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+    overflow: hidden;
+}
+
+.color-preview::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    background: var(--preview-color, transparent);
 }
 
 .preview-label {
@@ -321,6 +337,7 @@ h1 {
 }
 
 .swatch {
+    position: relative;
     aspect-ratio: 1;
     border-radius: 8px;
     cursor: pointer;
@@ -332,6 +349,15 @@ h1 {
                 linear-gradient(-45deg, transparent 75%, #ccc 75%);
     background-size: 10px 10px;
     background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+    overflow: hidden;
+}
+
+.swatch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    background: var(--swatch-color, transparent);
 }
 
 .swatch:hover {

@@ -10,42 +10,19 @@
     <div class="container">
         <div class="countdown-card">
             <h1 class="title">Countdown Timer</h1>
-            
+
             <div class="input-section">
                 <label for="eventName" class="label">Event Name</label>
                 <input type="text" id="eventName" class="input" placeholder="New Year 2027">
-                
+
                 <label for="targetDate" class="label">Target Date & Time</label>
                 <input type="datetime-local" id="targetDate" class="input">
-                
-                <button class="btn btn-set" id="setBtn">Set Countdown</button>
-            </div>
-            
-            <div class="countdown-display" id="countdownDisplay">
-                <div class="event-name" id="displayEventName">Set a countdown above</div>
-                
-                <div class="time-blocks">
-                    <div class="time-block">
-                        <div class="time-value" id="days">0</div>
-                        <div class="time-label">Days</div>
-                    </div>
-                    <div class="time-block">
-                        <div class="time-value" id="hours">00</div>
-                        <div class="time-label">Hours</div>
-                    </div>
-                    <div class="time-block">
-                        <div class="time-value" id="minutes">00</div>
-                        <div class="time-label">Minutes</div>
-                    </div>
-                    <div class="time-block">
-                        <div class="time-value" id="seconds">00</div>
-                        <div class="time-label">Seconds</div>
-                    </div>
-                </div>
-                
-                <div class="complete-message" id="completeMessage">🎉 Time's up! 🎉</div>
+
+                <button class="btn btn-set" id="setBtn">Add Countdown</button>
             </div>
         </div>
+
+        <div class="countdowns-list" id="countdownsList"></div>
     </div>
 
     <footer style="margin-top:2rem;padding:1.5rem;background:#1a1a2e;border-top:1px solid #333;text-align:center;font-size:0.85rem;color:#888;">

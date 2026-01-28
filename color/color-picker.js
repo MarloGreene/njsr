@@ -22,6 +22,7 @@ let currentHue = 220;
 let currentSat = 100;
 let currentLight = 50;
 let currentOpacity = 100;
+let isLocked = false;
 let colorHistory;
 try {
     colorHistory = JSON.parse(localStorage.getItem('colorHistory')) || [];
@@ -74,7 +75,7 @@ function updateColor() {
     const rgba = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${currentOpacity / 100})`;
     
     // Update preview
-    colorPreview.style.background = rgba;
+    colorPreview.style.setProperty('--preview-color', rgba);
     
     // Update opacity slider overlay
     const opacityTrack = document.querySelector('.opacity-slider');
@@ -157,20 +158,37 @@ function rgbToHsl(r, g, b) {
 }
 
 // Canvas interaction
-canvas.addEventListener('mousedown', (e) => {
-    updateFromCanvas(e);
-    canvas.addEventListener('mousemove', updateFromCanvas);
-});
-
 function updateFromCanvas(e) {
     const rect = canvas.getBoundingClientRect();
     const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
     const y = Math.max(0, Math.min(e.clientY - rect.top, rect.height));
-    
+
     currentSat = 100 - (x / rect.width) * 100;
     currentLight = 100 - (y / rect.height) * 100;
     updateColor();
 }
+
+// Hover preview when not locked
+canvas.addEventListener('mousemove', (e) => {
+    if (!isLocked) {
+        updateFromCanvas(e);
+    }
+});
+
+// Click to lock/unlock color
+canvas.addEventListener('click', (e) => {
+    if (isLocked) {
+        // Unlock and update to new position
+        isLocked = false;
+        cursor.classList.remove('locked');
+        updateFromCanvas(e);
+    } else {
+        // Lock current color
+        isLocked = true;
+        cursor.classList.add('locked');
+        scheduleHistoryUpdate();
+    }
+});
 
 // Slider events
 hueSlider.addEventListener('input', (e) => {
@@ -264,7 +282,7 @@ function renderHistory() {
     colorHistory.forEach(color => {
         const swatch = document.createElement('div');
         swatch.className = 'swatch';
-        swatch.style.background = color.rgba;
+        swatch.style.setProperty('--swatch-color', color.rgba);
         swatch.title = color.hex;
         swatch.addEventListener('click', () => {
             const rgb = hexToRgb(color.hex);
@@ -273,6 +291,8 @@ function renderHistory() {
             currentSat = hsl.s;
             currentLight = hsl.l;
             hueSlider.value = currentHue;
+            isLocked = true;
+            cursor.classList.add('locked');
             updateColor();
         });
         swatchGrid.appendChild(swatch);
@@ -294,7 +314,6 @@ function scheduleHistoryUpdate() {
     historyTimeout = setTimeout(addToHistory, 500);
 }
 
-canvas.addEventListener('mouseup', scheduleHistoryUpdate);
 hueSlider.addEventListener('change', scheduleHistoryUpdate);
 opacitySlider.addEventListener('change', scheduleHistoryUpdate);
 
@@ -314,6 +333,8 @@ eyeDropperBtn.addEventListener('click', async () => {
         currentSat = hsl.s;
         currentLight = hsl.l;
         hueSlider.value = currentHue;
+        isLocked = true;
+        cursor.classList.add('locked');
         updateColor();
         addToHistory();
     } catch (err) {
