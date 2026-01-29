@@ -26,7 +26,10 @@
 
             <!-- Batch Add Panel -->
             <div class="batch-panel" id="batchPanel" style="display:none">
-                <textarea id="batchInput" placeholder="Enter names, one per line..."></textarea>
+                <div class="batch-format-hint">Format: Name, Initial VA%, Current VA%</div>
+                <textarea id="batchInput" placeholder="John Doe, 30, 70
+Jane Smith, 0, 50
+Mike Jones"></textarea>
                 <button type="button" class="btn-batch-add" id="batchAddBtn">Add All</button>
             </div>
 
@@ -211,8 +214,16 @@
                         <legend>Outcome</legend>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="outcome_rating">Rating</label>
-                                <input type="text" id="outcome_rating" name="outcome_rating" placeholder="e.g., 70%, 100%">
+                                <label for="va_initial">VA Initial %</label>
+                                <input type="number" id="va_initial" name="va_initial" min="0" max="100" placeholder="Starting rating">
+                            </div>
+                            <div class="form-group">
+                                <label for="va_current">VA Current %</label>
+                                <input type="number" id="va_current" name="va_current" min="0" max="100" placeholder="Current rating">
+                            </div>
+                            <div class="form-group">
+                                <label for="outcome_rating">Rating Notes</label>
+                                <input type="text" id="outcome_rating" name="outcome_rating" placeholder="e.g., P&T, TDIU">
                             </div>
                             <div class="form-group">
                                 <label for="outcome_condition">Condition</label>

@@ -154,12 +154,19 @@ function quickAddRecord() {
 }
 
 // Batch add records
+// Format: "Name, Initial VA%, Current VA%" or just "Name"
 function batchAddRecords() {
-    const names = batchInput.value.split('\n').map(n => n.trim()).filter(Boolean);
-    if (names.length === 0) return;
+    const lines = batchInput.value.split('\n').map(n => n.trim()).filter(Boolean);
+    if (lines.length === 0) return;
 
-    names.forEach(name => {
-        const record = createMinimalRecord(name);
+    lines.forEach(line => {
+        // Parse comma-separated values: Name, Initial%, Current%
+        const parts = line.split(',').map(p => p.trim());
+        const name = parts[0];
+        const vaInitial = parts[1] ? parseInt(parts[1].replace('%', '')) : null;
+        const vaCurrent = parts[2] ? parseInt(parts[2].replace('%', '')) : null;
+
+        const record = createMinimalRecord(name, vaInitial, vaCurrent);
         records.push(record);
     });
 
@@ -171,10 +178,10 @@ function batchAddRecords() {
     batchToggle.classList.remove('active');
 }
 
-// Create minimal record with just a name
-function createMinimalRecord(name) {
+// Create minimal record with just a name (and optional VA ratings)
+function createMinimalRecord(name, vaInitial = null, vaCurrent = null) {
     const id = slugify(name);
-    return {
+    const record = {
         _id: generateId(), // Internal ID for tracking
         id: id,
         call_sign: name,
@@ -188,6 +195,16 @@ function createMinimalRecord(name) {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
     };
+
+    // Add VA ratings if provided
+    if (vaInitial !== null && !isNaN(vaInitial)) {
+        record.va_initial = vaInitial;
+    }
+    if (vaCurrent !== null && !isNaN(vaCurrent)) {
+        record.va_current = vaCurrent;
+    }
+
+    return record;
 }
 
 // Toggle batch mode
@@ -209,7 +226,11 @@ function renderCardList() {
         return;
     }
 
-    cardList.innerHTML = records.map(record => `
+    cardList.innerHTML = records.map(record => {
+        const hasVA = record.va_initial !== undefined || record.va_current !== undefined;
+        const vaDisplay = hasVA ? formatVAProgression(record.va_initial, record.va_current) : '';
+
+        return `
         <div class="record-card type-${record.type} ${currentRecordId === record._id ? 'active' : ''}"
              data-id="${record._id}">
             <div class="card-header">
@@ -218,12 +239,13 @@ function renderCardList() {
                     <button class="card-btn delete" data-id="${record._id}" title="Delete">&times;</button>
                 </div>
             </div>
+            ${hasVA ? `<div class="card-va">${vaDisplay}</div>` : ''}
             <div class="card-meta">
                 <span class="card-badge type-${record.type}">${record.type}</span>
                 ${record.status ? `<span class="card-badge">${record.status}</span>` : ''}
             </div>
         </div>
-    `).join('');
+    `}).join('');
 
     // Add click listeners
     cardList.querySelectorAll('.record-card').forEach(card => {
@@ -276,6 +298,10 @@ function loadRecordIntoForm(recordId) {
         document.getElementById('pipeline_next_action').value = record.pipeline.next_action || '';
         document.getElementById('pipeline_next_due').value = record.pipeline.next_due || '';
     }
+
+    // VA Ratings
+    document.getElementById('va_initial').value = record.va_initial ?? '';
+    document.getElementById('va_current').value = record.va_current ?? '';
 
     // Outcome
     if (record.outcome) {
@@ -403,6 +429,14 @@ function getFormData() {
     }
     if (document.getElementById('status').value) {
         data.status = document.getElementById('status').value;
+    }
+
+    // VA Ratings
+    if (document.getElementById('va_initial').value !== '') {
+        data.va_initial = parseInt(document.getElementById('va_initial').value);
+    }
+    if (document.getElementById('va_current').value !== '') {
+        data.va_current = parseInt(document.getElementById('va_current').value);
     }
 
     // Pipeline
@@ -859,6 +893,10 @@ function parseMarkdownRecord(content) {
     if (data.last_contact) document.getElementById('last_contact').value = data.last_contact;
     if (data.status) document.getElementById('status').value = data.status;
 
+    // VA Ratings
+    if (data.va_initial !== undefined) document.getElementById('va_initial').value = data.va_initial;
+    if (data.va_current !== undefined) document.getElementById('va_current').value = data.va_current;
+
     if (data.pipeline) {
         if (data.pipeline.stage) document.getElementById('pipeline_stage').value = data.pipeline.stage;
         if (data.pipeline.next_action) document.getElementById('pipeline_next_action').value = data.pipeline.next_action;
@@ -966,6 +1004,21 @@ function slugify(str) {
         .trim()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-|-$/g, '');
+}
+
+// Format VA progression for display
+function formatVAProgression(initial, current) {
+    const initStr = initial !== undefined ? `${initial}%` : '?';
+    const currStr = current !== undefined ? `${current}%` : '?';
+
+    if (initial !== undefined && current !== undefined) {
+        const diff = current - initial;
+        const arrow = diff > 0 ? '↑' : (diff < 0 ? '↓' : '→');
+        const diffClass = diff > 0 ? 'va-up' : (diff < 0 ? 'va-down' : 'va-same');
+        return `<span class="${diffClass}">${initStr} ${arrow} ${currStr}</span>`;
+    }
+
+    return `${initStr} → ${currStr}`;
 }
 
 function escapeHtml(str) {
