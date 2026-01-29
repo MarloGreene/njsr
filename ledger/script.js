@@ -1,6 +1,8 @@
 // State
 let tags = [];
 let redactions = [];
+let records = []; // All records stored in browser
+let currentRecordId = null; // Currently editing record ID
 
 // DOM Elements
 const form = document.getElementById('recordForm');
@@ -10,7 +12,7 @@ const importFile = document.getElementById('importFile');
 const exportBtn = document.getElementById('exportBtn');
 const copyBtn = document.getElementById('copyBtn');
 const previewBtn = document.getElementById('previewBtn');
-const saveDraftBtn = document.getElementById('saveDraftBtn');
+const saveRecordBtn = document.getElementById('saveRecordBtn');
 const slugifyBtn = document.getElementById('slugifyBtn');
 const publishWarning = document.getElementById('publishWarning');
 const warningList = document.getElementById('warningList');
@@ -18,6 +20,23 @@ const previewModal = document.getElementById('previewModal');
 const previewContent = document.getElementById('previewContent');
 const closePreview = document.getElementById('closePreview');
 const visibilitySelect = document.getElementById('visibility');
+
+// Sidebar elements
+const sidebar = document.getElementById('sidebar');
+const toggleSidebar = document.getElementById('toggleSidebar');
+const quickAddInput = document.getElementById('quickAddInput');
+const quickAddBtn = document.getElementById('quickAddBtn');
+const batchToggle = document.getElementById('batchToggle');
+const batchPanel = document.getElementById('batchPanel');
+const batchInput = document.getElementById('batchInput');
+const batchAddBtn = document.getElementById('batchAddBtn');
+const cardList = document.getElementById('cardList');
+const recordCount = document.getElementById('recordCount');
+const exportAllBtn = document.getElementById('exportAllBtn');
+const importAllFile = document.getElementById('importAllFile');
+const editingIndicator = document.getElementById('editingIndicator');
+const editingName = document.getElementById('editingName');
+const cancelEdit = document.getElementById('cancelEdit');
 
 // Chip input elements
 const tagsInput = document.getElementById('tagsInput');
@@ -29,9 +48,10 @@ const redactionsHidden = document.getElementById('redactions');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    loadDraft();
+    loadRecords();
     setupChipInputs();
     setupEventListeners();
+    renderCardList();
     checkPublishGates();
 });
 
@@ -43,10 +63,22 @@ function setupEventListeners() {
     exportBtn.addEventListener('click', exportRecord);
     copyBtn.addEventListener('click', copyToClipboard);
     previewBtn.addEventListener('click', showPreview);
-    saveDraftBtn.addEventListener('click', saveDraft);
+    saveRecordBtn.addEventListener('click', saveCurrentRecord);
     slugifyBtn.addEventListener('click', slugifyCallSign);
     closePreview.addEventListener('click', () => previewModal.classList.remove('active'));
     visibilitySelect.addEventListener('change', checkPublishGates);
+
+    // Sidebar controls
+    toggleSidebar.addEventListener('click', () => sidebar.classList.toggle('visible'));
+    quickAddBtn.addEventListener('click', quickAddRecord);
+    quickAddInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') quickAddRecord();
+    });
+    batchToggle.addEventListener('click', toggleBatchMode);
+    batchAddBtn.addEventListener('click', batchAddRecords);
+    exportAllBtn.addEventListener('click', exportAllRecords);
+    importAllFile.addEventListener('change', importAllRecords);
+    cancelEdit.addEventListener('click', cancelEditing);
 
     // Auto-check publish gates on relevant field changes
     document.getElementById('consent_to_share').addEventListener('change', checkPublishGates);
@@ -60,197 +92,297 @@ function setupEventListeners() {
         }
     });
 
-    // Close modal on Escape
+    // Close modal on Escape, close sidebar on mobile
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && previewModal.classList.contains('active')) {
-            previewModal.classList.remove('active');
+        if (e.key === 'Escape') {
+            if (previewModal.classList.contains('active')) {
+                previewModal.classList.remove('active');
+            }
+            if (sidebar.classList.contains('visible')) {
+                sidebar.classList.remove('visible');
+            }
+        }
+    });
+
+    // Click outside sidebar to close on mobile
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 900 &&
+            sidebar.classList.contains('visible') &&
+            !sidebar.contains(e.target) &&
+            e.target !== toggleSidebar) {
+            sidebar.classList.remove('visible');
         }
     });
 }
 
-// Setup chip inputs for tags and redactions
-function setupChipInputs() {
-    setupChipInput(tagsInput, tagsChips, 'tags');
-    setupChipInput(redactionsInput, redactionsChips, 'redactions');
+// Load records from localStorage
+function loadRecords() {
+    try {
+        const saved = localStorage.getItem('ledgerRecords');
+        records = saved ? JSON.parse(saved) : [];
+    } catch (e) {
+        console.error('Failed to load records:', e);
+        records = [];
+    }
 }
 
-function setupChipInput(input, container, type) {
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ',') {
-            e.preventDefault();
-            const value = input.value.trim().replace(/,/g, '');
-            if (value) {
-                addChip(value, type);
-                input.value = '';
-            }
-        } else if (e.key === 'Backspace' && !input.value) {
-            // Remove last chip on backspace if input is empty
-            const chips = type === 'tags' ? tags : redactions;
-            if (chips.length > 0) {
-                removeChip(chips.length - 1, type);
-            }
-        }
+// Save records to localStorage
+function saveRecords() {
+    localStorage.setItem('ledgerRecords', JSON.stringify(records));
+    renderCardList();
+}
+
+// Generate unique ID
+function generateId() {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+}
+
+// Quick add a record
+function quickAddRecord() {
+    const name = quickAddInput.value.trim();
+    if (!name) return;
+
+    const record = createMinimalRecord(name);
+    records.unshift(record);
+    saveRecords();
+
+    quickAddInput.value = '';
+    quickAddInput.focus();
+
+    // Load the new record for editing
+    loadRecordIntoForm(record._id);
+}
+
+// Batch add records
+function batchAddRecords() {
+    const names = batchInput.value.split('\n').map(n => n.trim()).filter(Boolean);
+    if (names.length === 0) return;
+
+    names.forEach(name => {
+        const record = createMinimalRecord(name);
+        records.push(record);
     });
+
+    saveRecords();
+    batchInput.value = '';
+
+    // Close batch panel
+    batchPanel.style.display = 'none';
+    batchToggle.classList.remove('active');
 }
 
-function addChip(value, type) {
-    const chips = type === 'tags' ? tags : redactions;
-    const container = type === 'tags' ? tagsChips : redactionsChips;
-
-    // Avoid duplicates
-    if (chips.includes(value)) return;
-
-    chips.push(value);
-    renderChips(type);
-    updateHiddenInput(type);
+// Create minimal record with just a name
+function createMinimalRecord(name) {
+    const id = slugify(name);
+    return {
+        _id: generateId(), // Internal ID for tracking
+        id: id,
+        call_sign: name,
+        type: 'prospect',
+        visibility: 'private',
+        status: 'new',
+        first_contact: new Date().toISOString().split('T')[0],
+        tags: [],
+        redactions: [],
+        narrative: `## Notes\n\nCreated: ${new Date().toLocaleDateString()}\n\n`,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+    };
 }
 
-function removeChip(index, type) {
-    const chips = type === 'tags' ? tags : redactions;
-    chips.splice(index, 1);
-    renderChips(type);
-    updateHiddenInput(type);
+// Toggle batch mode
+function toggleBatchMode() {
+    const isVisible = batchPanel.style.display !== 'none';
+    batchPanel.style.display = isVisible ? 'none' : 'block';
+    batchToggle.classList.toggle('active', !isVisible);
+    if (!isVisible) {
+        batchInput.focus();
+    }
 }
 
-function renderChips(type) {
-    const chips = type === 'tags' ? tags : redactions;
-    const container = type === 'tags' ? tagsChips : redactionsChips;
+// Render card list in sidebar
+function renderCardList() {
+    recordCount.textContent = records.length;
 
-    container.innerHTML = chips.map((chip, index) => `
-        <span class="chip">
-            ${escapeHtml(chip)}
-            <button type="button" class="chip-remove" data-index="${index}" data-type="${type}">&times;</button>
-        </span>
+    if (records.length === 0) {
+        cardList.innerHTML = '<div class="empty-list">No records yet. Add one above!</div>';
+        return;
+    }
+
+    cardList.innerHTML = records.map(record => `
+        <div class="record-card type-${record.type} ${currentRecordId === record._id ? 'active' : ''}"
+             data-id="${record._id}">
+            <div class="card-header">
+                <div class="card-name">${escapeHtml(record.call_sign || record.id)}</div>
+                <div class="card-actions">
+                    <button class="card-btn delete" data-id="${record._id}" title="Delete">&times;</button>
+                </div>
+            </div>
+            <div class="card-meta">
+                <span class="card-badge type-${record.type}">${record.type}</span>
+                ${record.status ? `<span class="card-badge">${record.status}</span>` : ''}
+            </div>
+        </div>
     `).join('');
 
-    // Add click listeners to remove buttons
-    container.querySelectorAll('.chip-remove').forEach(btn => {
-        btn.addEventListener('click', () => {
-            removeChip(parseInt(btn.dataset.index), btn.dataset.type);
+    // Add click listeners
+    cardList.querySelectorAll('.record-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('delete')) {
+                loadRecordIntoForm(card.dataset.id);
+            }
+        });
+    });
+
+    // Add delete listeners
+    cardList.querySelectorAll('.card-btn.delete').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteRecord(btn.dataset.id);
         });
     });
 }
 
-function updateHiddenInput(type) {
-    const chips = type === 'tags' ? tags : redactions;
-    const hidden = type === 'tags' ? tagsHidden : redactionsHidden;
-    hidden.value = chips.join(',');
-}
+// Load a record into the form
+function loadRecordIntoForm(recordId) {
+    const record = records.find(r => r._id === recordId);
+    if (!record) return;
 
-// Slugify call sign to ID
-function slugifyCallSign() {
-    const callSign = document.getElementById('call_sign').value;
-    if (!callSign) {
-        alert('Please enter a call sign first.');
-        return;
-    }
+    currentRecordId = recordId;
 
-    const slug = callSign
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-|-$/g, '');
-
-    document.getElementById('id').value = slug;
-}
-
-// Create new record with scaffold
-function createNewRecord() {
-    clearForm();
-
-    // Set defaults
-    document.getElementById('type').value = 'prospect';
-    document.getElementById('visibility').value = 'private';
-    document.getElementById('first_contact').value = new Date().toISOString().split('T')[0];
-
-    // Set narrative scaffold
-    document.getElementById('narrative').value = `## Initial Contact
-
-Date: ${new Date().toLocaleDateString()}
-Method:
-
-## Background
-
-
-
-## Current Situation
-
-
-
-## Goals
-
-
-
-## Action Items
-
-- [ ]
-- [ ]
-
-## Notes
-
-`;
-
-    checkPublishGates();
-}
-
-// Clear form
-function clearForm() {
-    if (form.elements.length > 0 && document.getElementById('call_sign').value) {
-        if (!confirm('Clear all form data?')) return;
-    }
-
+    // Clear form first
     form.reset();
     tags = [];
     redactions = [];
-    renderChips('tags');
-    renderChips('redactions');
-    updateHiddenInput('tags');
-    updateHiddenInput('redactions');
+
+    // Fill form fields
+    document.getElementById('id').value = record.id || '';
+    document.getElementById('call_sign').value = record.call_sign || '';
+    document.getElementById('real_name').value = record.real_name || '';
+    document.getElementById('branch').value = record.branch || '';
+    document.getElementById('era').value = record.era || '';
+    document.getElementById('deployments').value = Array.isArray(record.deployments)
+        ? record.deployments.join(', ')
+        : (record.deployments || '');
+    document.getElementById('type').value = record.type || 'prospect';
+    document.getElementById('visibility').value = record.visibility || 'private';
+    document.getElementById('status').value = record.status || '';
+    document.getElementById('first_contact').value = record.first_contact || '';
+    document.getElementById('last_contact').value = record.last_contact || '';
+
+    // Pipeline
+    if (record.pipeline) {
+        document.getElementById('pipeline_stage').value = record.pipeline.stage || '';
+        document.getElementById('pipeline_next_action').value = record.pipeline.next_action || '';
+        document.getElementById('pipeline_next_due').value = record.pipeline.next_due || '';
+    }
+
+    // Outcome
+    if (record.outcome) {
+        document.getElementById('outcome_rating').value = record.outcome.rating || '';
+        document.getElementById('outcome_condition').value = record.outcome.condition || '';
+        document.getElementById('outcome_decision_date').value = record.outcome.decision_date || '';
+        document.getElementById('outcome_decision_time_days').value = record.outcome.decision_time_days || '';
+        document.getElementById('outcome_monthly_increase_usd').value = record.outcome.monthly_increase_usd || '';
+    }
+
+    // Impact
+    if (record.impact) {
+        document.getElementById('impact_dependents').value = record.impact.dependents || '';
+        document.getElementById('impact_notes').value = record.impact.notes || '';
+    }
+
+    // Tags and redactions
+    if (record.tags && Array.isArray(record.tags)) {
+        tags = [...record.tags];
+        renderChips('tags');
+        updateHiddenInput('tags');
+    }
+    if (record.redactions && Array.isArray(record.redactions)) {
+        redactions = [...record.redactions];
+        renderChips('redactions');
+        updateHiddenInput('redactions');
+    }
+
+    // Public display
+    document.getElementById('consent_to_share').checked = record.consent_to_share || false;
+    document.getElementById('public_title').value = record.public_title || '';
+    document.getElementById('public_blurb').value = record.public_blurb || '';
+
+    // Narrative
+    document.getElementById('narrative').value = record.narrative || '';
+
+    // Show editing indicator
+    editingIndicator.style.display = 'flex';
+    editingName.textContent = record.call_sign || record.id;
+
+    // Update card list to show active
+    renderCardList();
     checkPublishGates();
+
+    // Scroll to form on mobile
+    if (window.innerWidth <= 900) {
+        sidebar.classList.remove('visible');
+        document.querySelector('.record-form').scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
-// Check publish gates
-function checkPublishGates() {
-    const visibility = document.getElementById('visibility').value;
-    const consent = document.getElementById('consent_to_share').checked;
-    const publicTitle = document.getElementById('public_title').value.trim();
-    const publicBlurb = document.getElementById('public_blurb').value.trim();
-
-    const warnings = [];
-
-    if (visibility === 'public') {
-        if (!consent) {
-            warnings.push('Consent to share must be checked');
-        }
-        if (!publicTitle) {
-            warnings.push('Public title is required');
-        }
-        if (!publicBlurb) {
-            warnings.push('Public blurb is required');
-        }
+// Save current record
+function saveCurrentRecord() {
+    const callSign = document.getElementById('call_sign').value.trim();
+    if (!callSign) {
+        alert('Please enter a call sign.');
+        return;
     }
 
-    if (warnings.length > 0) {
-        warningList.innerHTML = warnings.map(w => `<li>${w}</li>`).join('');
-        publishWarning.style.display = 'block';
+    const recordData = getFormData();
+
+    if (currentRecordId) {
+        // Update existing record
+        const index = records.findIndex(r => r._id === currentRecordId);
+        if (index !== -1) {
+            records[index] = {
+                ...records[index],
+                ...recordData,
+                updatedAt: new Date().toISOString()
+            };
+        }
     } else {
-        publishWarning.style.display = 'none';
+        // Create new record
+        const newRecord = {
+            _id: generateId(),
+            ...recordData,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        };
+        records.unshift(newRecord);
+        currentRecordId = newRecord._id;
     }
 
-    return warnings.length === 0;
+    saveRecords();
+
+    // Update editing indicator
+    editingIndicator.style.display = 'flex';
+    editingName.textContent = callSign;
+
+    // Visual feedback
+    const originalText = saveRecordBtn.textContent;
+    saveRecordBtn.textContent = 'Saved!';
+    setTimeout(() => {
+        saveRecordBtn.textContent = originalText;
+    }, 2000);
 }
 
-// Generate YAML front matter
-function generateYAML() {
-    const data = {};
+// Get form data as object
+function getFormData() {
+    const data = {
+        id: document.getElementById('id').value || slugify(document.getElementById('call_sign').value),
+        call_sign: document.getElementById('call_sign').value,
+        type: document.getElementById('type').value,
+        visibility: document.getElementById('visibility').value,
+    };
 
-    // Required fields
-    data.id = document.getElementById('id').value || slugify(document.getElementById('call_sign').value);
-    data.type = document.getElementById('type').value;
-    data.visibility = document.getElementById('visibility').value;
-    data.call_sign = document.getElementById('call_sign').value;
-
-    // Optional identity fields
+    // Optional fields
     if (document.getElementById('real_name').value) {
         data.real_name = document.getElementById('real_name').value;
     }
@@ -263,16 +395,12 @@ function generateYAML() {
     if (document.getElementById('deployments').value) {
         data.deployments = document.getElementById('deployments').value.split(',').map(s => s.trim()).filter(Boolean);
     }
-
-    // Contact timeline
     if (document.getElementById('first_contact').value) {
         data.first_contact = document.getElementById('first_contact').value;
     }
     if (document.getElementById('last_contact').value) {
         data.last_contact = document.getElementById('last_contact').value;
     }
-
-    // Status
     if (document.getElementById('status').value) {
         data.status = document.getElementById('status').value;
     }
@@ -327,10 +455,10 @@ function generateYAML() {
 
     // Tags and redactions
     if (tags.length > 0) {
-        data.tags = tags;
+        data.tags = [...tags];
     }
     if (redactions.length > 0) {
-        data.redactions = redactions;
+        data.redactions = [...redactions];
     }
 
     // Public display
@@ -344,16 +472,266 @@ function generateYAML() {
         data.public_blurb = document.getElementById('public_blurb').value;
     }
 
+    // Narrative
+    data.narrative = document.getElementById('narrative').value;
+
+    return data;
+}
+
+// Delete record
+function deleteRecord(recordId) {
+    const record = records.find(r => r._id === recordId);
+    if (!record) return;
+
+    if (!confirm(`Delete "${record.call_sign}"?`)) return;
+
+    records = records.filter(r => r._id !== recordId);
+    saveRecords();
+
+    // Clear form if deleting current record
+    if (currentRecordId === recordId) {
+        cancelEditing();
+    }
+}
+
+// Cancel editing
+function cancelEditing() {
+    currentRecordId = null;
+    editingIndicator.style.display = 'none';
+    clearFormSilent();
+    renderCardList();
+}
+
+// Export all records as JSON
+function exportAllRecords() {
+    if (records.length === 0) {
+        alert('No records to export.');
+        return;
+    }
+
+    const exportData = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        records: records
+    };
+
+    const content = JSON.stringify(exportData, null, 2);
+    downloadFile('ledger-records.json', content, 'application/json');
+}
+
+// Import records from JSON
+function importAllRecords(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        try {
+            const data = JSON.parse(event.target.result);
+
+            if (data.records && Array.isArray(data.records)) {
+                const count = data.records.length;
+
+                if (confirm(`Import ${count} records? This will add to your existing records.`)) {
+                    // Add internal IDs if missing
+                    data.records.forEach(record => {
+                        if (!record._id) {
+                            record._id = generateId();
+                        }
+                        // Check for duplicate internal IDs
+                        if (records.some(r => r._id === record._id)) {
+                            record._id = generateId();
+                        }
+                    });
+
+                    records = [...data.records, ...records];
+                    saveRecords();
+                    alert(`Imported ${count} records.`);
+                }
+            } else {
+                alert('Invalid file format. Expected a JSON file with a "records" array.');
+            }
+        } catch (err) {
+            alert('Failed to parse JSON file.');
+            console.error(err);
+        }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+}
+
+// Setup chip inputs for tags and redactions
+function setupChipInputs() {
+    setupChipInput(tagsInput, tagsChips, 'tags');
+    setupChipInput(redactionsInput, redactionsChips, 'redactions');
+}
+
+function setupChipInput(input, container, type) {
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ',') {
+            e.preventDefault();
+            const value = input.value.trim().replace(/,/g, '');
+            if (value) {
+                addChip(value, type);
+                input.value = '';
+            }
+        } else if (e.key === 'Backspace' && !input.value) {
+            const chips = type === 'tags' ? tags : redactions;
+            if (chips.length > 0) {
+                removeChip(chips.length - 1, type);
+            }
+        }
+    });
+}
+
+function addChip(value, type) {
+    const chips = type === 'tags' ? tags : redactions;
+    if (chips.includes(value)) return;
+    chips.push(value);
+    renderChips(type);
+    updateHiddenInput(type);
+}
+
+function removeChip(index, type) {
+    const chips = type === 'tags' ? tags : redactions;
+    chips.splice(index, 1);
+    renderChips(type);
+    updateHiddenInput(type);
+}
+
+function renderChips(type) {
+    const chips = type === 'tags' ? tags : redactions;
+    const container = type === 'tags' ? tagsChips : redactionsChips;
+
+    container.innerHTML = chips.map((chip, index) => `
+        <span class="chip">
+            ${escapeHtml(chip)}
+            <button type="button" class="chip-remove" data-index="${index}" data-type="${type}">&times;</button>
+        </span>
+    `).join('');
+
+    container.querySelectorAll('.chip-remove').forEach(btn => {
+        btn.addEventListener('click', () => {
+            removeChip(parseInt(btn.dataset.index), btn.dataset.type);
+        });
+    });
+}
+
+function updateHiddenInput(type) {
+    const chips = type === 'tags' ? tags : redactions;
+    const hidden = type === 'tags' ? tagsHidden : redactionsHidden;
+    hidden.value = chips.join(',');
+}
+
+// Slugify call sign to ID
+function slugifyCallSign() {
+    const callSign = document.getElementById('call_sign').value;
+    if (!callSign) {
+        alert('Please enter a call sign first.');
+        return;
+    }
+    document.getElementById('id').value = slugify(callSign);
+}
+
+// Create new record with scaffold
+function createNewRecord() {
+    cancelEditing();
+
+    document.getElementById('type').value = 'prospect';
+    document.getElementById('visibility').value = 'private';
+    document.getElementById('first_contact').value = new Date().toISOString().split('T')[0];
+
+    document.getElementById('narrative').value = `## Initial Contact
+
+Date: ${new Date().toLocaleDateString()}
+Method:
+
+## Background
+
+
+
+## Current Situation
+
+
+
+## Goals
+
+
+
+## Action Items
+
+- [ ]
+- [ ]
+
+## Notes
+
+`;
+
+    document.getElementById('call_sign').focus();
+    checkPublishGates();
+}
+
+// Clear form
+function clearForm() {
+    if (document.getElementById('call_sign').value && !confirm('Clear all form data?')) return;
+    clearFormSilent();
+}
+
+function clearFormSilent() {
+    form.reset();
+    tags = [];
+    redactions = [];
+    renderChips('tags');
+    renderChips('redactions');
+    updateHiddenInput('tags');
+    updateHiddenInput('redactions');
+    currentRecordId = null;
+    editingIndicator.style.display = 'none';
+    checkPublishGates();
+}
+
+// Check publish gates
+function checkPublishGates() {
+    const visibility = document.getElementById('visibility').value;
+    const consent = document.getElementById('consent_to_share').checked;
+    const publicTitle = document.getElementById('public_title').value.trim();
+    const publicBlurb = document.getElementById('public_blurb').value.trim();
+
+    const warnings = [];
+
+    if (visibility === 'public') {
+        if (!consent) warnings.push('Consent to share must be checked');
+        if (!publicTitle) warnings.push('Public title is required');
+        if (!publicBlurb) warnings.push('Public blurb is required');
+    }
+
+    if (warnings.length > 0) {
+        warningList.innerHTML = warnings.map(w => `<li>${w}</li>`).join('');
+        publishWarning.style.display = 'block';
+    } else {
+        publishWarning.style.display = 'none';
+    }
+
+    return warnings.length === 0;
+}
+
+// Generate YAML front matter
+function generateYAML() {
+    const data = getFormData();
+    // Remove internal fields
+    delete data._id;
+    delete data.createdAt;
+    delete data.updatedAt;
     return objectToYAML(data);
 }
 
-// Convert object to YAML string (simple implementation)
+// Convert object to YAML string
 function objectToYAML(obj, indent = 0) {
     const spaces = '  '.repeat(indent);
     let yaml = '';
 
     for (const [key, value] of Object.entries(obj)) {
-        if (value === null || value === undefined) continue;
+        if (value === null || value === undefined || key === 'narrative') continue;
 
         if (Array.isArray(value)) {
             yaml += `${spaces}${key}:\n`;
@@ -375,10 +753,8 @@ function objectToYAML(obj, indent = 0) {
     return yaml;
 }
 
-// Escape YAML string if needed
 function escapeYAMLString(str) {
     if (!str) return '""';
-    // Quote strings that contain special characters or look like other types
     if (/[:#\[\]{}|>&*!?,]/.test(str) || /^\s|\s$/.test(str) || /^(true|false|null|yes|no)$/i.test(str)) {
         return `"${str.replace(/"/g, '\\"')}"`;
     }
@@ -389,7 +765,6 @@ function escapeYAMLString(str) {
 function generateRecord() {
     const yaml = generateYAML();
     const narrative = document.getElementById('narrative').value;
-
     return `---\n${yaml}---\n\n${narrative}`;
 }
 
@@ -403,9 +778,7 @@ function exportRecord() {
 
     const content = generateRecord();
     const id = document.getElementById('id').value || slugify(callSign);
-    const filename = `${id}.md`;
-
-    downloadFile(filename, content, 'text/markdown');
+    downloadFile(`${id}.md`, content, 'text/markdown');
 }
 
 // Copy to clipboard
@@ -423,7 +796,6 @@ function copyToClipboard() {
             copyBtn.style.color = '';
         }, 2000);
     }).catch(() => {
-        // Fallback
         const textarea = document.createElement('textarea');
         textarea.value = content;
         document.body.appendChild(textarea);
@@ -440,90 +812,7 @@ function showPreview() {
     previewModal.classList.add('active');
 }
 
-// Save draft to localStorage
-function saveDraft() {
-    const draft = {
-        call_sign: document.getElementById('call_sign').value,
-        id: document.getElementById('id').value,
-        real_name: document.getElementById('real_name').value,
-        branch: document.getElementById('branch').value,
-        era: document.getElementById('era').value,
-        deployments: document.getElementById('deployments').value,
-        type: document.getElementById('type').value,
-        visibility: document.getElementById('visibility').value,
-        status: document.getElementById('status').value,
-        first_contact: document.getElementById('first_contact').value,
-        last_contact: document.getElementById('last_contact').value,
-        pipeline_stage: document.getElementById('pipeline_stage').value,
-        pipeline_next_action: document.getElementById('pipeline_next_action').value,
-        pipeline_next_due: document.getElementById('pipeline_next_due').value,
-        outcome_rating: document.getElementById('outcome_rating').value,
-        outcome_condition: document.getElementById('outcome_condition').value,
-        outcome_decision_date: document.getElementById('outcome_decision_date').value,
-        outcome_decision_time_days: document.getElementById('outcome_decision_time_days').value,
-        outcome_monthly_increase_usd: document.getElementById('outcome_monthly_increase_usd').value,
-        impact_dependents: document.getElementById('impact_dependents').value,
-        impact_notes: document.getElementById('impact_notes').value,
-        tags: tags,
-        redactions: redactions,
-        consent_to_share: document.getElementById('consent_to_share').checked,
-        public_title: document.getElementById('public_title').value,
-        public_blurb: document.getElementById('public_blurb').value,
-        narrative: document.getElementById('narrative').value,
-        savedAt: new Date().toISOString()
-    };
-
-    localStorage.setItem('ledgerDraft', JSON.stringify(draft));
-
-    const originalText = saveDraftBtn.textContent;
-    saveDraftBtn.textContent = 'Saved!';
-    setTimeout(() => {
-        saveDraftBtn.textContent = originalText;
-    }, 2000);
-}
-
-// Load draft from localStorage
-function loadDraft() {
-    const saved = localStorage.getItem('ledgerDraft');
-    if (!saved) return;
-
-    try {
-        const draft = JSON.parse(saved);
-
-        // Only load if there's actual content
-        if (!draft.call_sign && !draft.narrative) return;
-
-        // Fill form fields
-        Object.keys(draft).forEach(key => {
-            const el = document.getElementById(key);
-            if (el) {
-                if (el.type === 'checkbox') {
-                    el.checked = draft[key];
-                } else if (el.tagName !== 'BUTTON') {
-                    el.value = draft[key] || '';
-                }
-            }
-        });
-
-        // Restore tags and redactions
-        if (draft.tags && Array.isArray(draft.tags)) {
-            tags = draft.tags;
-            renderChips('tags');
-            updateHiddenInput('tags');
-        }
-        if (draft.redactions && Array.isArray(draft.redactions)) {
-            redactions = draft.redactions;
-            renderChips('redactions');
-            updateHiddenInput('redactions');
-        }
-
-        checkPublishGates();
-    } catch (e) {
-        console.error('Failed to load draft:', e);
-    }
-}
-
-// Handle file import
+// Handle file import (single .md file)
 function handleImport(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -534,14 +823,11 @@ function handleImport(e) {
         parseMarkdownRecord(content);
     };
     reader.readAsText(file);
-
-    // Reset file input
     e.target.value = '';
 }
 
 // Parse markdown record with YAML front matter
 function parseMarkdownRecord(content) {
-    // Split front matter from body
     const frontMatterMatch = content.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
 
     if (!frontMatterMatch) {
@@ -551,11 +837,12 @@ function parseMarkdownRecord(content) {
 
     const yamlContent = frontMatterMatch[1];
     const narrative = frontMatterMatch[2].trim();
-
-    // Parse YAML (simple parser)
     const data = parseYAML(yamlContent);
 
-    // Fill form
+    // Create new record or update current
+    cancelEditing();
+
+    // Fill form from parsed data
     if (data.id) document.getElementById('id').value = data.id;
     if (data.type) document.getElementById('type').value = data.type;
     if (data.visibility) document.getElementById('visibility').value = data.visibility;
@@ -572,14 +859,12 @@ function parseMarkdownRecord(content) {
     if (data.last_contact) document.getElementById('last_contact').value = data.last_contact;
     if (data.status) document.getElementById('status').value = data.status;
 
-    // Pipeline
     if (data.pipeline) {
         if (data.pipeline.stage) document.getElementById('pipeline_stage').value = data.pipeline.stage;
         if (data.pipeline.next_action) document.getElementById('pipeline_next_action').value = data.pipeline.next_action;
         if (data.pipeline.next_due) document.getElementById('pipeline_next_due').value = data.pipeline.next_due;
     }
 
-    // Outcome
     if (data.outcome) {
         if (data.outcome.rating) document.getElementById('outcome_rating').value = data.outcome.rating;
         if (data.outcome.condition) document.getElementById('outcome_condition').value = data.outcome.condition;
@@ -588,13 +873,11 @@ function parseMarkdownRecord(content) {
         if (data.outcome.monthly_increase_usd) document.getElementById('outcome_monthly_increase_usd').value = data.outcome.monthly_increase_usd;
     }
 
-    // Impact
     if (data.impact) {
         if (data.impact.dependents) document.getElementById('impact_dependents').value = data.impact.dependents;
         if (data.impact.notes) document.getElementById('impact_notes').value = data.impact.notes;
     }
 
-    // Tags and redactions
     if (data.tags && Array.isArray(data.tags)) {
         tags = data.tags;
         renderChips('tags');
@@ -606,18 +889,15 @@ function parseMarkdownRecord(content) {
         updateHiddenInput('redactions');
     }
 
-    // Public display
     if (data.consent_to_share) document.getElementById('consent_to_share').checked = true;
     if (data.public_title) document.getElementById('public_title').value = data.public_title;
     if (data.public_blurb) document.getElementById('public_blurb').value = data.public_blurb;
 
-    // Narrative
     document.getElementById('narrative').value = narrative;
-
     checkPublishGates();
 }
 
-// Simple YAML parser (handles our specific schema)
+// Simple YAML parser
 function parseYAML(yaml) {
     const result = {};
     const lines = yaml.split('\n');
@@ -633,7 +913,6 @@ function parseYAML(yaml) {
         const indent = line.search(/\S/);
         const trimmed = line.trim();
 
-        // Handle list items
         if (trimmed.startsWith('- ')) {
             const value = trimmed.substring(2).trim().replace(/^["']|["']$/g, '');
             if (currentKey && Array.isArray(currentObject[currentKey])) {
@@ -642,13 +921,11 @@ function parseYAML(yaml) {
             continue;
         }
 
-        // Handle key-value pairs
         const colonIndex = trimmed.indexOf(':');
         if (colonIndex > 0) {
             const key = trimmed.substring(0, colonIndex).trim();
             let value = trimmed.substring(colonIndex + 1).trim();
 
-            // Adjust object context based on indent
             while (indent <= indentStack[indentStack.length - 1] && objectStack.length > 1) {
                 objectStack.pop();
                 indentStack.pop();
@@ -656,21 +933,18 @@ function parseYAML(yaml) {
             }
 
             if (value === '') {
-                // Check if next line is a list or nested object
                 const nextLine = lines[i + 1];
                 if (nextLine && nextLine.trim().startsWith('- ')) {
                     currentObject[key] = [];
                     currentKey = key;
                 } else {
-                    // Nested object
                     currentObject[key] = {};
                     objectStack.push(currentObject[key]);
                     indentStack.push(indent);
                     currentObject = currentObject[key];
                 }
             } else {
-                // Parse value
-                value = value.replace(/^["']|["']$/g, ''); // Remove quotes
+                value = value.replace(/^["']|["']$/g, '');
                 if (value === 'true') value = true;
                 else if (value === 'false') value = false;
                 else if (/^\d+$/.test(value)) value = parseInt(value);
