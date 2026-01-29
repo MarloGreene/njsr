@@ -3,6 +3,7 @@ let tags = [];
 let redactions = [];
 let records = []; // All records stored in browser
 let currentRecordId = null; // Currently editing record ID
+let spartanMode = false; // Pre-fill GWOT combat infantry defaults
 
 // DOM Elements
 const form = document.getElementById('recordForm');
@@ -24,6 +25,7 @@ const visibilitySelect = document.getElementById('visibility');
 // Sidebar elements
 const sidebar = document.getElementById('sidebar');
 const toggleSidebar = document.getElementById('toggleSidebar');
+const spartanToggle = document.getElementById('spartanToggle');
 const quickAddInput = document.getElementById('quickAddInput');
 const quickAddBtn = document.getElementById('quickAddBtn');
 const batchToggle = document.getElementById('batchToggle');
@@ -49,11 +51,36 @@ const redactionsHidden = document.getElementById('redactions');
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     loadRecords();
+    loadSpartanMode();
     setupChipInputs();
     setupEventListeners();
     renderCardList();
     checkPublishGates();
 });
+
+// Load Spartan mode state from localStorage
+function loadSpartanMode() {
+    spartanMode = localStorage.getItem('ledgerSpartanMode') === 'true';
+    updateSpartanToggle();
+}
+
+// Toggle Spartan mode
+function toggleSpartanMode() {
+    spartanMode = !spartanMode;
+    localStorage.setItem('ledgerSpartanMode', spartanMode);
+    updateSpartanToggle();
+}
+
+// Update Spartan toggle button appearance
+function updateSpartanToggle() {
+    if (spartanMode) {
+        spartanToggle.classList.add('active');
+        spartanToggle.title = 'Spartan Mode ON - GWOT combat infantry defaults enabled';
+    } else {
+        spartanToggle.classList.remove('active');
+        spartanToggle.title = 'Pre-fill GWOT combat infantry defaults';
+    }
+}
 
 // Setup event listeners
 function setupEventListeners() {
@@ -70,6 +97,7 @@ function setupEventListeners() {
 
     // Sidebar controls
     toggleSidebar.addEventListener('click', () => sidebar.classList.toggle('visible'));
+    spartanToggle.addEventListener('click', toggleSpartanMode);
     quickAddBtn.addEventListener('click', quickAddRecord);
     quickAddInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') quickAddRecord();
@@ -204,6 +232,15 @@ function createMinimalRecord(name, vaInitial = null, vaCurrent = null) {
         record.va_current = vaCurrent;
     }
 
+    // Apply Spartan mode defaults for GWOT combat infantry
+    if (spartanMode) {
+        record.branch = 'Army';
+        record.era = 'OIF/OEF';
+        record.goal = '100% P&T PTSD';
+        record.outcome = { condition: 'PTSD' };
+        record.tags = ['gwot', 'combat-infantry'];
+    }
+
     return record;
 }
 
@@ -229,12 +266,13 @@ function renderCardList() {
     cardList.innerHTML = records.map(record => {
         const hasVA = record.va_initial !== undefined || record.va_current !== undefined;
         const vaDisplay = hasVA ? formatVAProgression(record.va_initial, record.va_current) : '';
+        const reunionIcon = record.attends_reunions ? '<span class="reunion-badge" title="Attends reunions">🎖</span>' : '';
 
         return `
         <div class="record-card type-${record.type} ${currentRecordId === record._id ? 'active' : ''}"
              data-id="${record._id}">
             <div class="card-header">
-                <div class="card-name">${escapeHtml(record.call_sign || record.id)}</div>
+                <div class="card-name">${escapeHtml(record.call_sign || record.id)} ${reunionIcon}</div>
                 <div class="card-actions">
                     <button class="card-btn delete" data-id="${record._id}" title="Delete">&times;</button>
                 </div>
@@ -299,7 +337,8 @@ function loadRecordIntoForm(recordId) {
         document.getElementById('pipeline_next_due').value = record.pipeline.next_due || '';
     }
 
-    // VA Ratings
+    // Goal and VA Ratings
+    document.getElementById('goal').value = record.goal || '';
     document.getElementById('va_initial').value = record.va_initial ?? '';
     document.getElementById('va_current').value = record.va_current ?? '';
 
@@ -317,6 +356,12 @@ function loadRecordIntoForm(recordId) {
         document.getElementById('impact_dependents').value = record.impact.dependents || '';
         document.getElementById('impact_notes').value = record.impact.notes || '';
     }
+
+    // Engagement
+    document.getElementById('attends_reunions').checked = record.attends_reunions || false;
+    document.getElementById('reunions_attended').value = record.reunions_attended || '';
+    document.getElementById('last_reunion').value = record.last_reunion || '';
+    document.getElementById('engagement_level').value = record.engagement_level || '';
 
     // Tags and redactions
     if (record.tags && Array.isArray(record.tags)) {
@@ -431,7 +476,10 @@ function getFormData() {
         data.status = document.getElementById('status').value;
     }
 
-    // VA Ratings
+    // Goal and VA Ratings
+    if (document.getElementById('goal').value) {
+        data.goal = document.getElementById('goal').value;
+    }
     if (document.getElementById('va_initial').value !== '') {
         data.va_initial = parseInt(document.getElementById('va_initial').value);
     }
@@ -485,6 +533,20 @@ function getFormData() {
     }
     if (Object.keys(impact).length > 0) {
         data.impact = impact;
+    }
+
+    // Engagement
+    if (document.getElementById('attends_reunions').checked) {
+        data.attends_reunions = true;
+    }
+    if (document.getElementById('reunions_attended').value) {
+        data.reunions_attended = document.getElementById('reunions_attended').value;
+    }
+    if (document.getElementById('last_reunion').value) {
+        data.last_reunion = document.getElementById('last_reunion').value;
+    }
+    if (document.getElementById('engagement_level').value) {
+        data.engagement_level = document.getElementById('engagement_level').value;
     }
 
     // Tags and redactions
@@ -674,6 +736,17 @@ function createNewRecord() {
     document.getElementById('type').value = 'prospect';
     document.getElementById('visibility').value = 'private';
     document.getElementById('first_contact').value = new Date().toISOString().split('T')[0];
+
+    // Apply Spartan mode defaults
+    if (spartanMode) {
+        document.getElementById('branch').value = 'Army';
+        document.getElementById('era').value = 'OIF/OEF';
+        document.getElementById('goal').value = '100% P&T PTSD';
+        document.getElementById('outcome_condition').value = 'PTSD';
+        tags = ['gwot', 'combat-infantry'];
+        renderChips('tags');
+        updateHiddenInput('tags');
+    }
 
     document.getElementById('narrative').value = `## Initial Contact
 
@@ -893,7 +966,8 @@ function parseMarkdownRecord(content) {
     if (data.last_contact) document.getElementById('last_contact').value = data.last_contact;
     if (data.status) document.getElementById('status').value = data.status;
 
-    // VA Ratings
+    // Goal and VA Ratings
+    if (data.goal) document.getElementById('goal').value = data.goal;
     if (data.va_initial !== undefined) document.getElementById('va_initial').value = data.va_initial;
     if (data.va_current !== undefined) document.getElementById('va_current').value = data.va_current;
 
@@ -915,6 +989,12 @@ function parseMarkdownRecord(content) {
         if (data.impact.dependents) document.getElementById('impact_dependents').value = data.impact.dependents;
         if (data.impact.notes) document.getElementById('impact_notes').value = data.impact.notes;
     }
+
+    // Engagement
+    if (data.attends_reunions) document.getElementById('attends_reunions').checked = true;
+    if (data.reunions_attended) document.getElementById('reunions_attended').value = data.reunions_attended;
+    if (data.last_reunion) document.getElementById('last_reunion').value = data.last_reunion;
+    if (data.engagement_level) document.getElementById('engagement_level').value = data.engagement_level;
 
     if (data.tags && Array.isArray(data.tags)) {
         tags = data.tags;

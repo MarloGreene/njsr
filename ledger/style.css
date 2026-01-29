@@ -78,6 +78,41 @@ body {
     font-weight: 600;
 }
 
+/* Spartan Mode Toggle */
+.btn-spartan-toggle {
+    margin: 10px 20px;
+    padding: 10px 15px;
+    background: var(--gray-700);
+    border: 2px solid var(--gray-600);
+    color: var(--gray-300);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-spartan-toggle:hover {
+    background: var(--gray-600);
+    border-color: var(--gray-500);
+    color: white;
+}
+
+.btn-spartan-toggle.active {
+    background: linear-gradient(135deg, #8b0000 0%, #a52a2a 100%);
+    border-color: #cd5c5c;
+    color: white;
+    box-shadow: 0 0 10px rgba(139, 0, 0, 0.4);
+}
+
+.spartan-icon {
+    font-size: 1.1rem;
+}
+
 /* Quick Add */
 .quick-add {
     padding: 15px 20px;
@@ -246,6 +281,11 @@ body {
     font-size: 0.95rem;
     color: white;
     word-break: break-word;
+}
+
+.reunion-badge {
+    font-size: 0.85rem;
+    margin-left: 4px;
 }
 
 .card-actions {
