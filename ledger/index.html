@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ledger Record Builder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Ledger Record Builder</h1>
+            <p class="subtitle">Create and edit markdown ledger records</p>
+        </header>
+
+        <div class="toolbar">
+            <button type="button" class="btn btn-new" id="newBtn">+ New Record</button>
+            <label class="btn btn-import">
+                Import .md
+                <input type="file" id="importFile" accept=".md,.markdown,.txt" style="display:none">
+            </label>
+            <button type="button" class="btn btn-clear" id="clearBtn">Clear Form</button>
+        </div>
+
+        <div class="publish-warning" id="publishWarning" style="display:none">
+            <strong>Publication Gates Not Met:</strong>
+            <ul id="warningList"></ul>
+        </div>
+
+        <form id="recordForm" class="record-form">
+            <!-- Identity Section -->
+            <fieldset>
+                <legend>Identity</legend>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="call_sign">Call Sign *</label>
+                        <input type="text" id="call_sign" name="call_sign" required placeholder="e.g., Maverick">
+                    </div>
+                    <div class="form-group">
+                        <label for="id">ID (slug)</label>
+                        <div class="input-with-btn">
+                            <input type="text" id="id" name="id" placeholder="auto-generated" readonly>
+                            <button type="button" class="btn-small" id="slugifyBtn" title="Generate from call sign">Slugify</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="real_name">Real Name</label>
+                        <input type="text" id="real_name" name="real_name" placeholder="Optional - for private records">
+                    </div>
+                    <div class="form-group">
+                        <label for="branch">Branch</label>
+                        <select id="branch" name="branch">
+                            <option value="">Select...</option>
+                            <option value="Army">Army</option>
+                            <option value="Navy">Navy</option>
+                            <option value="Air Force">Air Force</option>
+                            <option value="Marines">Marines</option>
+                            <option value="Coast Guard">Coast Guard</option>
+                            <option value="Space Force">Space Force</option>
+                            <option value="National Guard">National Guard</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="era">Era</label>
+                        <input type="text" id="era" name="era" placeholder="e.g., OIF/OEF, Vietnam, Gulf War">
+                    </div>
+                    <div class="form-group">
+                        <label for="deployments">Deployments</label>
+                        <input type="text" id="deployments" name="deployments" placeholder="Comma-separated list">
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Classification Section -->
+            <fieldset>
+                <legend>Classification</legend>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="type">Type *</label>
+                        <select id="type" name="type" required>
+                            <option value="prospect">Prospect</option>
+                            <option value="case">Case</option>
+                            <option value="success">Success</option>
+                            <option value="alumni">Alumni</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="visibility">Visibility *</label>
+                        <select id="visibility" name="visibility" required>
+                            <option value="private">Private</option>
+                            <option value="public">Public</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status">
+                            <option value="">Select...</option>
+                            <option value="new">New</option>
+                            <option value="active">Active</option>
+                            <option value="pending">Pending</option>
+                            <option value="on-hold">On Hold</option>
+                            <option value="completed">Completed</option>
+                            <option value="closed">Closed</option>
+                            <option value="lost">Lost</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Contact Timeline Section -->
+            <fieldset>
+                <legend>Contact Timeline</legend>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first_contact">First Contact</label>
+                        <input type="date" id="first_contact" name="first_contact">
+                    </div>
+                    <div class="form-group">
+                        <label for="last_contact">Last Contact</label>
+                        <input type="date" id="last_contact" name="last_contact">
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Pipeline Section -->
+            <fieldset>
+                <legend>Pipeline</legend>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pipeline_stage">Stage</label>
+                        <select id="pipeline_stage" name="pipeline_stage">
+                            <option value="">Select...</option>
+                            <option value="intake">Intake</option>
+                            <option value="assessment">Assessment</option>
+                            <option value="documentation">Documentation</option>
+                            <option value="submission">Submission</option>
+                            <option value="review">Review</option>
+                            <option value="decision">Decision</option>
+                            <option value="appeals">Appeals</option>
+                            <option value="complete">Complete</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pipeline_next_action">Next Action</label>
+                        <input type="text" id="pipeline_next_action" name="pipeline_next_action" placeholder="What needs to happen next?">
+                    </div>
+                    <div class="form-group">
+                        <label for="pipeline_next_due">Next Due</label>
+                        <input type="date" id="pipeline_next_due" name="pipeline_next_due">
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Outcome Section -->
+            <fieldset>
+                <legend>Outcome</legend>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="outcome_rating">Rating</label>
+                        <input type="text" id="outcome_rating" name="outcome_rating" placeholder="e.g., 70%, 100%">
+                    </div>
+                    <div class="form-group">
+                        <label for="outcome_condition">Condition</label>
+                        <input type="text" id="outcome_condition" name="outcome_condition" placeholder="e.g., PTSD, TBI">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="outcome_decision_date">Decision Date</label>
+                        <input type="date" id="outcome_decision_date" name="outcome_decision_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="outcome_decision_time_days">Decision Time (days)</label>
+                        <input type="number" id="outcome_decision_time_days" name="outcome_decision_time_days" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="outcome_monthly_increase_usd">Monthly Increase (USD)</label>
+                        <input type="number" id="outcome_monthly_increase_usd" name="outcome_monthly_increase_usd" min="0" step="0.01">
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Impact Section -->
+            <fieldset>
+                <legend>Impact</legend>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="impact_dependents">Dependents</label>
+                        <input type="number" id="impact_dependents" name="impact_dependents" min="0" placeholder="Number of dependents">
+                    </div>
+                    <div class="form-group flex-2">
+                        <label for="impact_notes">Impact Notes</label>
+                        <input type="text" id="impact_notes" name="impact_notes" placeholder="Brief impact description">
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Tags & Redactions Section -->
+            <fieldset>
+                <legend>Tags & Redactions</legend>
+                <div class="form-group">
+                    <label for="tags">Tags</label>
+                    <div class="chip-input-container">
+                        <div class="chips" id="tagsChips"></div>
+                        <input type="text" id="tagsInput" placeholder="Type and press Enter to add">
+                    </div>
+                    <input type="hidden" id="tags" name="tags">
+                </div>
+                <div class="form-group">
+                    <label for="redactions">Redactions</label>
+                    <div class="chip-input-container">
+                        <div class="chips" id="redactionsChips"></div>
+                        <input type="text" id="redactionsInput" placeholder="Fields to redact in public view">
+                    </div>
+                    <input type="hidden" id="redactions" name="redactions">
+                </div>
+            </fieldset>
+
+            <!-- Public Display Section -->
+            <fieldset class="public-section" id="publicSection">
+                <legend>Public Display</legend>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="consent_to_share" name="consent_to_share">
+                        <span>Consent to Share</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="public_title">Public Title</label>
+                    <input type="text" id="public_title" name="public_title" placeholder="Title for public display">
+                </div>
+                <div class="form-group">
+                    <label for="public_blurb">Public Blurb</label>
+                    <textarea id="public_blurb" name="public_blurb" rows="3" placeholder="Brief summary for public display"></textarea>
+                </div>
+            </fieldset>
+
+            <!-- Narrative Section -->
+            <fieldset>
+                <legend>Narrative</legend>
+                <div class="form-group">
+                    <label for="narrative">Markdown Body</label>
+                    <textarea id="narrative" name="narrative" rows="12" placeholder="## Notes
+
+Write your detailed notes here in Markdown format...
+
+## Timeline
+
+- **Date**: Event description
+
+## Documents
+
+- [ ] Document 1
+- [ ] Document 2"></textarea>
+                </div>
+            </fieldset>
+
+            <!-- Export Actions -->
+            <div class="export-actions">
+                <button type="button" class="btn btn-primary" id="exportBtn">Download .md</button>
+                <button type="button" class="btn btn-secondary" id="copyBtn">Copy to Clipboard</button>
+                <button type="button" class="btn btn-secondary" id="previewBtn">Preview</button>
+                <button type="button" class="btn btn-save" id="saveDraftBtn">Save Draft</button>
+            </div>
+        </form>
+
+        <!-- Preview Modal -->
+        <div class="modal" id="previewModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Record Preview</h2>
+                    <button type="button" class="modal-close" id="closePreview">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <pre id="previewContent"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Ledger Record Builder</strong> &middot; /ledger/</p>
+        <p>Create and edit markdown ledger records. All data processed locally.</p>
+        <p class="copyright">MIT License &copy; njsr.org 2002-2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
