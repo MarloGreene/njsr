@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACU</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .acu {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 8px);
+            grid-template-rows: repeat(auto-fill, 8px);
+        }
+
+        .px {
+            width: 8px;
+            height: 8px;
+        }
+
+        /* ACU colors */
+        .c0 { background: #8a8a7a; } /* Urban Gray (dominant) */
+        .c1 { background: #7d7d6e; } /* Urban Gray Dark */
+        .c2 { background: #9a9a8a; } /* Urban Gray Light */
+        .c3 { background: #6b7c5e; } /* Foliage Green */
+        .c4 { background: #5c6d50; } /* Foliage Green Dark */
+        .c5 { background: #c4b99a; } /* Sand/Tan */
+        .c6 { background: #b5aa8c; } /* Sand Dark */
+        .c7 { background: #969684; } /* Transition Gray */
+    </style>
+</head>
+<body>
+    <div class="acu" id="acu"></div>
+    <script>
+        const acu = document.getElementById('acu');
+        const cols = Math.ceil(window.innerWidth / 8);
+        const rows = Math.ceil(window.innerHeight / 8);
+
+        // Weighted distribution for authentic ACU look
+        // Heavy on grays, lighter on green and sand
+        const weights = [
+            0, 0, 0, 0, 0,  // Urban Gray (dominant)
+            1, 1, 1,        // Urban Gray Dark
+            2, 2, 2,        // Urban Gray Light
+            3, 3,           // Foliage Green
+            4,              // Foliage Green Dark
+            5, 5,           // Sand
+            6,              // Sand Dark
+            7, 7, 7         // Transition Gray
+        ];
+
+        let html = '';
+        for (let i = 0; i < rows * cols; i++) {
+            const c = weights[Math.floor(Math.random() * weights.length)];
+            html += `<div class="px c${c}"></div>`;
+        }
+        acu.innerHTML = html;
+    </script>
+</body>
+</html>
