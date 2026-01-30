@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Jumpy Man</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game"></canvas>
+        <div id="ui">
+            <div id="score">0</div>
+            <div id="ui-buttons">
+                <button id="turbo-btn" title="Turbo (Hold Shift)">TURBO</button>
+                <button id="auto-run-btn" title="Toggle Auto-Run">AUTO</button>
+            </div>
+        </div>
+        <div id="touch-controls">
+            <button id="btn-left" class="touch-btn">&larr;</button>
+            <button id="btn-jump" class="touch-btn">&uarr;</button>
+            <button id="btn-right" class="touch-btn">&rarr;</button>
+        </div>
+        <div id="start-screen">
+            <h1>JUMPY MAN</h1>
+            <p>Arrow keys or WASD to move<br>Space or Up to jump<br>Hold Shift or triple-tap direction for turbo<br>Smash through walls!</p>
+            <p class="chill-note">No death, just vibes</p>
+            <button id="start-btn">START</button>
+        </div>
+        <div id="game-over" class="hidden">
+            <h2>CHILL</h2>
+            <p>Distance: <span id="final-score">0</span></p>
+            <button id="restart-btn">RESTART</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

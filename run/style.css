@@ -1,0 +1,221 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #1a1a2e;
+    overflow: hidden;
+    font-family: 'Courier New', monospace;
+    touch-action: none;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game {
+    background: linear-gradient(180deg, #16213e 0%, #1a1a2e 50%, #0f0f1a 100%);
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#ui {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+}
+
+#score {
+    font-size: 24px;
+    color: #e94560;
+    text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+    letter-spacing: 2px;
+}
+
+#ui-buttons {
+    display: flex;
+    gap: 10px;
+    pointer-events: auto;
+}
+
+#auto-run-btn, #turbo-btn {
+    background: transparent;
+    border: 2px solid #4a4a6a;
+    color: #4a4a6a;
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+}
+
+#auto-run-btn:hover, #turbo-btn:hover {
+    border-color: #e94560;
+    color: #e94560;
+}
+
+#auto-run-btn.active {
+    background: #e94560;
+    border-color: #e94560;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(233, 69, 96, 0.5);
+}
+
+#turbo-btn.active {
+    background: #ffcc00;
+    border-color: #ffcc00;
+    color: #1a1a2e;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+}
+
+#turbo-btn.active.locked {
+    animation: turbo-pulse 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes turbo-pulse {
+    from { box-shadow: 0 0 20px rgba(255, 204, 0, 0.6); }
+    to { box-shadow: 0 0 35px rgba(255, 204, 0, 0.9); }
+}
+
+#touch-controls {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    gap: 15px;
+}
+
+.touch-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(233, 69, 96, 0.2);
+    border: 2px solid rgba(233, 69, 96, 0.5);
+    color: #e94560;
+    font-size: 24px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.touch-btn:active {
+    background: rgba(233, 69, 96, 0.5);
+}
+
+#start-screen, #game-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 15, 26, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+    z-index: 10;
+}
+
+#start-screen h1 {
+    font-size: 72px;
+    color: #e94560;
+    text-shadow: 0 0 30px rgba(233, 69, 96, 0.8);
+    margin-bottom: 30px;
+    letter-spacing: 20px;
+}
+
+#game-over h2 {
+    font-size: 48px;
+    color: #e94560;
+    margin-bottom: 20px;
+}
+
+#start-screen p {
+    color: #8a8aa3;
+    line-height: 2;
+    margin-bottom: 20px;
+}
+
+.chill-note {
+    color: #ffcc00 !important;
+    font-style: italic;
+    margin-bottom: 30px !important;
+}
+
+#final-score {
+    color: #e94560;
+    font-size: 28px;
+}
+
+#start-btn, #restart-btn {
+    background: #e94560;
+    border: none;
+    color: #fff;
+    padding: 15px 50px;
+    font-family: inherit;
+    font-size: 18px;
+    cursor: pointer;
+    letter-spacing: 3px;
+    transition: all 0.2s;
+    margin-top: 20px;
+}
+
+#start-btn:hover, #restart-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(233, 69, 96, 0.6);
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media (pointer: coarse) {
+    #touch-controls {
+        display: flex;
+    }
+}
+
+@media (max-width: 600px) {
+    #start-screen h1 {
+        font-size: 48px;
+        letter-spacing: 10px;
+    }
+
+    #start-screen p {
+        font-size: 14px;
+        padding: 0 20px;
+    }
+
+    .touch-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
+    }
+
+    #ui-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    #auto-run-btn, #turbo-btn {
+        padding: 6px 12px;
+        font-size: 10px;
+    }
+}

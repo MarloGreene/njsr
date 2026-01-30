@@ -6,11 +6,15 @@ This document provides a comprehensive overview of all the web-based tools and a
 
 - **23 Questions Answered by The Book of Mormon** (23/): Educational scripture quiz
 
+- **acu** (acu/): Tool description needed
+
 - **Book of Mormon Reader** (bom/): A web-based scripture reader for The Book of Mormon
 
 - **Book of Mormon Random Image Viewer** (bomr/): Random reverent imagery from The Book of Mormon
 
 - **Buddy Letter Assistant** (buddy/): VA PTSD claim support letter generator
+
+- **c3** (c3/): Tool description needed
 
 - **Calendar** (cal/): Simple yearly calendar display
 
@@ -22,6 +26,8 @@ This document provides a comprehensive overview of all the web-based tools and a
 
 - **Countdown Timer** (countdown/): Event countdown with date/time setting
 
+- **deck** (deck/): Tool description needed
+
 - **Dice Roller** (dice/): Polyhedral dice simulator with drag-and-drop tower
 
 - **Photo Portfolio** (foto/): Image gallery with zoom and grid controls
@@ -29,6 +35,8 @@ This document provides a comprehensive overview of all the web-based tools and a
 - **IP Information Dashboard** (ip/): Network and browser fingerprinting info
 
 - **Network Information** (ip2/): IPv4/IPv6 address details
+
+- **ledger** (ledger/): Tool description needed
 
 - **Lightning Fast Scripture Search** (lfss/): High-performance scripture search engine
 
@@ -44,9 +52,13 @@ This document provides a comprehensive overview of all the web-based tools and a
 
 - **QR Code Generator** (qr/): Custom QR code creation and download
 
+- **quote** (quote/): Tool description needed
+
 - **Random Generator** (rand/): Random numbers, passwords, and passphrases
 
 - **Random Password Generator** (rng/): Secure password creation
+
+- **Jumpy Man** (run/): Chill 2D platformer with wall-smashing and turbo mode
 
 - **Dynamic Soundboard** (sb/): PHP-powered audio clip player
 
@@ -84,4 +96,4 @@ This document provides a comprehensive overview of all the web-based tools and a
 - **tmp/**: Temporary directory
 - **work/**: Work-in-progress files
 
-*Last updated: 2026-01-28*
+*Last updated: 2026-01-30*
