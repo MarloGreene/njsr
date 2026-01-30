@@ -9,8 +9,18 @@
 <body>
     <div id="game-container">
         <canvas id="game"></canvas>
+        <div id="controls-hint">
+            <span><kbd>←→</kbd> move</span>
+            <span><kbd>↑</kbd><kbd>space</kbd> jump</span>
+            <span><kbd>shift</kbd> turbo</span>
+            <span>3× tap = instant turbo</span>
+            <span>hold = build speed</span>
+        </div>
         <div id="ui">
-            <div id="score">0</div>
+            <div id="score-area">
+                <div id="score">0</div>
+                <div id="speed-indicator" class="speed-tier tier-run">RUN</div>
+            </div>
             <div id="ui-buttons">
                 <button id="turbo-btn" title="Turbo (Hold Shift)">TURBO</button>
                 <button id="auto-run-btn" title="Toggle Auto-Run">AUTO</button>
@@ -23,7 +33,7 @@
         </div>
         <div id="start-screen">
             <h1>JUMPY MAN</h1>
-            <p>Arrow keys or WASD to move<br>Space or Up to jump<br>Hold Shift or triple-tap direction for turbo<br>Smash through walls!</p>
+            <p>Arrow keys or WASD to move<br>Space or Up to jump<br>Hold direction to build speed<br>Shift or 3× tap for instant turbo</p>
             <p class="chill-note">No death, just vibes</p>
             <button id="start-btn">START</button>
         </div>

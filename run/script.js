@@ -7,8 +7,14 @@ const FRICTION = 0.85;
 const JUMP_FORCE = -14;
 const MOVE_SPEED = 0.8;
 const MAX_SPEED = 6;
-const TURBO_MULTIPLIER = 2.5;
 const TILE_SIZE = 40;
+
+// Speed tiers (multipliers)
+const SPEED_TIERS = [
+    { name: 'run', mult: 1.0, threshold: 0 },
+    { name: 'fast', mult: 1.6, threshold: 1000 },    // 1 second
+    { name: 'turbo', mult: 2.5, threshold: 2000 }    // 2 seconds
+];
 
 // Game state
 let gameRunning = false;
@@ -48,6 +54,11 @@ const tapTracker = {
     right: { times: [], turboLocked: false }
 };
 const TAP_WINDOW = 400; // ms window for triple-tap
+
+// Hold-to-accelerate tracking
+let directionHoldStart = 0;
+let currentSpeedTier = 0;
+let instantTurbo = false; // For shift key or triple-tap
 
 // Level generation - chill version, no hazards
 function generateChunk(startX) {
@@ -184,11 +195,49 @@ function checkCollision(rect1, rect2) {
            rect1.y + rect1.height > rect2.y;
 }
 
+function getSpeedMultiplier() {
+    // Instant turbo (shift or triple-tap) overrides hold-based tiers
+    if (instantTurbo) return SPEED_TIERS[2].mult;
+
+    if (directionHoldStart === 0) return 1;
+
+    const holdTime = Date.now() - directionHoldStart;
+
+    // Find the highest tier we've reached
+    let tier = 0;
+    for (let i = SPEED_TIERS.length - 1; i >= 0; i--) {
+        if (holdTime >= SPEED_TIERS[i].threshold) {
+            tier = i;
+            break;
+        }
+    }
+
+    // Update UI if tier changed
+    if (tier !== currentSpeedTier) {
+        currentSpeedTier = tier;
+        updateSpeedIndicator();
+    }
+
+    return SPEED_TIERS[tier].mult;
+}
+
+function updateSpeedIndicator() {
+    const indicator = document.getElementById('speed-indicator');
+    const tierName = SPEED_TIERS[currentSpeedTier].name;
+    indicator.textContent = tierName.toUpperCase();
+    indicator.className = 'speed-tier tier-' + tierName;
+
+    // Also update turbo button state for visual consistency
+    const turboBtn = document.getElementById('turbo-btn');
+    turboBtn.classList.toggle('active', currentSpeedTier === 2 || instantTurbo);
+}
+
 function update() {
     if (!gameRunning) return;
 
-    const speedMult = turboMode ? TURBO_MULTIPLIER : 1;
+    const speedMult = getSpeedMultiplier();
     const currentMaxSpeed = MAX_SPEED * speedMult;
+    turboMode = speedMult >= SPEED_TIERS[2].mult; // For particle effects etc
 
     // Input handling
     let moveDir = 0;
@@ -462,6 +511,10 @@ function startGame() {
     document.getElementById('start-screen').classList.add('hidden');
     document.getElementById('game-over').classList.add('hidden');
     init();
+    directionHoldStart = 0;
+    currentSpeedTier = 0;
+    instantTurbo = false;
+    updateSpeedIndicator();
     gameRunning = true;
 }
 
@@ -503,17 +556,20 @@ document.addEventListener('keydown', (e) => {
     if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
         keys.left = true;
         checkTripleTap('left');
+        if (directionHoldStart === 0) directionHoldStart = Date.now();
     }
     if (e.code === 'ArrowRight' || e.code === 'KeyD') {
         keys.right = true;
         checkTripleTap('right');
+        if (directionHoldStart === 0) directionHoldStart = Date.now();
     }
     if (e.code === 'ArrowUp' || e.code === 'KeyW' || e.code === 'Space') {
         keys.jump = true;
         e.preventDefault();
     }
     if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
-        setTurbo(true);
+        instantTurbo = true;
+        updateSpeedIndicator();
     }
 });
 
@@ -521,16 +577,27 @@ document.addEventListener('keyup', (e) => {
     if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
         keys.left = false;
         releaseTurboLock('left');
+        if (!keys.right) {
+            directionHoldStart = 0;
+            currentSpeedTier = 0;
+            updateSpeedIndicator();
+        }
     }
     if (e.code === 'ArrowRight' || e.code === 'KeyD') {
         keys.right = false;
         releaseTurboLock('right');
+        if (!keys.left) {
+            directionHoldStart = 0;
+            currentSpeedTier = 0;
+            updateSpeedIndicator();
+        }
     }
     if (e.code === 'ArrowUp' || e.code === 'KeyW' || e.code === 'Space') keys.jump = false;
     if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
         // Only release if not locked by triple-tap
         if (!tapTracker.left.turboLocked && !tapTracker.right.turboLocked) {
-            setTurbo(false);
+            instantTurbo = false;
+            updateSpeedIndicator();
         }
     }
 });
@@ -554,10 +621,11 @@ function toggleAutoRun() {
 }
 
 function setTurbo(active, locked = false) {
-    turboMode = active;
+    instantTurbo = active;
     const btn = document.getElementById('turbo-btn');
     btn.classList.toggle('active', active);
     btn.classList.toggle('locked', active && locked);
+    updateSpeedIndicator();
 }
 
 document.getElementById('auto-run-btn').addEventListener('click', toggleAutoRun);
