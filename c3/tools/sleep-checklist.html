@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep Disruption Checklist | Charlie Company Cooperative</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f5f5f5;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header {
+            border-bottom: 3px solid #1a1a1a;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .intro {
+            background: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #333;
+        }
+
+        .intro p {
+            font-size: 0.95rem;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .intro p:last-child {
+            margin-bottom: 0;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .checklist-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+            page-break-inside: avoid;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #333;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .item-text {
+            flex: 1;
+        }
+
+        .item-text strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .item-text span {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .tracker {
+            margin: 40px 0;
+            page-break-inside: avoid;
+        }
+
+        .tracker h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .tracker-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tracker-table th,
+        .tracker-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .tracker-table th {
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+
+        .tracker-table td {
+            height: 40px;
+        }
+
+        .action-box {
+            background: #f0f0f0;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        .action-box h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .action-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .action-item:last-child {
+            margin-bottom: 0;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .print-btn:hover {
+            background: #333;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 30px;
+                max-width: 100%;
+            }
+
+            .print-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sleep Disruption Checklist</h1>
+            <p class="subtitle">Charlie Company Cooperative</p>
+        </header>
+
+        <div class="intro">
+            <p><strong>Why this matters:</strong> Sleep is the foundation. Without it, every other system struggles to recover. Combat-related sleep disruption isn't just "bad sleep" — it's your nervous system refusing to stand down.</p>
+            <p>Check any patterns that apply to you. Track your sleep for one week. Use this data to identify what's actually happening.</p>
+        </div>
+
+        <h2>Sleep Onset (Getting to Sleep)</h2>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Racing thoughts at bedtime</strong>
+                <span>Mind won't quiet down. Replaying events, planning, worrying.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Physical tension</strong>
+                <span>Body won't relax. Jaw clenched, shoulders tight, can't get comfortable.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Hypervigilance at night</strong>
+                <span>Listening for sounds. Checking doors/windows. Can't let guard down.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Avoiding sleep</strong>
+                <span>Staying up late intentionally. Dreading the attempt to sleep.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Need substances to sleep</strong>
+                <span>Alcohol, cannabis, sleep meds, or other aids to shut down.</span>
+            </div>
+        </div>
+
+        <h2>Sleep Maintenance (Staying Asleep)</h2>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Waking multiple times per night</strong>
+                <span>Light sleep. Every noise wakes you. Never feel deeply asleep.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Waking in panic or alert</strong>
+                <span>Heart racing, scanning the room, ready to respond to a threat.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Nightmares</strong>
+                <span>Combat-related dreams. Themes of threat, loss, helplessness.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Night sweats</strong>
+                <span>Waking drenched. Sheets soaked. Happens regularly.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Sleep talking or physical movement</strong>
+                <span>Spouse reports you talk, yell, punch, kick, or thrash.</span>
+            </div>
+        </div>
+
+        <h2>Sleep Quality & Daytime Effects</h2>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Waking exhausted</strong>
+                <span>Doesn't matter how long you slept. Never feel rested.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Daytime fatigue</strong>
+                <span>Dragging through the day. Coffee barely helps.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Irritability from poor sleep</strong>
+                <span>Short fuse directly connected to bad nights.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Difficulty concentrating</strong>
+                <span>Brain fog. Memory issues. Can't focus.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Napping to compensate</strong>
+                <span>Crashing during the day because nights are useless.</span>
+            </div>
+        </div>
+
+        <div class="tracker">
+            <h3>7-Day Sleep Tracker</h3>
+            <table class="tracker-table">
+                <tr>
+                    <th>Date</th>
+                    <th>Bed Time</th>
+                    <th>Wake Time</th>
+                    <th>Times Woke</th>
+                    <th>Nightmare?</th>
+                    <th>Quality (1-5)</th>
+                </tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            </table>
+        </div>
+
+        <div class="action-box">
+            <h3>Evidence-Based Sleep Actions</h3>
+            <div class="action-item">
+                <span class="checkbox"></span>
+                <span>Set consistent wake time (even weekends)</span>
+            </div>
+            <div class="action-item">
+                <span class="checkbox"></span>
+                <span>No screens 1 hour before bed</span>
+            </div>
+            <div class="action-item">
+                <span class="checkbox"></span>
+                <span>Room completely dark (blackout curtains)</span>
+            </div>
+            <div class="action-item">
+                <span class="checkbox"></span>
+                <span>Room cool (65-68°F)</span>
+            </div>
+            <div class="action-item">
+                <span class="checkbox"></span>
+                <span>No caffeine after 2pm</span>
+            </div>
+            <div class="action-item">
+                <span class="checkbox"></span>
+                <span>Physical exercise (not within 3 hours of bed)</span>
+            </div>
+            <div class="action-item">
+                <span class="checkbox"></span>
+                <span>If awake 20+ min, get up briefly, then return</span>
+            </div>
+            <div class="action-item">
+                <span class="checkbox"></span>
+                <span>Consider: Prazosin (Rx) for nightmares — ask your provider</span>
+            </div>
+        </div>
+
+        <footer>
+            <p>Charlie Company Cooperative — charliecompany.org</p>
+            <p>Track this for one week. Bring it to your provider if you have one.</p>
+        </footer>
+    </div>
+
+    <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+</body>
+</html>

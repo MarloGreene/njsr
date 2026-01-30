@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversation Guide: Talking to Your Spouse | Charlie Company Cooperative</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #f5f5f5;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header {
+            border-bottom: 3px solid #1a1a1a;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .intro {
+            background: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #333;
+        }
+
+        .intro p {
+            font-size: 0.95rem;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .intro p:last-child {
+            margin-bottom: 0;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 35px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .script-box {
+            background: #f5f5f5;
+            border-left: 4px solid #666;
+            padding: 20px;
+            margin: 20px 0;
+            font-style: italic;
+        }
+
+        .script-box p {
+            margin-bottom: 12px;
+            color: #444;
+        }
+
+        .script-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .do-dont {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .do-box, .dont-box {
+            padding: 20px;
+        }
+
+        .do-box {
+            background: #e8f5e9;
+            border-top: 3px solid #4caf50;
+        }
+
+        .dont-box {
+            background: #ffebee;
+            border-top: 3px solid #f44336;
+        }
+
+        .do-box h4, .dont-box h4 {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .do-box h4 {
+            color: #2e7d32;
+        }
+
+        .dont-box h4 {
+            color: #c62828;
+        }
+
+        .do-box ul, .dont-box ul {
+            list-style: none;
+            font-size: 0.9rem;
+        }
+
+        .do-box li, .dont-box li {
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .do-box li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+        }
+
+        .dont-box li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: #f44336;
+        }
+
+        .topic-block {
+            background: #fafafa;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #eee;
+        }
+
+        .topic-block h4 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .topic-block p {
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+
+        .for-spouse {
+            background: #e3f2fd;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 4px solid #1976d2;
+        }
+
+        .for-spouse h3 {
+            font-size: 1rem;
+            color: #1565c0;
+            margin-bottom: 15px;
+        }
+
+        .for-spouse p {
+            font-size: 0.95rem;
+            color: #444;
+        }
+
+        .for-spouse ul {
+            margin-left: 20px;
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+
+        .for-spouse li {
+            margin-bottom: 8px;
+        }
+
+        .fill-section {
+            margin: 25px 0;
+        }
+
+        .fill-item {
+            margin-bottom: 15px;
+        }
+
+        .fill-item label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .fill-box {
+            border: 1px solid #ccc;
+            min-height: 80px;
+            padding: 10px;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .print-btn:hover {
+            background: #333;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 30px;
+                max-width: 100%;
+            }
+
+            .print-btn {
+                display: none;
+            }
+
+            .do-dont {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .do-dont {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Talking to Your Spouse About What's Happening</h1>
+            <p class="subtitle">Charlie Company Cooperative</p>
+        </header>
+
+        <div class="intro">
+            <p>She knows something is different. She may not have the words for it. You may not have the words for it either. But the distance is real, and silence makes it worse.</p>
+            <p>This guide is for starting the conversation — not fixing everything in one talk. Just opening the door.</p>
+        </div>
+
+        <h2>Before You Start</h2>
+
+        <p>Pick the right time. Not during an argument. Not when the kids are around. Not when either of you is exhausted. Find a quiet moment — maybe a drive, a walk, or after dinner when the house is calm.</p>
+
+        <p>You don't have to have everything figured out. You're not delivering a diagnosis. You're letting her in.</p>
+
+        <h2>Opening the Conversation</h2>
+
+        <p>You don't need a perfect script. But having some words ready helps. Here are some ways to start:</p>
+
+        <div class="script-box">
+            <p>"I've been reading some stuff about what happens to guys after deployment, and... a lot of it sounds like me. I wanted to talk to you about it."</p>
+        </div>
+
+        <div class="script-box">
+            <p>"I know I've been different since I got back. I haven't really known how to explain it. But I'm trying to understand it now, and I want you to know what's going on."</p>
+        </div>
+
+        <div class="script-box">
+            <p>"There's some stuff I've been carrying that I haven't talked about. Not because I don't trust you — because I didn't have the words. I'm trying to find them."</p>
+        </div>
+
+        <h2>What to Say (and What Not to Say)</h2>
+
+        <div class="do-dont">
+            <div class="do-box">
+                <h4>Try This</h4>
+                <ul>
+                    <li>"I'm working on understanding this"</li>
+                    <li>"It's not about you"</li>
+                    <li>"I want you to know what's happening with me"</li>
+                    <li>"I don't have all the answers yet"</li>
+                    <li>"I'm not asking you to fix it"</li>
+                    <li>"Here's what helps..." (if you know)</li>
+                </ul>
+            </div>
+            <div class="dont-box">
+                <h4>Avoid This</h4>
+                <ul>
+                    <li>"You wouldn't understand"</li>
+                    <li>"It's nothing"</li>
+                    <li>"I'm fine" (when you're not)</li>
+                    <li>"Just leave me alone"</li>
+                    <li>War stories as a way to shock</li>
+                    <li>Making her responsible for your healing</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Topics to Cover</h2>
+
+        <div class="topic-block">
+            <h4>Your Sleep</h4>
+            <p>"I don't sleep well. It's not insomnia — it's that my brain won't fully stand down. Sometimes there are nightmares. That's why I [get up at night / sleep on the couch / seem tired]."</p>
+        </div>
+
+        <div class="topic-block">
+            <h4>Your Reactions</h4>
+            <p>"Sometimes I react to things that don't make sense — loud noises, crowds, certain situations. It's not rational, and I know that. My body learned to stay on high alert, and it hasn't fully switched off."</p>
+        </div>
+
+        <div class="topic-block">
+            <h4>Your Distance</h4>
+            <p>"When I shut down or go quiet, it's not about you. It's me trying to manage what's happening inside. I'm not pushing you away — I just don't always know how to be present."</p>
+        </div>
+
+        <div class="topic-block">
+            <h4>Specific Needs</h4>
+            <p>If you know what helps, share it: "It helps when you don't approach me from behind." "I need a few minutes to decompress when I get home." "Fireworks are hard — can we stay in on the 4th?"</p>
+        </div>
+
+        <h2>What You're Not Asking Her to Do</h2>
+
+        <p>Be clear: You're not asking her to be your therapist. You're not asking her to "fix" you. You're not making her responsible for your healing.</p>
+
+        <p>You're asking her to understand — not to carry it.</p>
+
+        <div class="script-box">
+            <p>"I'm not asking you to solve this. I just want you to know what's real. And I want us to figure out how to handle it together."</p>
+        </div>
+
+        <div class="for-spouse">
+            <h3>A Note for Spouses (You Can Share This Section)</h3>
+            <p>If your husband gave you this guide, he's trying. That's not nothing.</p>
+            <p>What he's describing isn't weakness, and it isn't about you. His nervous system adapted to survive combat, and those adaptations don't just turn off when the deployment ends.</p>
+            <p><strong>What helps:</strong></p>
+            <ul>
+                <li>Don't take the distance personally — it's not rejection</li>
+                <li>Learn his specific triggers so you can avoid accidental activation</li>
+                <li>Give him space when he needs it, without punishment</li>
+                <li>Don't require him to talk about combat — let him share at his pace</li>
+                <li>Encourage professional help without demanding it</li>
+                <li>Take care of yourself too — caregiver fatigue is real</li>
+            </ul>
+            <p style="margin-top: 15px;">Resources for spouses: <strong>Give an Hour</strong> (free counseling), <strong>Blue Star Families</strong>, <strong>Military OneSource</strong></p>
+        </div>
+
+        <h2>After the Conversation</h2>
+
+        <p>One conversation won't fix everything. But it opens a door. After you talk:</p>
+
+        <ul style="margin-left: 20px; margin-bottom: 20px;">
+            <li style="margin-bottom: 8px;">Give her time to process</li>
+            <li style="margin-bottom: 8px;">Don't expect an immediate "right" response</li>
+            <li style="margin-bottom: 8px;">Check in again in a few days</li>
+            <li style="margin-bottom: 8px;">Thank her for listening</li>
+            <li style="margin-bottom: 8px;">Keep the door open — this is the beginning, not the end</li>
+        </ul>
+
+        <h2>Write Down Your Version</h2>
+
+        <div class="fill-section">
+            <div class="fill-item">
+                <label>What I most want her to understand:</label>
+                <div class="fill-box"></div>
+            </div>
+            <div class="fill-item">
+                <label>What I need from her (be specific):</label>
+                <div class="fill-box"></div>
+            </div>
+            <div class="fill-item">
+                <label>What I don't want her to worry about:</label>
+                <div class="fill-box"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Charlie Company Cooperative — charliecompany.org</p>
+            <p>She married a warrior. Let her know what that means now.</p>
+        </footer>
+    </div>
+
+    <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+</body>
+</html>

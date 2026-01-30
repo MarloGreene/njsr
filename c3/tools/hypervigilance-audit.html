@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypervigilance Audit | Charlie Company Cooperative</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f5f5f5;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header {
+            border-bottom: 3px solid #1a1a1a;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .intro {
+            background: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #333;
+        }
+
+        .intro p {
+            font-size: 0.95rem;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .intro p:last-child {
+            margin-bottom: 0;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .audit-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 18px;
+            page-break-inside: avoid;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #333;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-content strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .item-content p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .trigger-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .trigger-line span {
+            color: #333;
+        }
+
+        .fill-line {
+            flex: 1;
+            border-bottom: 1px solid #ccc;
+            min-width: 100px;
+        }
+
+        .mapping-section {
+            background: #f9f9f9;
+            padding: 25px;
+            margin: 40px 0;
+        }
+
+        .mapping-section h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .mapping-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .mapping-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .mapping-item label {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .mapping-item .fill-box {
+            border: 1px solid #ccc;
+            height: 60px;
+            background: white;
+        }
+
+        .reframe-box {
+            background: #f0f0f0;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        .reframe-box h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .reframe-box p {
+            font-size: 0.95rem;
+            color: #444;
+            margin-bottom: 12px;
+        }
+
+        .reframe-list {
+            list-style: none;
+        }
+
+        .reframe-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            font-size: 0.95rem;
+        }
+
+        .reframe-list li:last-child {
+            border-bottom: none;
+        }
+
+        .reframe-list strong {
+            color: #1a1a1a;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .print-btn:hover {
+            background: #333;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 30px;
+                max-width: 100%;
+            }
+
+            .print-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hypervigilance Audit</h1>
+            <p class="subtitle">Charlie Company Cooperative</p>
+        </header>
+
+        <div class="intro">
+            <p><strong>What this is:</strong> Hypervigilance kept you alive in combat. It's your nervous system running threat detection at maximum sensitivity. The problem isn't that you have it — it's that it doesn't know when to turn off.</p>
+            <p>This audit helps you map your specific patterns. Awareness is the first step to recalibration.</p>
+        </div>
+
+        <h2>Environmental Scanning</h2>
+
+        <div class="audit-item">
+            <span class="checkbox"></span>
+            <div class="item-content">
+                <strong>Seating position awareness</strong>
+                <p>Always sit with back to wall. Need to see exits. Uncomfortable otherwise.</p>
+                <div class="trigger-line">
+                    <span>Worst in:</span>
+                    <div class="fill-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="audit-item">
+            <span class="checkbox"></span>
+            <div class="item-content">
+                <strong>Exit mapping</strong>
+                <p>Automatically identify exits when entering any space. Know your route out.</p>
+                <div class="trigger-line">
+                    <span>Worst in:</span>
+                    <div class="fill-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="audit-item">
+            <span class="checkbox"></span>
+            <div class="item-content">
+                <strong>Crowd scanning</strong>
+                <p>Watching hands, faces, body language. Looking for threats in crowds.</p>
+                <div class="trigger-line">
+                    <span>Worst in:</span>
+                    <div class="fill-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="audit-item">
+            <span class="checkbox"></span>
+            <div class="item-content">
+                <strong>Vehicle awareness</strong>
+                <p>Scanning parked cars, watching for VBIEDs, uncomfortable in traffic.</p>
+                <div class="trigger-line">
+                    <span>Worst in:</span>
+                    <div class="fill-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Startle & Reactivity</h2>
+
+        <div class="audit-item">
+            <span class="checkbox"></span>
+            <div class="item-content">
+                <strong>Exaggerated startle response</strong>
+                <p>Loud noises cause physical jump, heart racing, combat posture.</p>
+                <div class="trigger-line">
+                    <span>Triggered by:</span>
+                    <div class="fill-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="audit-item">
+            <span class="checkbox"></span>
+            <div class="item-content">
+                <strong>Fireworks / gunfire sounds</strong>
+                <p>Fourth of July, hunting season, car backfires. Immediate stress response.</p>
+                <div class="trigger-line">
+                    <span>Coping strategy:</span>
+                    <div class="fill-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="audit-item">
+            <span class="checkbox"></span>
+            <div class="item-content">
+                <strong>Helicopters / aircraft</strong>
+                <p>Sound of rotors or low-flying aircraft triggers alertness or memories.</p>
+                <div class="trigger-line">
+                    <span>Reaction level (1-10):</span>
+                    <div class="fill-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="audit-item">
+            <span class="checkbox"></span>
+            <div class="item-content">
+                <strong>Being approached from behind</strong>
+                <p>Spouse, kids, coworkers approaching from behind triggers defensive response.</p>
+                <div class="trigger-line">
+                    <span>Have discussed with family:</span>
+                    <div class="fill-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Sleep & Home Security</h2>
+
+        <div class="audit-item">
+            <span class="checkbox"></span>
+            <div class="item-content">
+                <strong>Multiple door/window checks</strong>
+                <p>Checking locks repeatedly before sleep. Can't rest until perimeter is secure.</p>
+            </div>
+        </div>
+
+        <div class="audit-item">
+            <span class="checkbox"></span>
+            <div class="item-content">
+                <strong>Weapon within reach at night</strong>
+                <p>Firearm or other weapon accessible while sleeping. Feel unsafe without it.</p>
+            </div>
+        </div>
+
+        <div class="audit-item">
+            <span class="checkbox"></span>
+            <div class="item-content">
+                <strong>Light sleeping / easily woken</strong>
+                <p>Any noise brings you to full alert. Never fully unconscious.</p>
+            </div>
+        </div>
+
+        <div class="audit-item">
+            <span class="checkbox"></span>
+            <div class="item-content">
+                <strong>Home security systems / cameras</strong>
+                <p>Extensive security setup. Checking cameras frequently.</p>
+            </div>
+        </div>
+
+        <div class="mapping-section">
+            <h3>Your Top 3 Triggers</h3>
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">What situations consistently activate your hypervigilance the most?</p>
+            <div class="mapping-grid">
+                <div class="mapping-item">
+                    <label>1. Situation/Trigger</label>
+                    <div class="fill-box"></div>
+                </div>
+                <div class="mapping-item">
+                    <label>1. Physical Response</label>
+                    <div class="fill-box"></div>
+                </div>
+                <div class="mapping-item">
+                    <label>2. Situation/Trigger</label>
+                    <div class="fill-box"></div>
+                </div>
+                <div class="mapping-item">
+                    <label>2. Physical Response</label>
+                    <div class="fill-box"></div>
+                </div>
+                <div class="mapping-item">
+                    <label>3. Situation/Trigger</label>
+                    <div class="fill-box"></div>
+                </div>
+                <div class="mapping-item">
+                    <label>3. Physical Response</label>
+                    <div class="fill-box"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="reframe-box">
+            <h3>Reframe: This Is Training, Not Damage</h3>
+            <p>Your hypervigilance is your nervous system doing exactly what it was trained to do. The problem isn't that you're broken — it's that the software is still running combat protocols in a non-combat environment.</p>
+            <p><strong>Recalibration strategies:</strong></p>
+            <ul class="reframe-list">
+                <li><strong>Grounding:</strong> When triggered, name 5 things you can see. Feel your feet on the floor. You're here, not there.</li>
+                <li><strong>Communicate:</strong> Tell your spouse/family your patterns so they can adapt (don't approach from behind, etc.)</li>
+                <li><strong>Controlled exposure:</strong> Gradually expose yourself to triggering environments in safe, controlled ways.</li>
+                <li><strong>Physical reset:</strong> When activated, cold water on face, slow exhale, or brief intense exercise can reset the nervous system.</li>
+                <li><strong>Professional support:</strong> EMDR and CPT have strong evidence for reducing hypervigilance specifically.</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>Charlie Company Cooperative — charliecompany.org</p>
+            <p>Awareness is step one. You can't recalibrate what you haven't mapped.</p>
+        </footer>
+    </div>
+
+    <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+</body>
+</html>

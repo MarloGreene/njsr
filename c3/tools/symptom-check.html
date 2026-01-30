@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTSD Symptom Self-Check | Charlie Company Cooperative</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f5f5f5;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header {
+            border-bottom: 3px solid #1a1a1a;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .intro {
+            background: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #333;
+        }
+
+        .intro p {
+            font-size: 0.95rem;
+            color: #444;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+
+        .question-text {
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #333;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .notes-section {
+            margin-top: 40px;
+        }
+
+        .notes-box {
+            border: 1px solid #ccc;
+            min-height: 120px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .scoring {
+            background: #f0f0f0;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        .scoring h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .scoring-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .score-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .scoring p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .print-btn:hover {
+            background: #333;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 30px;
+                max-width: 100%;
+            }
+
+            .print-btn {
+                display: none;
+            }
+
+            .question {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PTSD Symptom Self-Check</h1>
+            <p class="subtitle">Charlie Company Cooperative</p>
+        </header>
+
+        <div class="intro">
+            <p><strong>Instructions:</strong> For each question, check the box that best describes your experience over the past month. This is not a diagnosis — it's a starting point for self-awareness. Answer honestly. No one sees this but you.</p>
+        </div>
+
+        <h2>Re-Experiencing</h2>
+
+        <div class="question">
+            <p class="question-text">1. Unwanted memories of deployment that come out of nowhere</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">2. Nightmares or disturbing dreams related to service</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">3. Flashbacks — feeling like you're back in that moment</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">4. Physical reactions to reminders (heart racing, sweating, tension)</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <h2>Avoidance</h2>
+
+        <div class="question">
+            <p class="question-text">5. Avoiding thoughts or feelings related to deployment</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">6. Avoiding places, people, or activities that trigger memories</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <h2>Negative Changes in Mood/Cognition</h2>
+
+        <div class="question">
+            <p class="question-text">7. Difficulty remembering important parts of traumatic events</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">8. Negative beliefs about yourself or the world ("I'm broken," "No one can be trusted")</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">9. Blaming yourself for what happened</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">10. Persistent negative emotions (fear, anger, guilt, shame)</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">11. Loss of interest in activities you used to enjoy</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">12. Feeling detached or cut off from others</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">13. Difficulty experiencing positive emotions (happiness, love, satisfaction)</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <h2>Arousal and Reactivity</h2>
+
+        <div class="question">
+            <p class="question-text">14. Irritability or angry outbursts</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">15. Reckless or self-destructive behavior</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">16. Hypervigilance — always on guard, scanning for threats</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">17. Exaggerated startle response</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">18. Difficulty concentrating</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p class="question-text">19. Sleep problems (trouble falling asleep, staying asleep, or restless sleep)</p>
+            <div class="options">
+                <label class="option"><span class="checkbox"></span> Never</label>
+                <label class="option"><span class="checkbox"></span> Rarely</label>
+                <label class="option"><span class="checkbox"></span> Sometimes</label>
+                <label class="option"><span class="checkbox"></span> Often</label>
+            </div>
+        </div>
+
+        <div class="scoring">
+            <h3>Scoring</h3>
+            <div class="scoring-grid">
+                <div class="score-item">
+                    <div class="score-label">Never</div>
+                    <div class="score-value">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Rarely</div>
+                    <div class="score-value">1</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Sometimes</div>
+                    <div class="score-value">2</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Often</div>
+                    <div class="score-value">3</div>
+                </div>
+            </div>
+            <p><strong>Total Score:</strong> _____ / 57</p>
+            <p style="margin-top: 15px;">This is not a clinical diagnosis. If you scored above 30, or if several items are "Often," consider speaking with someone who understands combat trauma. The symptoms you're experiencing are real, explainable, and addressable.</p>
+        </div>
+
+        <div class="notes-section">
+            <h2>Notes</h2>
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">Anything you want to remember, patterns you noticed, or questions to ask:</p>
+            <div class="notes-box"></div>
+        </div>
+
+        <footer>
+            <p>Charlie Company Cooperative — charliecompany.org</p>
+            <p>This worksheet is for personal use. Not a substitute for professional evaluation.</p>
+        </footer>
+    </div>
+
+    <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+</body>
+</html>

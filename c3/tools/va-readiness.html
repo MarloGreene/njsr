@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VA Claim Readiness Checklist | Charlie Company Cooperative</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f5f5f5;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header {
+            border-bottom: 3px solid #1a1a1a;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .intro {
+            background: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #333;
+        }
+
+        .intro p {
+            font-size: 0.95rem;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .intro p:last-child {
+            margin-bottom: 0;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .checklist-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+            page-break-inside: avoid;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #333;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .item-text {
+            flex: 1;
+        }
+
+        .item-text strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .item-text span {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .note-box {
+            background: #fff8dc;
+            border: 1px solid #daa520;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .note-box strong {
+            color: #8b6914;
+        }
+
+        .info-box {
+            background: #f0f0f0;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .info-box h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .info-box p {
+            font-size: 0.95rem;
+            color: #444;
+            margin-bottom: 12px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            font-size: 0.95rem;
+            color: #444;
+        }
+
+        .info-box li {
+            margin-bottom: 8px;
+        }
+
+        .timeline {
+            border-left: 3px solid #333;
+            padding-left: 25px;
+            margin: 30px 0;
+        }
+
+        .timeline-item {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            background: white;
+            border: 3px solid #333;
+            border-radius: 50%;
+        }
+
+        .timeline-item h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .timeline-item p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .fill-section {
+            margin: 30px 0;
+        }
+
+        .fill-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .fill-item {
+            flex: 1;
+        }
+
+        .fill-item label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .fill-line {
+            border: none;
+            border-bottom: 1px solid #999;
+            height: 25px;
+            display: block;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .print-btn:hover {
+            background: #333;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 30px;
+                max-width: 100%;
+            }
+
+            .print-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>VA Claim Readiness Checklist</h1>
+            <p class="subtitle">Charlie Company Cooperative</p>
+        </header>
+
+        <div class="intro">
+            <p><strong>The reality:</strong> You earned these benefits through service. Filing a VA disability claim isn't asking for a handout — it's documenting service-connected injuries and receiving the compensation you're entitled to.</p>
+            <p>This checklist covers what you need to file a strong claim for PTSD. Preparation matters.</p>
+        </div>
+
+        <h2>Documents You Need</h2>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>DD-214 (Certificate of Release or Discharge)</strong>
+                <span>Shows your service dates, MOS, and character of discharge. Request from National Archives if needed.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Service Treatment Records (STRs)</strong>
+                <span>Medical records from active duty. Request from NPRC. May take 2-3 months.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Personnel Records</strong>
+                <span>Deployment orders, combat action documentation, awards (CAB, CIB, Purple Heart, etc.)</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Post-service medical records</strong>
+                <span>Any mental health treatment since discharge. VA, private, Vet Centers — all of it.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Buddy statements (lay evidence)</strong>
+                <span>Written statements from fellow service members who can verify your stressors or symptoms.</span>
+            </div>
+        </div>
+
+        <div class="note-box">
+            <strong>Pro tip:</strong> You don't need everything perfect to file. File the claim, then continue gathering evidence. The "effective date" is based on when you file, not when you complete the file.
+        </div>
+
+        <h2>Establishing Service Connection for PTSD</h2>
+
+        <p style="margin-bottom: 20px; color: #444;">PTSD claims require three things:</p>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>1. Current diagnosis of PTSD</strong>
+                <span>From a qualified mental health provider. VA C&P exam can provide this if you don't have one.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>2. In-service stressor</strong>
+                <span>The traumatic event(s) that occurred during service. Combat vets with CAB/CIB have this presumed.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>3. Nexus (link between stressor and diagnosis)</strong>
+                <span>Medical opinion connecting your current PTSD to the in-service stressor.</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>Combat Veterans: Easier Path</h3>
+            <p>If you have evidence of combat service (CAB, CIB, combat zone deployment orders, hostile fire pay records), the VA presumes your stressor is valid. You don't need to prove the specific event — just that you served in combat conditions.</p>
+            <p>This is called the "combat presumption" under 38 CFR 3.304(f)(2).</p>
+        </div>
+
+        <h2>Stressor Statement Prep</h2>
+
+        <p style="margin-bottom: 15px; color: #444;">You'll need to describe at least one traumatic event. Be specific but don't over-explain. Include:</p>
+
+        <div class="fill-section">
+            <div class="fill-row">
+                <div class="fill-item">
+                    <label>Approximate date (month/year):</label>
+                    <span class="fill-line"></span>
+                </div>
+                <div class="fill-item">
+                    <label>Location:</label>
+                    <span class="fill-line"></span>
+                </div>
+            </div>
+            <div class="fill-row">
+                <div class="fill-item">
+                    <label>Unit:</label>
+                    <span class="fill-line"></span>
+                </div>
+                <div class="fill-item">
+                    <label>Your role:</label>
+                    <span class="fill-line"></span>
+                </div>
+            </div>
+            <div class="fill-item" style="margin-top: 15px;">
+                <label>Brief description of what happened:</label>
+                <div style="border: 1px solid #999; min-height: 100px; margin-top: 5px;"></div>
+            </div>
+        </div>
+
+        <h2>The Process: What to Expect</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <h4>1. File the claim</h4>
+                <p>VA.gov, eBenefits, or paper form (VA Form 21-526EZ). This locks in your effective date.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>2. Development phase</h4>
+                <p>VA gathers evidence, requests records. You can submit additional evidence during this time.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>3. C&P Exam</h4>
+                <p>Compensation & Pension exam with a VA psychologist. Be honest. Describe your worst days, not your best.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>4. Decision</h4>
+                <p>Rating decision sent by mail. If denied or underrated, you have appeal options.</p>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>C&P Exam Tips</h3>
+            <ul>
+                <li><strong>Don't minimize.</strong> Describe how symptoms affect your daily life at their worst.</li>
+                <li><strong>Be specific.</strong> "I have nightmares 4-5 times a week" beats "I have sleep problems."</li>
+                <li><strong>Mention everything.</strong> Anger, isolation, hypervigilance, avoidance, relationship impact.</li>
+                <li><strong>Don't try to look tough.</strong> This isn't a job interview. It's documentation of injury.</li>
+                <li><strong>Bring notes.</strong> It's okay to reference this checklist or written notes.</li>
+            </ul>
+        </div>
+
+        <h2>Rating Levels for PTSD</h2>
+
+        <div class="info-box">
+            <p><strong>0%</strong> — Diagnosed, but symptoms controlled by medication</p>
+            <p><strong>10%</strong> — Mild symptoms, minor impact on work/social functioning</p>
+            <p><strong>30%</strong> — Occasional decrease in work efficiency</p>
+            <p><strong>50%</strong> — Reduced reliability, difficulty in social/occupational situations</p>
+            <p><strong>70%</strong> — Deficiencies in most areas (work, family, judgment, mood)</p>
+            <p><strong>100%</strong> — Total occupational and social impairment</p>
+            <p style="margin-top: 15px;"><strong>P&T (Permanent & Total):</strong> 100% rating that VA determines won't improve. No future re-evaluations.</p>
+        </div>
+
+        <h2>Resources</h2>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>VA.gov</strong>
+                <span>File claims, check status, access records</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>VSO (Veterans Service Organization)</strong>
+                <span>Free help with claims: DAV, VFW, American Legion, etc. They know the system.</span>
+            </div>
+        </div>
+
+        <div class="checklist-item">
+            <span class="checkbox"></span>
+            <div class="item-text">
+                <strong>Vet Center</strong>
+                <span>Free counseling, readjustment help. Separate from VA Medical. More personal.</span>
+            </div>
+        </div>
+
+        <footer>
+            <p>Charlie Company Cooperative — charliecompany.org</p>
+            <p>You earned this. The paperwork is just the process.</p>
+        </footer>
+    </div>
+
+    <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+</body>
+</html>
