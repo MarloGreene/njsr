@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Preview</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="top-bar">
+        <a href="#" id="save-cheatsheet" title="Save markdown cheat sheet to your files">? cheat sheet</a>
+    </div>
+
+    <div id="container">
+        <div id="editor-pane">
+            <textarea id="editor" placeholder="Write markdown here..." autofocus></textarea>
+        </div>
+        <div id="preview-pane">
+            <div id="preview"></div>
+        </div>
+    </div>
+
+    <div id="controls">
+        <select id="file-select"></select>
+        <button id="new-file" title="New">+</button>
+        <button id="delete-file" title="Delete">×</button>
+        <span class="sep">|</span>
+        <button id="theme-toggle">dark</button>
+        <span class="sep">|</span>
+        <button id="export-md" title="Export .md">↓md</button>
+        <button id="export-html" title="Export .html">↓html</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

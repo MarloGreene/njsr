@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RunWritr</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="animation-container">
+        <div id="stars"></div>
+        <div id="clouds"></div>
+        <div id="hills"></div>
+        <div id="scenery"></div>
+        <div id="ground-base"></div>
+        <div id="ground"></div>
+        <pre id="runner"></pre>
+    </div>
+
+    <textarea id="editor" placeholder="Start writing and watch your runner go..." autofocus></textarea>
+
+    <div id="stats">
+        <span id="vim-indicator"></span>
+        <span id="word-count">0 words</span>
+        <span id="speed-indicator">stroll</span>
+    </div>
+
+    <div id="controls">
+        <select id="file-select" title="Select file"></select>
+        <button id="new-file" title="New file">+</button>
+        <button id="delete-file" title="Delete file">×</button>
+        <span class="separator">|</span>
+        <button id="mode-toggle" title="Toggle ASCII/Unicode">ASCII</button>
+        <button id="theme-toggle" title="Toggle light/dark">dark</button>
+        <button id="vim-toggle" title="Toggle vim mode">vim:off</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

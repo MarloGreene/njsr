@@ -1,0 +1,337 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background: #1a1a2e;
+    color: #eee;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: background 0.3s, color 0.3s;
+}
+
+body.light {
+    background: #f5f5f0;
+    color: #222;
+}
+
+#animation-container {
+    height: 140px;
+    position: relative;
+    background: linear-gradient(to bottom, #0f0f23 0%, #16213e 50%, #1a1a2e 100%);
+    overflow: hidden;
+    flex-shrink: 0;
+    border-bottom: 2px solid #00ff88;
+    box-shadow: 0 5px 30px rgba(0, 255, 136, 0.15);
+    transition: background 0.3s, border-color 0.3s;
+}
+
+body.light #animation-container {
+    background: linear-gradient(to bottom, #87ceeb 0%, #b0e0e6 50%, #f0f8ff 100%);
+    border-bottom-color: #228b22;
+    box-shadow: 0 5px 30px rgba(34, 139, 34, 0.15);
+}
+
+/* Stars layer - slowest */
+#stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: pre;
+    font-size: 12px;
+    color: #ffffff44;
+    line-height: 1;
+}
+
+body.light #stars {
+    color: #00000011;
+}
+
+/* Clouds/background layer - slow */
+#clouds {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    white-space: pre;
+    font-size: 10px;
+    color: #334466;
+    line-height: 1.2;
+}
+
+body.light #clouds {
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Hills/midground layer - medium */
+#hills {
+    position: absolute;
+    bottom: 35px;
+    left: 0;
+    white-space: pre;
+    font-size: 12px;
+    color: #1a3a2a;
+    line-height: 1;
+}
+
+body.light #hills {
+    color: #3cb371;
+}
+
+/* Scenery objects layer */
+#scenery {
+    position: absolute;
+    bottom: 18px;
+    left: 0;
+    white-space: pre;
+    font-size: 14px;
+    line-height: 1;
+    color: #00aa66;
+    z-index: 5;
+}
+
+body.light #scenery {
+    color: #228b22;
+}
+
+/* Ground layer - fastest */
+#ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    white-space: pre;
+    font-size: 14px;
+    line-height: 1;
+    color: #00ff88;
+}
+
+body.light #ground {
+    color: #228b22;
+}
+
+#ground-base {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 18px;
+    background: linear-gradient(to bottom, #2d4a3e 0%, #1a2f26 100%);
+    transition: background 0.3s;
+}
+
+body.light #ground-base {
+    background: linear-gradient(to bottom, #8fbc8f 0%, #6b8e6b 100%);
+}
+
+/* Runner stays fixed in view */
+#runner {
+    position: absolute;
+    bottom: 22px;
+    left: 80px;
+    font-size: 14px;
+    line-height: 1.1;
+    color: #00ff88;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    z-index: 10;
+}
+
+body.light #runner {
+    color: #222;
+    text-shadow: none;
+}
+
+#editor {
+    flex: 1;
+    width: 100%;
+    padding: 30px 50px;
+    font-family: 'Georgia', serif;
+    font-size: 18px;
+    line-height: 1.8;
+    background: #1a1a2e;
+    color: #e0e0e0;
+    border: none;
+    outline: none;
+    resize: none;
+    transition: background 0.3s, color 0.3s;
+}
+
+body.light #editor {
+    background: #f5f5f0;
+    color: #222;
+}
+
+#editor::placeholder {
+    color: #555;
+    font-style: italic;
+}
+
+body.light #editor::placeholder {
+    color: #999;
+}
+
+#stats {
+    position: fixed;
+    bottom: 15px;
+    right: 20px;
+    font-size: 12px;
+    color: #666;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+#speed-indicator {
+    color: #00ff88;
+    text-transform: uppercase;
+    font-weight: bold;
+    min-width: 70px;
+}
+
+body.light #speed-indicator {
+    color: #228b22;
+}
+
+/* Speed state colors */
+#speed-indicator.walk { color: #88aaff; }
+#speed-indicator.run { color: #ffaa00; }
+#speed-indicator.sprint { color: #ff4488; text-shadow: 0 0 10px rgba(255, 68, 136, 0.5); }
+#speed-indicator.stumble { color: #ff4444; }
+#speed-indicator.jump { color: #00ffff; }
+#speed-indicator.leap { color: #ff00ff; }
+
+body.light #speed-indicator.walk { color: #4169e1; }
+body.light #speed-indicator.run { color: #ff8c00; }
+body.light #speed-indicator.sprint { color: #dc143c; text-shadow: none; }
+
+/* Vim mode indicator */
+#vim-indicator {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+#vim-indicator.hidden {
+    display: none;
+}
+
+#vim-indicator.normal {
+    background: #4a3f6a;
+    color: #c4b5fd;
+    border: 1px solid #7c3aed;
+}
+
+#vim-indicator.insert {
+    background: #1a4a3a;
+    color: #6ee7b7;
+    border: 1px solid #10b981;
+}
+
+body.light #vim-indicator.normal {
+    background: #ede9fe;
+    color: #6d28d9;
+    border-color: #8b5cf6;
+}
+
+body.light #vim-indicator.insert {
+    background: #d1fae5;
+    color: #047857;
+    border-color: #34d399;
+}
+
+/* Controls */
+#controls {
+    position: fixed;
+    bottom: 15px;
+    left: 20px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+#controls .separator {
+    color: #444;
+    margin: 0 4px;
+}
+
+body.light #controls .separator {
+    color: #bbb;
+}
+
+#controls select {
+    background: #333;
+    color: #888;
+    border: 1px solid #444;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    border-radius: 3px;
+    max-width: 150px;
+}
+
+#controls select:hover {
+    background: #444;
+    color: #fff;
+    border-color: #00ff88;
+}
+
+body.light #controls select {
+    background: #ddd;
+    color: #666;
+    border-color: #bbb;
+}
+
+body.light #controls select:hover {
+    background: #ccc;
+    color: #222;
+    border-color: #228b22;
+}
+
+#controls button {
+    background: #333;
+    color: #888;
+    border: 1px solid #444;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+}
+
+#controls button:hover {
+    background: #444;
+    color: #fff;
+    border-color: #00ff88;
+}
+
+#controls button.active {
+    background: #2a4a3a;
+    color: #00ff88;
+    border-color: #00ff88;
+}
+
+body.light #controls button {
+    background: #ddd;
+    color: #666;
+    border-color: #bbb;
+}
+
+body.light #controls button:hover {
+    background: #ccc;
+    color: #222;
+    border-color: #228b22;
+}
+
+body.light #controls button.active {
+    background: #d1fae5;
+    color: #047857;
+    border-color: #34d399;
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penguin Peak - The Endless Climb</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        <div id="hud">
+            <div id="distance">0m</div>
+            <div id="peak-count">Peak 1</div>
+        </div>
+        <div id="controls-overlay">
+            <div class="control-group">
+                <span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span>
+                <span class="or">or</span>
+                <span class="key">H</span><span class="key">J</span><span class="key">K</span><span class="key">L</span>
+                <span class="or">or</span>
+                <span class="key">&larr;</span><span class="key">&darr;</span><span class="key">&uarr;</span><span class="key">&rarr;</span>
+            </div>
+            <div class="control-group">
+                <span class="key wide">SPACE</span>
+                <span class="or">or</span>
+                <span class="key">F</span>
+                <span class="label">jump &amp; slide</span>
+            </div>
+        </div>
+        <div id="start-screen">
+            <h1>PENGUIN PEAK</h1>
+            <p class="subtitle">The mountain never ends. Neither do you.</p>
+            <p class="instruction">Press any key to begin your climb</p>
+            <div id="high-score"></div>
+        </div>
+        <div id="game-over-screen" class="hidden">
+            <h2>REST STOP</h2>
+            <p id="final-distance"></p>
+            <p id="peaks-reached"></p>
+            <p class="instruction">Press any key to climb again</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
