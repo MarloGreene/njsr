@@ -42,7 +42,11 @@ This document provides a comprehensive overview of all the web-based tools and a
 
 - **Matrix Rain** (matrix/): Animated falling character effect
 
+- **Markdown Preview** (mp/): Minimalist two-pane markdown editor with real-time preview
+
 - **Ministering Memory Helper** (one/): LDS ministering assignment tracker
+
+- **Penguin Peak** (penguin/): Endless 3D penguin climbing game with parallax mountains
 
 - **PTSD Symptom Awareness Tool** (psa/): VA disability rating calculator
 
@@ -59,6 +63,8 @@ This document provides a comprehensive overview of all the web-based tools and a
 - **Random Password Generator** (rng/): Secure password creation
 
 - **Jumpy Man** (run/): Chill 2D platformer with wall-smashing and turbo mode
+
+- **RunWritr** (rw/): Writing environment with animated ASCII running companion
 
 - **Dynamic Soundboard** (sb/): PHP-powered audio clip player
 
@@ -96,4 +102,4 @@ This document provides a comprehensive overview of all the web-based tools and a
 - **tmp/**: Temporary directory
 - **work/**: Work-in-progress files
 
-*Last updated: 2026-01-30*
+*Last updated: 2026-02-01*
