@@ -197,6 +197,71 @@ body {
   border-style: dashed;
 }
 
+/* File group (collapsible folder) */
+.file-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.file-folder {
+  position: relative;
+  background: var(--bg-alt);
+}
+
+.file-folder.has-selected {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+
+.file-folder .expand-arrow {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+}
+
+.selection-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--accent);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 5px;
+  border-radius: 10px;
+  min-width: 16px;
+  text-align: center;
+}
+
+.file-group-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-width: 500px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.file-group-item {
+  min-width: 70px;
+  padding: 6px 10px;
+}
+
+.file-group-item .file-icon {
+  font-size: 1.2rem;
+}
+
+.file-group-item .file-name {
+  font-size: 0.7rem;
+}
+
 .file-icon {
   font-size: 1.5rem;
   margin-bottom: 4px;

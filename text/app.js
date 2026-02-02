@@ -149,6 +149,9 @@ function removeUserFile(id) {
 
 // ==================== FILE GRID ====================
 
+// Track expanded groups
+let expandedGroups = new Set();
+
 function renderFileGrid() {
   const grid = document.getElementById('fileGrid');
   grid.innerHTML = '';
@@ -161,7 +164,91 @@ function renderFileGrid() {
     ? allWorks
     : allWorks.filter(w => w.category === currentCategory);
 
-  filtered.forEach((work, index) => {
+  // Group works by category for collapsible display
+  const groups = {};
+  const standalone = [];
+
+  for (const work of filtered) {
+    // Shakespeare gets grouped, others shown individually
+    if (work.category === 'shakespeare') {
+      if (!groups.shakespeare) groups.shakespeare = [];
+      groups.shakespeare.push(work);
+    } else {
+      standalone.push(work);
+    }
+  }
+
+  // Render Shakespeare group folder (if any)
+  if (groups.shakespeare && groups.shakespeare.length > 0) {
+    const shakespeareWorks = groups.shakespeare;
+    const selectedCount = shakespeareWorks.filter(w => selectedWorks.has(w.id)).length;
+    const isExpanded = expandedGroups.has('shakespeare');
+
+    // Group folder
+    const folder = document.createElement('div');
+    folder.className = 'file-group';
+
+    const folderHeader = document.createElement('div');
+    folderHeader.className = 'file-item file-folder' + (selectedCount > 0 ? ' has-selected' : '');
+    folderHeader.innerHTML = `
+      <span class="file-icon">${isExpanded ? '📂' : '📁'}</span>
+      <span class="file-name">Shakespeare</span>
+      ${selectedCount > 0 ? `<span class="selection-badge">${selectedCount}</span>` : ''}
+      <span class="expand-arrow">${isExpanded ? '▼' : '▶'}</span>
+    `;
+
+    folderHeader.addEventListener('click', (e) => {
+      if (e.shiftKey) {
+        // Shift+click selects/deselects all
+        const allSelected = shakespeareWorks.every(w => selectedWorks.has(w.id));
+        shakespeareWorks.forEach(w => {
+          if (allSelected) {
+            selectedWorks.delete(w.id);
+          } else {
+            selectedWorks.add(w.id);
+          }
+        });
+        renderFileGrid();
+        updateResultsHeader();
+        performSearch();
+      } else {
+        // Toggle expand/collapse
+        if (expandedGroups.has('shakespeare')) {
+          expandedGroups.delete('shakespeare');
+        } else {
+          expandedGroups.add('shakespeare');
+        }
+        renderFileGrid();
+      }
+    });
+
+    folder.appendChild(folderHeader);
+
+    // Expanded items
+    if (isExpanded) {
+      const itemsContainer = document.createElement('div');
+      itemsContainer.className = 'file-group-items';
+
+      shakespeareWorks.forEach(work => {
+        const item = document.createElement('div');
+        item.className = 'file-item file-group-item' + (selectedWorks.has(work.id) ? ' selected' : '');
+        item.dataset.id = work.id;
+        item.innerHTML = `
+          <span class="file-icon">📜</span>
+          <span class="file-name" title="${escapeHtml(work.title)}">${escapeHtml(truncate(work.title, 14))}</span>
+        `;
+        item.addEventListener('click', () => toggleWorkSelection(work.id));
+        itemsContainer.appendChild(item);
+      });
+
+      folder.appendChild(itemsContainer);
+    }
+
+    grid.appendChild(folder);
+  }
+
+  // Render standalone files (scripture, user files)
+  standalone.forEach(work => {
     const item = document.createElement('div');
     item.className = 'file-item' + (selectedWorks.has(work.id) ? ' selected' : '') +
                      (work.category === 'user' ? ' user-file' : '');
