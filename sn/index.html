@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Now! Explorer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div id="app">
+    <header>
+      <button class="theme-toggle" id="theme-toggle" title="Toggle light/dark mode (t)">🌙</button>
+      <h1>🔐 Security Now! Explorer</h1>
+      <p class="tagline">20 years of security wisdom from Steve Gibson & Leo Laporte</p>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab active" data-view="search">🔍 Search</button>
+      <button class="tab" data-view="trends">📈 Trends</button>
+      <button class="tab" data-view="cloud">☁️ Word Cloud</button>
+      <button class="tab" data-view="steveisms">💬 Steve-isms</button>
+      <button class="tab" data-view="leoisms">🎙️ Leo-isms</button>
+      <button class="tab" data-view="stats">📊 Stats</button>
+    </nav>
+
+    <!-- Search View -->
+    <section id="search-view" class="view active">
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Search 1048 episodes... (try: ransomware, sqrl, heartbleed)" autofocus>
+        <span id="result-count"></span>
+      </div>
+      <div class="filters">
+        <label>
+          <span>Year:</span>
+          <select id="year-filter">
+            <option value="">All Years</option>
+          </select>
+        </label>
+        <label>
+          <span>Sort:</span>
+          <select id="sort-order">
+            <option value="relevance">Relevance</option>
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="longest">Longest First</option>
+          </select>
+        </label>
+      </div>
+      <div id="results"></div>
+    </section>
+
+    <!-- Trends View -->
+    <section id="trends-view" class="view">
+      <div class="trend-controls">
+        <div class="term-selector">
+          <label>Track terms:</label>
+          <div id="term-buttons"></div>
+        </div>
+        <div class="chart-options">
+          <label>
+            <input type="checkbox" id="normalize-chart"> Normalize per episode
+          </label>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas id="trends-chart"></canvas>
+      </div>
+      <div id="trend-insights"></div>
+    </section>
+
+    <!-- Word Cloud View -->
+    <section id="cloud-view" class="view">
+      <div class="cloud-controls">
+        <div class="cloud-controls-row">
+          <label>
+            <span>Min frequency:</span>
+            <input type="range" id="cloud-min" min="100" max="5000" value="500">
+            <span id="cloud-min-val">500</span>
+          </label>
+          <label>
+            <span>Max words:</span>
+            <input type="range" id="cloud-max" min="50" max="300" value="150">
+            <span id="cloud-max-val">150</span>
+          </label>
+          <button class="reshuffle-btn" id="reshuffle-cloud" title="Reshuffle (r)">🔀 Reshuffle</button>
+        </div>
+      </div>
+      <div id="word-cloud"></div>
+    </section>
+
+    <!-- Steve-isms View -->
+    <section id="steveisms-view" class="view">
+      <div class="steveisms-intro">
+        <p>Classic Steve Gibson phrases and sayings from 20 years of Security Now!</p>
+      </div>
+
+      <div class="quote-machine">
+        <div class="quote-display">
+          <blockquote id="current-quote">
+            <p id="quote-text">Click a phrase below or hit "Random Quote" to begin!</p>
+            <cite id="quote-cite"></cite>
+          </blockquote>
+          <button id="random-quote-btn" class="random-btn">🎲 Random Quote</button>
+        </div>
+      </div>
+
+      <div class="phrase-filter">
+        <label>Filter by category:</label>
+        <select id="category-filter">
+          <option value="">All Categories</option>
+        </select>
+      </div>
+
+      <div class="steveisms-grid" id="steveisms-grid">
+        <!-- Phrase cards will be inserted here -->
+      </div>
+
+      <div id="phrase-quotes" class="phrase-quotes-panel hidden">
+        <div class="panel-header">
+          <h3 id="panel-phrase-title"></h3>
+          <button class="close-panel" onclick="closeQuotesPanel()">✕</button>
+        </div>
+        <div id="panel-quotes-list"></div>
+      </div>
+    </section>
+
+    <!-- Leo-isms View -->
+    <section id="leoisms-view" class="view">
+      <div class="steveisms-intro">
+        <p>Classic Leo Laporte phrases from 20 years of hosting Security Now!</p>
+      </div>
+
+      <div class="quote-machine">
+        <div class="quote-display leo-quote-display">
+          <blockquote id="leo-current-quote">
+            <p id="leo-quote-text">Click a phrase below or hit "Random Quote" to hear from Leo!</p>
+            <cite id="leo-quote-cite"></cite>
+          </blockquote>
+          <button id="leo-random-quote-btn" class="random-btn leo-btn">🎲 Random Quote</button>
+        </div>
+      </div>
+
+      <div class="phrase-filter">
+        <label>Filter by category:</label>
+        <select id="leo-category-filter">
+          <option value="">All Categories</option>
+        </select>
+      </div>
+
+      <div class="steveisms-grid" id="leoisms-grid">
+        <!-- Phrase cards will be inserted here -->
+      </div>
+
+      <div id="leo-phrase-quotes" class="phrase-quotes-panel hidden">
+        <div class="panel-header">
+          <h3 id="leo-panel-phrase-title"></h3>
+          <button class="close-panel" onclick="closeLeoQuotesPanel()">✕</button>
+        </div>
+        <div id="leo-panel-quotes-list"></div>
+      </div>
+    </section>
+
+    <!-- Stats View -->
+    <section id="stats-view" class="view">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-number" id="stat-episodes">-</span>
+          <span class="stat-label">Episodes</span>
+          <div class="stat-sparkline" id="spark-episodes"></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="stat-words">-</span>
+          <span class="stat-label">Total Words</span>
+          <div class="stat-sparkline" id="spark-words"></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="stat-years">-</span>
+          <span class="stat-label">Years Running</span>
+          <div class="stat-sparkline" id="spark-years"></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="stat-avg">-</span>
+          <span class="stat-label">Avg Words/Episode</span>
+          <div class="stat-sparkline" id="spark-avg"></div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <h3>Episode Length Over Time</h3>
+        <canvas id="length-chart"></canvas>
+      </div>
+
+      <div class="chart-container">
+        <h3>Episodes Per Year</h3>
+        <canvas id="yearly-chart"></canvas>
+      </div>
+
+      <div id="top-episodes">
+        <h3>Longest Episodes</h3>
+        <div id="longest-list"></div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Data from <a href="https://www.grc.com/securitynow.htm" target="_blank">GRC.com</a> •
+         Built with ❤️ for Security Now! fans</p>
+    </footer>
+  </div>
+
+  <div id="loading">
+    <div class="spinner"></div>
+    <p>Loading 1048 episodes...</p>
+  </div>
+
+  <button class="shortcuts-toggle" id="shortcuts-toggle">⌨️ <kbd>?</kbd></button>
+  <div class="shortcuts-help hidden" id="shortcuts-help">
+    <h4>Keyboard Shortcuts</h4>
+    <ul>
+      <li><span>Search</span> <kbd>/</kbd></li>
+      <li><span>Navigate tabs</span> <kbd>h</kbd> <kbd>l</kbd></li>
+      <li><span>Next/prev page</span> <kbd>j</kbd> <kbd>k</kbd></li>
+      <li><span>Toggle theme</span> <kbd>t</kbd></li>
+      <li><span>Close panel</span> <kbd>Esc</kbd></li>
+      <li><span>Reshuffle cloud</span> <kbd>r</kbd></li>
+      <li><span>Random quote</span> <kbd>q</kbd></li>
+      <li><span>This help</span> <kbd>?</kbd></li>
+    </ul>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -53,7 +53,8 @@ const toolDescriptions = {
   'write': 'just write - Minimalist note-taking application',
   'zenw': 'Zen Writer - Distraction-free text editor',
   'zonk': 'VA Disability Claim Guide - Veteran benefits resource',
-  '52': '52 - Random playing card drawer'
+  '52': '52 - Random playing card drawer',
+  'sn': 'Security Now! Explorer - Search and explore 20 years of Security Now! podcast transcripts'
 };
 
 // Tool categories for sorting by kind
@@ -98,7 +99,8 @@ const toolCategories = {
   'write': 'productivity',
   'zenw': 'productivity',
   'zonk': 'medical',
-  '52': 'entertainment'
+  '52': 'entertainment',
+  'sn': 'entertainment'
 };
 
 // Directories to exclude from tool detection

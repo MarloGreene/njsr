@@ -82,6 +82,8 @@ This document provides a comprehensive overview of all the web-based tools and a
 
 - **Pearl of Great Price Matrix** (sm/pogp/): Matrix animation with Pearl of Great Price verses
 
+- **Security Now! Explorer** (sn/): Search and explore 20 years of Security Now! podcast transcripts
+
 - **Stopwatch** (stopwatch/): Polished timing application
 
 - **Tarot Card Reader** (tarot/): Mystical card reading application
