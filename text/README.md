@@ -1,21 +1,54 @@
-text tool: feel free to get creative with a name
-Couple rows up top, some menu / filter / search stuff
-Row of pseudo file icons for our current / default provided texts: bom.txt, hamlet.txt, etc.
-Option for user to drag their own text file onto the file row, thereby uploading it to memory / localStorage, such that they can then search, highlight, note, and export their own provided texts?
-Statistics options for word clouds / frequency, charting, graphing, stats, random verse / quote, etc.
+# Codex
 
-Search results, full text, etc. etc. etc. below.
+A unified text explorer for searching, analyzing, and exploring classical texts.
 
-Use case: I go to njsr.org/text and am greeted by a sleek and minimalist page, inviting me to type something in the search bar or click one of the stat button options to explore texts, either individually or together.
+## Features
 
-I select Bible and Book of Mormon and search for "Jesus," showing me results from each volume, with options to expand from there to the surrounding text ("jump to full text" kind of thing), take a note, highlight, pin, star, add to list, rate? (I'm way over-thinking it.)
+- **Multi-file search** - Select multiple texts and search across them simultaneously
+- **Collapsible groups** - Shakespeare's 42 works grouped in an expandable folder
+- **Drag-and-drop** - Add your own .txt or .md files (stored in localStorage)
+- **Statistics panel** - Word cloud, frequency analysis, random verse generator
+- **Full text reader** - Jump from search results to full context
+- **Three themes** - Light, dark, and sepia
+- **Keyboard shortcuts** - Press `?` for the full list
 
-Then I go back to the file row on top and de-select the Book of Mormon and select Shakespeare or the Odyssey or another of our defaults to do the same searching and notating.
+## Included Texts
 
-Then I'm like hey, I have my own collection of huge text files I'd like to search and highlight and etc.; I'm gonna drag my very own .txt or .md or other plain text only file to explore onto the file area on the page, and it'll process the file into localStorage / memory, so nothing actually touches our server, but they're able to maintain their own session files to a reasonable degree.
+**Shakespeare (42 works)** - From the Folger Shakespeare Library
+- All plays, sonnets, and poems
+- Clean, modern-edited text
 
-Inspired by all of our other text and search pages.
+**Scripture (4 volumes)**
+- Bible (KJV)
+- Book of Mormon
+- Doctrine & Covenants
+- Pearl of Great Price
 
-Big ask, but I believe in you!
+## Setup
 
-I've included a few files in ./txt/ for initial inclusion.
+1. Place source texts in `txt/` subdirectories
+2. Run the preprocessor to build the search index:
+   ```bash
+   node preprocess.js
+   ```
+3. Open `index.html` in a browser
+
+## Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `/` | Focus search |
+| `Esc` | Clear search / close modal |
+| `t` | Toggle theme |
+| `s` | Toggle stats panel |
+| `r` | Random verse |
+| `←` `→` | Previous / next page |
+| `1-9` | Toggle file selection |
+| `?` | Show help |
+
+## Privacy
+
+All data stays local:
+- Search index generated from local files
+- User-uploaded files stored in localStorage
+- No server-side processing or tracking
