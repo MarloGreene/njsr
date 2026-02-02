@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 // Configuration
 const rootDir = path.join(__dirname);
@@ -102,6 +103,21 @@ const toolCategories = {
 
 // Directories to exclude from tool detection
 const excludeDirs = ['bc', 'bg', 'cash', 'degrees', 'eb', 'oldbuddy', 'split', 'ss', 'ssah', 'stuff', 'textfiles', 'tmp', 'tools', 'url', 'work', 'zsr', 'alpha', 'beta', 'node_modules', '.git', '.github', 'meh'];
+
+// Get the last commit date for a tool directory (returns ISO date string)
+function getLastCommitDate(toolPath) {
+  try {
+    const fullPath = path.join(rootDir, toolPath);
+    // Get the last commit date for any file in this directory
+    const result = execSync(
+      `git log -1 --format=%cI -- "${fullPath}"`,
+      { cwd: rootDir, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }
+    ).trim();
+    return result || '1970-01-01T00:00:00+00:00'; // Fallback for untracked
+  } catch (e) {
+    return '1970-01-01T00:00:00+00:00';
+  }
+}
 
 function getDirectories(source) {
   return fs.readdirSync(source, { withFileTypes: true })
@@ -386,6 +402,9 @@ function sortTools(sortType) {
                 return a.dataset.title.localeCompare(b.dataset.title);
             case 'kind':
                 return a.dataset.kind.localeCompare(b.dataset.kind);
+            case 'date':
+                // Sort by date descending (newest first)
+                return b.dataset.date.localeCompare(a.dataset.date);
             default:
                 return parseInt(a.dataset.index) - parseInt(b.dataset.index);
         }
@@ -553,6 +572,7 @@ function generateIndexHtml(dirs) {
         <div class="sort-container">
             <div class="sort-buttons">
                 <button class="sort-btn active" data-sort="default">Default</button>
+                <button class="sort-btn" data-sort="date">Recently Updated</button>
                 <button class="sort-btn" data-sort="kind">By Kind</button>
                 <button class="sort-btn" data-sort="title">By Title</button>
             </div>
@@ -567,7 +587,8 @@ function generateIndexHtml(dirs) {
     const description = toolDescriptions[dir] || dir + ' - Tool description needed';
     const [title, desc] = description.split(' - ');
     const kind = toolCategories[dir] || 'other';
-    content += `            <a href="/${dir}/" class="tool-row" data-title="${title.toLowerCase()}" data-description="${(desc || '').toLowerCase()}" data-kind="${kind}" data-path="${dir}" data-index="${index}">
+    const lastModified = getLastCommitDate(dir);
+    content += `            <a href="/${dir}/" class="tool-row" data-title="${title.toLowerCase()}" data-description="${(desc || '').toLowerCase()}" data-kind="${kind}" data-path="${dir}" data-index="${index}" data-date="${lastModified}">
                 <div class="tool-content">
                     <div class="tool-header">
                         <div class="tool-path">${dir}/</div>

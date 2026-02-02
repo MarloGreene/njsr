@@ -15,6 +15,9 @@ function sortTools(sortType) {
                 return a.dataset.title.localeCompare(b.dataset.title);
             case 'kind':
                 return a.dataset.kind.localeCompare(b.dataset.kind);
+            case 'date':
+                // Sort by date descending (newest first)
+                return b.dataset.date.localeCompare(a.dataset.date);
             default:
                 return parseInt(a.dataset.index) - parseInt(b.dataset.index);
         }
