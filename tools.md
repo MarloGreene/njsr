@@ -6,6 +6,8 @@ This document provides a comprehensive overview of all the web-based tools and a
 
 - **23 Questions Answered by The Book of Mormon** (23/): Educational scripture quiz
 
+- **52** (52/): Random playing card drawer
+
 - **acu** (acu/): Tool description needed
 
 - **Book of Mormon Reader** (bom/): A web-based scripture reader for The Book of Mormon
@@ -102,4 +104,4 @@ This document provides a comprehensive overview of all the web-based tools and a
 - **tmp/**: Temporary directory
 - **work/**: Work-in-progress files
 
-*Last updated: 2026-02-01*
+*Last updated: 2026-02-02*

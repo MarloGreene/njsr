@@ -51,7 +51,8 @@ const toolDescriptions = {
   'wc': 'Text Statistics - Text analysis and counting tool',
   'write': 'just write - Minimalist note-taking application',
   'zenw': 'Zen Writer - Distraction-free text editor',
-  'zonk': 'VA Disability Claim Guide - Veteran benefits resource'
+  'zonk': 'VA Disability Claim Guide - Veteran benefits resource',
+  '52': '52 - Random playing card drawer'
 };
 
 // Tool categories for sorting by kind
@@ -95,7 +96,8 @@ const toolCategories = {
   'wc': 'productivity',
   'write': 'productivity',
   'zenw': 'productivity',
-  'zonk': 'medical'
+  'zonk': 'medical',
+  '52': 'entertainment'
 };
 
 // Directories to exclude from tool detection

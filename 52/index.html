@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>52 - Random Playing Card</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a472a 0%, #2d5a3f 100%);
+      font-family: 'Georgia', serif;
+    }
+
+    .card {
+      width: 250px;
+      height: 350px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+      position: relative;
+      padding: 12px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+    }
+
+    .card:active {
+      transform: scale(0.98);
+    }
+
+    .card.red {
+      color: #c41e3a;
+    }
+
+    .card.black {
+      color: #1a1a1a;
+    }
+
+    .corner {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .corner .rank {
+      font-size: 28px;
+    }
+
+    .corner .suit {
+      font-size: 22px;
+    }
+
+    .corner.top-left {
+      top: 12px;
+      left: 12px;
+    }
+
+    .corner.bottom-right {
+      bottom: 12px;
+      right: 12px;
+      transform: rotate(180deg);
+    }
+
+    .center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 160px;
+      height: 240px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 0;
+    }
+
+    .pip-row {
+      display: flex;
+      justify-content: space-around;
+      font-size: 32px;
+    }
+
+    .pip {
+      width: 40px;
+      text-align: center;
+    }
+
+    /* Ace - large center suit */
+    .ace-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 120px;
+    }
+
+    /* Face cards */
+    .face-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .face-card .face-letter {
+      font-size: 100px;
+      font-weight: bold;
+      line-height: 1;
+      font-family: 'Times New Roman', serif;
+    }
+
+    .face-card .face-suit {
+      font-size: 48px;
+    }
+
+    /* Face card decorative frame */
+    .face-frame {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 140px;
+      height: 200px;
+      border: 3px solid currentColor;
+      border-radius: 8px;
+      opacity: 0.3;
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 20px;
+      color: rgba(255,255,255,0.5);
+      font-family: sans-serif;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="card" title="Click for a new card"></div>
+  <div class="hint">Click card or refresh for another</div>
+
+  <script>
+    const suits = ['♠', '♥', '♦', '♣'];
+    const suitNames = ['spades', 'hearts', 'diamonds', 'clubs'];
+    const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+
+    function isRed(suit) {
+      return suit === '♥' || suit === '♦';
+    }
+
+    function getPipLayout(rank) {
+      // Returns array of rows, each row is array of pip positions (0=empty, 1=pip)
+      // Format: [left, center, right] for each row
+      const layouts = {
+        '2':  [[0,1,0], [0,0,0], [0,0,0], [0,0,0], [0,1,0]],
+        '3':  [[0,1,0], [0,0,0], [0,1,0], [0,0,0], [0,1,0]],
+        '4':  [[1,0,1], [0,0,0], [0,0,0], [0,0,0], [1,0,1]],
+        '5':  [[1,0,1], [0,0,0], [0,1,0], [0,0,0], [1,0,1]],
+        '6':  [[1,0,1], [0,0,0], [1,0,1], [0,0,0], [1,0,1]],
+        '7':  [[1,0,1], [0,1,0], [1,0,1], [0,0,0], [1,0,1]],
+        '8':  [[1,0,1], [0,1,0], [1,0,1], [0,1,0], [1,0,1]],
+        '9':  [[1,0,1], [1,0,1], [0,1,0], [1,0,1], [1,0,1]],
+        '10': [[1,0,1], [0,1,0], [1,0,1], [1,0,1], [0,1,0], [1,0,1]],
+      };
+      return layouts[rank];
+    }
+
+    function renderCard(suit, rank) {
+      const card = document.getElementById('card');
+      const colorClass = isRed(suit) ? 'red' : 'black';
+
+      let centerHTML = '';
+
+      if (rank === 'A') {
+        // Ace: large centered suit
+        centerHTML = `<div class="ace-center">${suit}</div>`;
+      } else if (['J', 'Q', 'K'].includes(rank)) {
+        // Face cards
+        centerHTML = `
+          <div class="face-frame"></div>
+          <div class="face-card">
+            <div class="face-letter">${rank}</div>
+            <div class="face-suit">${suit}</div>
+          </div>
+        `;
+      } else {
+        // Number cards with pip layout
+        const layout = getPipLayout(rank);
+        let rowsHTML = layout.map(row => {
+          const pips = row.map(pip =>
+            `<span class="pip">${pip ? suit : ''}</span>`
+          ).join('');
+          return `<div class="pip-row">${pips}</div>`;
+        }).join('');
+        centerHTML = `<div class="center">${rowsHTML}</div>`;
+      }
+
+      card.className = `card ${colorClass}`;
+      card.innerHTML = `
+        <div class="corner top-left">
+          <span class="rank">${rank}</span>
+          <span class="suit">${suit}</span>
+        </div>
+        ${centerHTML}
+        <div class="corner bottom-right">
+          <span class="rank">${rank}</span>
+          <span class="suit">${suit}</span>
+        </div>
+      `;
+    }
+
+    function drawRandomCard() {
+      const suit = suits[Math.floor(Math.random() * suits.length)];
+      const rank = ranks[Math.floor(Math.random() * ranks.length)];
+      renderCard(suit, rank);
+    }
+
+    document.getElementById('card').addEventListener('click', drawRandomCard);
+    drawRandomCard();
+  </script>
+</body>
+</html>

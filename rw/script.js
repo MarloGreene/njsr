@@ -64,9 +64,10 @@ const CHAR_SETS = {
             ],
             stumble: [
                 '  o  \n /|  \n / \\ ',
-                ' \\o  \n  |\\ \n / \\ ',
-                '  \\o/\n   | \n  /| ',
-                ' _o_ \n  |  \n / \\ ',
+                ' \\o  \n  |\\ \n /   ',
+                '  \\o_\n   |\\ \n     ',
+                ' --o>\n     \n     ',
+                '  _o/\n  /| \n     ',
                 '  o  \n /|\\ \n / \\ '
             ],
             jump: [
@@ -159,9 +160,10 @@ const CHAR_SETS = {
             ],
             stumble: [
                 '  ●  \n ╱│  \n ╱ ╲ ',
-                ' ╲●  \n  │╲ \n ╱ ╲ ',
-                '  ╲●╱\n   │ \n  ╱│ ',
-                ' ─●─ \n  │  \n ╱ ╲ ',
+                ' ╲●  \n  │╲ \n ╱   ',
+                '  ╲●─\n   │╲\n     ',
+                ' ──●▷\n     \n     ',
+                '  ─●╱\n  ╱│ \n     ',
                 '  ●  \n ╱│╲ \n ╱ ╲ '
             ],
             jump: [
@@ -725,14 +727,14 @@ const state = {
 
 const SPEED_THRESHOLDS = { walk: 0, run: 2, sprint: 5 };
 const SCROLL_MULTIPLIERS = {
-    walk: 0.5, run: 2, sprint: 4, stumble: 0.3,
-    jump: 1.5, leap: 3, victory: 1,
-    clipboard: 0.1, thinking: 0.15, editing: 0.2
+    walk: 0.3, run: 1.2, sprint: 2.5, stumble: 0.4,
+    jump: 1, leap: 2, victory: 0.6,
+    clipboard: 0.08, thinking: 0.1, editing: 0.15
 };
 const FRAME_RATES = {
-    walk: 180, run: 100, sprint: 60, stumble: 120,
-    jump: 80, leap: 80, victory: 150,
-    clipboard: 400, thinking: 300, editing: 120
+    walk: 280, run: 180, sprint: 120, stumble: 160,
+    jump: 120, leap: 120, victory: 200,
+    clipboard: 500, thinking: 400, editing: 180
 };
 const SPEED_WINDOW = 2000;
 
