@@ -5075,9 +5075,10 @@ function showToast() {
 
 function updateTimestamp() {
     const now = new Date();
-    const humanTime = now.toLocaleTimeString('en-US', { hour12: false });
+    const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    const timeStr = now.toLocaleTimeString('en-US', { hour12: false });
     const unixTime = Math.floor(now.getTime() / 1000);
-    document.getElementById('human-time').textContent = humanTime;
+    document.getElementById('human-time').textContent = `${dateStr} ${timeStr}`;
     document.getElementById('unix-time').textContent = unixTime;
 }
 
