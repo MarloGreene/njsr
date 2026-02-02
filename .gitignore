@@ -46,3 +46,14 @@ url/
 work/
 zsr/
 sn/txt/
+
+# Shakespeare source files (large, available from archive.org)
+bill/t8.shakespeare.txt
+bill/shakespeare-data.json
+bill/folger/
+
+# Ministry of Grep large corpora (users generate locally)
+txt/quad/
+
+# Shakespeare markdown version (in progress)
+billmd/

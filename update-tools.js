@@ -54,7 +54,9 @@ const toolDescriptions = {
   'zenw': 'Zen Writer - Distraction-free text editor',
   'zonk': 'VA Disability Claim Guide - Veteran benefits resource',
   '52': '52 - Random playing card drawer',
-  'sn': 'Security Now! Explorer - Search and explore 20 years of Security Now! podcast transcripts'
+  'sn': 'Security Now! Explorer - Search and explore 20 years of Security Now! podcast transcripts',
+  'txt': 'Ministry of Grep - Universal text search engine for classical and public-domain corpora',
+  'bill': "The Bard's Library - Shakespeare explorer with search, quotes, insults, and more"
 };
 
 // Tool categories for sorting by kind
@@ -100,7 +102,9 @@ const toolCategories = {
   'zenw': 'productivity',
   'zonk': 'medical',
   '52': 'entertainment',
-  'sn': 'entertainment'
+  'sn': 'entertainment',
+  'txt': 'productivity',
+  'bill': 'entertainment'
 };
 
 // Directories to exclude from tool detection

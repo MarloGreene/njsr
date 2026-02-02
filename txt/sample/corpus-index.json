@@ -1,0 +1,233 @@
+{
+  "id": "sample",
+  "title": "Sample Corpus",
+  "subtitle": "Demo texts for testing the Ministry of Grep engine",
+  "author": "Various",
+  "description": "A collection of sample texts for demonstrating search, filtering, and highlighting capabilities.",
+  "theme": "default",
+  "works": [
+    {
+      "file": "cicero-de-finibus.txt",
+      "title": "De Finibus Bonorum et Malorum",
+      "author": "Cicero",
+      "category": "philosophy",
+      "chunkCount": 5,
+      "wordCount": 147
+    },
+    {
+      "file": "hipster-ipsum.txt",
+      "title": "Hipster Ipsum",
+      "author": "Brooklyn Collective",
+      "category": "prose",
+      "chunkCount": 5,
+      "wordCount": 128
+    },
+    {
+      "file": "lorem-classic.txt",
+      "title": "Lorem Ipsum Classic",
+      "author": "Unknown",
+      "category": "prose",
+      "chunkCount": 5,
+      "wordCount": 152
+    },
+    {
+      "file": "poetry-sample.txt",
+      "title": "Sample Verses",
+      "author": "Anonymous Bard",
+      "category": "poetry",
+      "chunkCount": 5,
+      "wordCount": 125
+    },
+    {
+      "file": "tech-ipsum.txt",
+      "title": "Tech Ipsum",
+      "author": "Silicon Valley",
+      "category": "prose",
+      "chunkCount": 5,
+      "wordCount": 168
+    }
+  ],
+  "chunks": [
+    {
+      "id": "cicero-de-finibus-1",
+      "file": "cicero-de-finibus.txt",
+      "index": 1,
+      "text": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+      "searchText": "sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
+    },
+    {
+      "id": "cicero-de-finibus-2",
+      "file": "cicero-de-finibus.txt",
+      "index": 2,
+      "text": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+      "searchText": "nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit."
+    },
+    {
+      "id": "cicero-de-finibus-3",
+      "file": "cicero-de-finibus.txt",
+      "index": 3,
+      "text": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.",
+      "searchText": "at vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident."
+    },
+    {
+      "id": "cicero-de-finibus-4",
+      "file": "cicero-de-finibus.txt",
+      "index": 4,
+      "text": "Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.",
+      "searchText": "similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. et harum quidem rerum facilis est et expedita distinctio."
+    },
+    {
+      "id": "cicero-de-finibus-5",
+      "file": "cicero-de-finibus.txt",
+      "index": 5,
+      "text": "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.",
+      "searchText": "nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus."
+    },
+    {
+      "id": "hipster-ipsum-1",
+      "file": "hipster-ipsum.txt",
+      "index": 1,
+      "text": "Artisan vegan seitan, kombucha chia chambray hexagon. Pabst biodiesel drinking vinegar beard narwhal letterpress semiotics next level. Snackwave palo santo taiyaki lomo crucifix put a bird on it iPhone pitchfork.",
+      "searchText": "artisan vegan seitan, kombucha chia chambray hexagon. pabst biodiesel drinking vinegar beard narwhal letterpress semiotics next level. snackwave palo santo taiyaki lomo crucifix put a bird on it iphone pitchfork."
+    },
+    {
+      "id": "hipster-ipsum-2",
+      "file": "hipster-ipsum.txt",
+      "index": 2,
+      "text": "Sustainable echo park godard, four dollar toast locavore humblebrag vexillologist thundercats butcher ugh street art deep v typewriter succulents. Stumptown chartreuse post-ironic glossier man braid.",
+      "searchText": "sustainable echo park godard, four dollar toast locavore humblebrag vexillologist thundercats butcher ugh street art deep v typewriter succulents. stumptown chartreuse post-ironic glossier man braid."
+    },
+    {
+      "id": "hipster-ipsum-3",
+      "file": "hipster-ipsum.txt",
+      "index": 3,
+      "text": "Normcore single-origin coffee health goth flannel migas skateboard. YOLO chillwave kickstarter poke actually, tote bag readymade messenger bag. Drinking vinegar trust fund authentic, gentrify lo-fi pour-over praxis.",
+      "searchText": "normcore single-origin coffee health goth flannel migas skateboard. yolo chillwave kickstarter poke actually, tote bag readymade messenger bag. drinking vinegar trust fund authentic, gentrify lo-fi pour-over praxis."
+    },
+    {
+      "id": "hipster-ipsum-4",
+      "file": "hipster-ipsum.txt",
+      "index": 4,
+      "text": "Ethical cold-pressed mustache raclette. Meggings taxidermy polaroid iPhone truffaut praxis venmo cloud bread synth. Vape bespoke fashion axe brooklyn semiotics mixtape health goth.",
+      "searchText": "ethical cold-pressed mustache raclette. meggings taxidermy polaroid iphone truffaut praxis venmo cloud bread synth. vape bespoke fashion axe brooklyn semiotics mixtape health goth."
+    },
+    {
+      "id": "hipster-ipsum-5",
+      "file": "hipster-ipsum.txt",
+      "index": 5,
+      "text": "Kinfolk air plant cardigan selfies XOXO twee microdosing hell of. Tumblr shabby chic direct trade fanny pack shaman helvetica gluten-free hot chicken keytar.",
+      "searchText": "kinfolk air plant cardigan selfies xoxo twee microdosing hell of. tumblr shabby chic direct trade fanny pack shaman helvetica gluten-free hot chicken keytar."
+    },
+    {
+      "id": "lorem-classic-1",
+      "file": "lorem-classic.txt",
+      "index": 1,
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "searchText": "lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    },
+    {
+      "id": "lorem-classic-2",
+      "file": "lorem-classic.txt",
+      "index": 2,
+      "text": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "searchText": "duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    },
+    {
+      "id": "lorem-classic-3",
+      "file": "lorem-classic.txt",
+      "index": 3,
+      "text": "Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida.",
+      "searchText": "curabitur pretium tincidunt lacus. nulla gravida orci a odio. nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. integer in mauris eu nibh euismod gravida."
+    },
+    {
+      "id": "lorem-classic-4",
+      "file": "lorem-classic.txt",
+      "index": 4,
+      "text": "Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor ultrices risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.",
+      "searchText": "duis ac tellus et risus vulputate vehicula. donec lobortis risus a elit. etiam tempor ultrices risus. vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae."
+    },
+    {
+      "id": "lorem-classic-5",
+      "file": "lorem-classic.txt",
+      "index": 5,
+      "text": "Mauris lacinia sapien quis libero. Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh in quis justo.",
+      "searchText": "mauris lacinia sapien quis libero. nullam sit amet turpis elementum ligula vehicula consequat. morbi a ipsum. integer a nibh in quis justo."
+    },
+    {
+      "id": "poetry-sample-1",
+      "file": "poetry-sample.txt",
+      "index": 1,
+      "text": "In ancient times, when words held sway,\nAnd poets sang of night and day,\nThe muses whispered soft and low,\nOf truths that only hearts could know.",
+      "searchText": "in ancient times, when words held sway,\nand poets sang of night and day,\nthe muses whispered soft and low,\nof truths that only hearts could know."
+    },
+    {
+      "id": "poetry-sample-2",
+      "file": "poetry-sample.txt",
+      "index": 2,
+      "text": "Through verdant fields and mountains high,\nBeneath the ever-changing sky,\nWe wander seeking what is true,\nThe light that guides us, ever new.",
+      "searchText": "through verdant fields and mountains high,\nbeneath the ever-changing sky,\nwe wander seeking what is true,\nthe light that guides us, ever new."
+    },
+    {
+      "id": "poetry-sample-3",
+      "file": "poetry-sample.txt",
+      "index": 3,
+      "text": "O gentle reader, pause and think,\nHow life hangs by the slender link,\nOf moments passing, swift and fleet,\nWhere joy and sorrow often meet.",
+      "searchText": "o gentle reader, pause and think,\nhow life hangs by the slender link,\nof moments passing, swift and fleet,\nwhere joy and sorrow often meet."
+    },
+    {
+      "id": "poetry-sample-4",
+      "file": "poetry-sample.txt",
+      "index": 4,
+      "text": "The stars above keep silent watch,\nWhile time unfolds without a notch,\nEach second precious, never twice,\nA pearl beyond all mortal price.",
+      "searchText": "the stars above keep silent watch,\nwhile time unfolds without a notch,\neach second precious, never twice,\na pearl beyond all mortal price."
+    },
+    {
+      "id": "poetry-sample-5",
+      "file": "poetry-sample.txt",
+      "index": 5,
+      "text": "So take these words and hold them dear,\nThrough seasons turning, year by year,\nFor in the verse, a truth resides,\nThat in the heart forever bides.",
+      "searchText": "so take these words and hold them dear,\nthrough seasons turning, year by year,\nfor in the verse, a truth resides,\nthat in the heart forever bides."
+    },
+    {
+      "id": "tech-ipsum-1",
+      "file": "tech-ipsum.txt",
+      "index": 1,
+      "text": "Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.",
+      "searchText": "leverage agile frameworks to provide a robust synopsis for high level overviews. iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition."
+    },
+    {
+      "id": "tech-ipsum-2",
+      "file": "tech-ipsum.txt",
+      "index": 2,
+      "text": "Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment. Bring to the table win-win survival strategies to ensure proactive domination.",
+      "searchText": "organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment. bring to the table win-win survival strategies to ensure proactive domination."
+    },
+    {
+      "id": "tech-ipsum-3",
+      "file": "tech-ipsum.txt",
+      "index": 3,
+      "text": "At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.",
+      "searchText": "at the end of the day, going forward, a new normal that has evolved from generation x is on the runway heading towards a streamlined cloud solution. user generated content in real-time will have multiple touchpoints for offshoring."
+    },
+    {
+      "id": "tech-ipsum-4",
+      "file": "tech-ipsum.txt",
+      "index": 4,
+      "text": "Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps containers. Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.",
+      "searchText": "capitalize on low hanging fruit to identify a ballpark value added activity to beta test. override the digital divide with additional clickthroughs from devops containers. nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line."
+    },
+    {
+      "id": "tech-ipsum-5",
+      "file": "tech-ipsum.txt",
+      "index": 5,
+      "text": "Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail. Keeping your eye on the ball while performing a deep dive on the start-up mentality.",
+      "searchText": "podcasting operational change management inside of workflows to establish a framework. taking seamless key performance indicators offline to maximise the long tail. keeping your eye on the ball while performing a deep dive on the start-up mentality."
+    }
+  ],
+  "stats": {
+    "works": 5,
+    "chunks": 25,
+    "words": 720
+  },
+  "generated": "2026-02-02T17:05:32.297Z"
+}

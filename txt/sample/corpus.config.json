@@ -1,0 +1,10 @@
+{
+  "title": "Sample Corpus",
+  "subtitle": "Demo texts for testing the Ministry of Grep engine",
+  "author": "Various",
+  "description": "A collection of sample texts for demonstrating search, filtering, and highlighting capabilities.",
+  "textsDir": "texts",
+  "chunkBy": "paragraph",
+  "theme": "default",
+  "categories": ["prose", "poetry", "philosophy"]
+}

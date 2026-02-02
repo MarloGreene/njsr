@@ -10,6 +10,8 @@ This document provides a comprehensive overview of all the web-based tools and a
 
 - **acu** (acu/): Tool description needed
 
+- **The Bard's Library** (bill/): Shakespeare explorer with search, quotes, insults, and more
+
 - **Book of Mormon Reader** (bom/): A web-based scripture reader for The Book of Mormon
 
 - **Book of Mormon Random Image Viewer** (bomr/): Random reverent imagery from The Book of Mormon
@@ -89,6 +91,8 @@ This document provides a comprehensive overview of all the web-based tools and a
 - **Tarot Card Reader** (tarot/): Mystical card reading application
 
 - **tTracker** (tt/): Tinnitus episode logger
+
+- **Ministry of Grep** (txt/): Universal text search engine for classical and public-domain corpora
 
 - **Text Statistics** (wc/): Text analysis and counting tool
 

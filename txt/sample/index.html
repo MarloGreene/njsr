@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sample Corpus - Ministry of Grep</title>
+  <link rel="stylesheet" href="../engine/styles.css">
+  <style>
+    /* Corpus-specific overrides can go here */
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+
+  <div class="container">
+    <header class="header">
+      <h1 id="corpusTitle">Loading...</h1>
+      <p class="subtitle" id="corpusSubtitle"></p>
+    </header>
+
+    <div class="search-box">
+      <input
+        type="text"
+        class="search-input"
+        id="searchInput"
+        placeholder="Search the corpus..."
+        autocomplete="off"
+        autofocus
+      >
+    </div>
+
+    <div class="filters">
+      <select class="filter-select" id="workFilter">
+        <option value="">All Works</option>
+      </select>
+      <select class="filter-select" id="categoryFilter">
+        <option value="">All Categories</option>
+      </select>
+    </div>
+
+    <div class="stats-bar">
+      <span id="resultCount">Loading...</span>
+      <span id="searchTime"></span>
+    </div>
+
+    <div id="results" class="results">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Loading corpus...</p>
+      </div>
+    </div>
+
+    <div class="pagination" id="pagination" style="display: none;">
+      <button id="prevBtn" disabled>← Previous</button>
+      <span class="page-info" id="pageInfo">Page 1 of 1</span>
+      <button id="nextBtn" disabled>Next →</button>
+    </div>
+
+    <div class="keyboard-hints">
+      <kbd>/</kbd> focus search &bull;
+      <kbd>Esc</kbd> clear &bull;
+      <kbd>←</kbd> <kbd>→</kbd> pages &bull;
+      <kbd>t</kbd> toggle theme
+    </div>
+
+    <footer class="footer">
+      <p>Powered by <a href="../">Ministry of Grep</a> &bull; <a href="https://njsr.org">njsr.org</a></p>
+    </footer>
+  </div>
+
+  <script src="../engine/engine.js"></script>
+  <script>
+    // Initialize engine
+    const engine = new GrepEngine({
+      resultsPerPage: 25,
+      onResults: renderResults,
+      onLoading: (loading) => {
+        document.getElementById('results').innerHTML = loading
+          ? '<div class="loading"><div class="spinner"></div><p>Loading...</p></div>'
+          : '';
+      },
+      onError: (err) => {
+        document.getElementById('results').innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">⚠️</div>
+            <div class="empty-state-text">Error loading corpus: ${err.message}</div>
+          </div>
+        `;
+      }
+    });
+
+    // Theme handling
+    let currentTheme = localStorage.getItem('grep-theme') || 'default';
+
+    function setTheme(theme) {
+      currentTheme = theme;
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('grep-theme', theme);
+      document.getElementById('themeToggle').textContent =
+        theme === 'dark' ? '☀️' : theme === 'sepia' ? '📜' : '🌙';
+    }
+
+    function cycleTheme() {
+      const themes = ['default', 'dark', 'sepia'];
+      const nextIndex = (themes.indexOf(currentTheme) + 1) % themes.length;
+      setTheme(themes[nextIndex]);
+    }
+
+    // Render results
+    function renderResults({ results, total, page, totalPages, searchTime, query }) {
+      const resultsDiv = document.getElementById('results');
+      const paginationDiv = document.getElementById('pagination');
+
+      // Update stats
+      document.getElementById('resultCount').textContent =
+        total === 0 ? 'No results' :
+        query ? `${total.toLocaleString()} results` :
+        `${total.toLocaleString()} passages`;
+
+      if (searchTime) {
+        document.getElementById('searchTime').textContent = `${searchTime}ms`;
+      }
+
+      // Empty state
+      if (results.length === 0) {
+        resultsDiv.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">${query ? '🔍' : '📚'}</div>
+            <div class="empty-state-text">
+              ${query ? `No results for "${escapeHtml(query)}"` : 'Start typing to search'}
+            </div>
+          </div>
+        `;
+        paginationDiv.style.display = 'none';
+        return;
+      }
+
+      // Render results
+      resultsDiv.innerHTML = results.map(chunk => `
+        <div class="result-item" data-id="${chunk.id}">
+          <div class="result-meta">
+            <span class="result-file">${escapeHtml(chunk.file)}</span>
+            <span class="result-index">#${chunk.index}</span>
+          </div>
+          <div class="result-text">
+            ${query ? engine.highlight(chunk.text, query) : escapeHtml(chunk.text)}
+          </div>
+        </div>
+      `).join('');
+
+      // Pagination
+      if (totalPages > 1) {
+        paginationDiv.style.display = 'flex';
+        document.getElementById('pageInfo').textContent = `Page ${page + 1} of ${totalPages}`;
+        document.getElementById('prevBtn').disabled = page === 0;
+        document.getElementById('nextBtn').disabled = page >= totalPages - 1;
+      } else {
+        paginationDiv.style.display = 'none';
+      }
+    }
+
+    // Populate filters
+    function populateFilters() {
+      const workFilter = document.getElementById('workFilter');
+      const categoryFilter = document.getElementById('categoryFilter');
+
+      // Works
+      const works = engine.getWorks();
+      works.forEach(work => {
+        const option = document.createElement('option');
+        option.value = work.file;
+        option.textContent = work.title;
+        workFilter.appendChild(option);
+      });
+
+      // Categories
+      const categories = engine.getCategories();
+      categories.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+        categoryFilter.appendChild(option);
+      });
+    }
+
+    // Update header
+    function updateHeader() {
+      const info = engine.getInfo();
+      if (info) {
+        document.getElementById('corpusTitle').textContent = info.title;
+        document.getElementById('corpusSubtitle').textContent = info.subtitle;
+        document.title = `${info.title} - Ministry of Grep`;
+      }
+    }
+
+    // Escape HTML
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Event listeners
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      engine.search(e.target.value);
+    });
+
+    document.getElementById('workFilter').addEventListener('change', (e) => {
+      engine.setFilter('work', e.target.value);
+    });
+
+    document.getElementById('categoryFilter').addEventListener('change', (e) => {
+      engine.setFilter('category', e.target.value);
+    });
+
+    document.getElementById('prevBtn').addEventListener('click', () => engine.prevPage());
+    document.getElementById('nextBtn').addEventListener('click', () => engine.nextPage());
+    document.getElementById('themeToggle').addEventListener('click', cycleTheme);
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Ignore if in input
+      if (e.target.tagName === 'INPUT') {
+        if (e.key === 'Escape') {
+          e.target.value = '';
+          engine.searchNow('');
+          e.target.blur();
+        }
+        return;
+      }
+
+      switch (e.key) {
+        case '/':
+          e.preventDefault();
+          document.getElementById('searchInput').focus();
+          break;
+        case 't':
+          cycleTheme();
+          break;
+        case 'ArrowLeft':
+          engine.prevPage();
+          break;
+        case 'ArrowRight':
+          engine.nextPage();
+          break;
+      }
+    });
+
+    // Initialize
+    async function init() {
+      setTheme(currentTheme);
+
+      try {
+        await engine.loadCorpus('corpus-index.json');
+        updateHeader();
+        populateFilters();
+        engine.searchNow('');
+      } catch (err) {
+        console.error('Failed to initialize:', err);
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Bard's Library - Shakespeare Explorer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme (t)">🌙</button>
+      <h1>📜 The Bard's Library</h1>
+      <p class="tagline">Explore the Complete Works of William Shakespeare</p>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab active" data-view="search">🔍 Search</button>
+      <button class="tab" data-view="browse">📚 Browse</button>
+      <button class="tab" data-view="quote">✨ Random Quote</button>
+      <button class="tab" data-view="insult">🎭 Insult Generator</button>
+      <button class="tab" data-view="names">👤 Name Generator</button>
+      <button class="tab" data-view="stats">📊 Stats</button>
+    </nav>
+
+    <!-- Search View -->
+    <section id="search-view" class="view active">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search all of Shakespeare..." autofocus>
+        <span id="resultCount"></span>
+      </div>
+      <div class="filters">
+        <select id="workFilter">
+          <option value="">All Works</option>
+        </select>
+        <select id="typeFilter">
+          <option value="">All Types</option>
+          <option value="tragedy">Tragedies</option>
+          <option value="comedy">Comedies</option>
+          <option value="history">Histories</option>
+          <option value="poetry">Poetry</option>
+        </select>
+        <select id="sortOrder">
+          <option value="relevance">Relevance</option>
+          <option value="work">By Work</option>
+        </select>
+      </div>
+      <div id="searchResults" class="results"></div>
+      <div id="pagination" class="pagination" style="display:none;">
+        <button id="prevPage">← Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextPage">Next →</button>
+      </div>
+    </section>
+
+    <!-- Browse View -->
+    <section id="browse-view" class="view">
+      <div class="browse-nav">
+        <select id="browseWork" class="browse-select">
+          <option value="">Select a work...</option>
+        </select>
+      </div>
+      <div id="browseContent" class="browse-content">
+        <div class="browse-welcome">
+          <p>Select a play or poem above to start reading.</p>
+          <div class="work-grid" id="workGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Random Quote View -->
+    <section id="quote-view" class="view">
+      <div class="quote-display">
+        <blockquote id="quoteText"></blockquote>
+        <cite id="quoteCite"></cite>
+      </div>
+      <div class="quote-actions">
+        <button id="newQuoteBtn" class="primary-btn">✨ New Quote</button>
+        <button id="copyQuoteBtn" class="secondary-btn">📋 Copy</button>
+      </div>
+      <div class="quote-history">
+        <h3>Recent Quotes</h3>
+        <div id="quoteHistory"></div>
+      </div>
+    </section>
+
+    <!-- Insult Generator View -->
+    <section id="insult-view" class="view">
+      <div class="insult-intro">
+        <p>Generate authentic Shakespearean insults!</p>
+      </div>
+      <div class="insult-display">
+        <span class="insult-prefix">Thou</span>
+        <span class="insult-word" id="insult1">???</span>
+        <span class="insult-word" id="insult2">???</span>
+        <span class="insult-word" id="insult3">???</span>
+        <span class="insult-suffix">!</span>
+      </div>
+      <div class="insult-actions">
+        <button id="newInsultBtn" class="primary-btn">🎭 Generate Insult</button>
+        <button id="copyInsultBtn" class="secondary-btn">📋 Copy</button>
+      </div>
+      <div class="insult-columns">
+        <div class="insult-col">
+          <h4>Column 1</h4>
+          <div id="col1Words" class="word-list"></div>
+        </div>
+        <div class="insult-col">
+          <h4>Column 2</h4>
+          <div id="col2Words" class="word-list"></div>
+        </div>
+        <div class="insult-col">
+          <h4>Column 3</h4>
+          <div id="col3Words" class="word-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Name Generator View -->
+    <section id="names-view" class="view">
+      <div class="name-intro">
+        <p>Generate a Shakespearean character name for your next story!</p>
+      </div>
+      <div class="name-display">
+        <span id="generatedName">Click to generate...</span>
+      </div>
+      <div class="name-actions">
+        <button id="newNameBtn" class="primary-btn">👤 Generate Name</button>
+        <button id="copyNameBtn" class="secondary-btn">📋 Copy</button>
+      </div>
+      <div class="name-options">
+        <label><input type="checkbox" id="includeTitle" checked> Include title</label>
+        <label><input type="checkbox" id="includePlace" checked> Include place</label>
+      </div>
+      <div class="saved-names">
+        <h3>Saved Names</h3>
+        <div id="savedNamesList"></div>
+      </div>
+    </section>
+
+    <!-- Stats View -->
+    <section id="stats-view" class="view">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-number" id="statWorks">-</span>
+          <span class="stat-label">Works</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statWords">-</span>
+          <span class="stat-label">Words</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statLines">-</span>
+          <span class="stat-label">Lines</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statChunks">-</span>
+          <span class="stat-label">Passages</span>
+        </div>
+      </div>
+      <div class="works-by-type">
+        <h3>Works by Type</h3>
+        <div id="typeBreakdown" class="type-breakdown"></div>
+      </div>
+      <div class="word-cloud-section">
+        <h3>Common Words</h3>
+        <p class="cloud-note">Top words across all works (excluding common words)</p>
+        <div id="wordCloud" class="word-cloud"></div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Text from <a href="https://www.gutenberg.org/ebooks/100" target="_blank">Project Gutenberg</a> &bull;
+         Built with love at <a href="https://njsr.org">njsr.org</a></p>
+    </footer>
+  </div>
+
+  <div id="loading">
+    <div class="spinner"></div>
+    <p>Loading Shakespeare...</p>
+  </div>
+
+  <div class="keyboard-help" id="keyboardHelp">
+    <h4>Keyboard Shortcuts</h4>
+    <ul>
+      <li><kbd>/</kbd> Focus search</li>
+      <li><kbd>1-6</kbd> Switch tabs</li>
+      <li><kbd>←</kbd><kbd>→</kbd> Pages / tabs</li>
+      <li><kbd>r</kbd> Random (quote/insult/name)</li>
+      <li><kbd>t</kbd> Toggle theme</li>
+      <li><kbd>?</kbd> This help</li>
+    </ul>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

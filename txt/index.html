@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ministry of Grep - Text Search Cathedral</title>
+  <link rel="stylesheet" href="engine/styles.css">
+  <style>
+    .hero {
+      text-align: center;
+      padding: var(--spacing-xxl) 0;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 200;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .hero .icon {
+      font-size: 4rem;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto var(--spacing-xl);
+      line-height: 1.6;
+    }
+
+    .corpora-section {
+      margin-top: var(--spacing-xl);
+    }
+
+    .corpora-section h2 {
+      text-align: center;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .corpus-card {
+      display: block;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .corpus-card:hover {
+      box-shadow: 0 4px 16px var(--shadow);
+      transform: translateY(-2px);
+    }
+
+    .corpus-card h3 {
+      color: var(--accent-dark);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .corpus-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .corpus-stats {
+      display: flex;
+      gap: var(--spacing-md);
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    .corpus-stats span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .no-corpora {
+      text-align: center;
+      padding: var(--spacing-xxl);
+      color: var(--text-secondary);
+    }
+
+    .setup-instructions {
+      background: var(--bg-secondary);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      margin-top: var(--spacing-xl);
+    }
+
+    .setup-instructions h3 {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .setup-instructions pre {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: var(--spacing-md);
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+    }
+
+    .setup-instructions code {
+      font-family: var(--font-mono);
+    }
+
+    .setup-instructions ol {
+      margin: var(--spacing-md) 0;
+      padding-left: var(--spacing-lg);
+    }
+
+    .setup-instructions li {
+      margin-bottom: var(--spacing-sm);
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+
+  <div class="container">
+    <div class="hero">
+      <div class="icon">📜</div>
+      <h1>Ministry of Grep</h1>
+      <p class="tagline">
+        A sacred library of searchable texts. One engine, many facades.
+        Drop in your corpus, and let the words flow.
+      </p>
+    </div>
+
+    <div class="corpora-section">
+      <h2>Available Corpora</h2>
+      <div id="corporaList">
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>Loading manifest...</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-instructions" id="setupInstructions" style="display: none;">
+      <h3>Adding a New Corpus</h3>
+      <ol>
+        <li>Create a new directory under <code>/txt/</code> (e.g., <code>/txt/shakespeare/</code>)</li>
+        <li>Add a <code>corpus.config.json</code> with title, author, and chunking rules</li>
+        <li>Add your text files to a <code>texts/</code> subdirectory</li>
+        <li>Run the preprocessor to generate the search index:</li>
+      </ol>
+      <pre>node txt/engine/preprocess.js</pre>
+      <p style="margin-top: var(--spacing-md); color: var(--text-secondary);">
+        See the <code>/txt/sample/</code> corpus for a working example.
+      </p>
+    </div>
+
+    <footer class="footer">
+      <p>Ministry of Grep &bull; <a href="https://njsr.org">njsr.org</a> &bull; MIT License</p>
+    </footer>
+  </div>
+
+  <script>
+    // Theme handling
+    let currentTheme = localStorage.getItem('grep-theme') || 'default';
+
+    function setTheme(theme) {
+      currentTheme = theme;
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('grep-theme', theme);
+      document.getElementById('themeToggle').textContent =
+        theme === 'dark' ? '☀️' : theme === 'sepia' ? '📜' : '🌙';
+    }
+
+    function cycleTheme() {
+      const themes = ['default', 'dark', 'sepia'];
+      const nextIndex = (themes.indexOf(currentTheme) + 1) % themes.length;
+      setTheme(themes[nextIndex]);
+    }
+
+    document.getElementById('themeToggle').addEventListener('click', cycleTheme);
+    setTheme(currentTheme);
+
+    // Keyboard shortcut for theme
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 't' && e.target.tagName !== 'INPUT') {
+        cycleTheme();
+      }
+    });
+
+    // Load manifest
+    async function loadManifest() {
+      const listDiv = document.getElementById('corporaList');
+      const instructionsDiv = document.getElementById('setupInstructions');
+
+      try {
+        const response = await fetch('manifest.json');
+        if (!response.ok) throw new Error('Manifest not found');
+
+        const manifest = await response.json();
+
+        if (!manifest.corpora || manifest.corpora.length === 0) {
+          listDiv.innerHTML = `
+            <div class="no-corpora">
+              <p>No corpora found. Run the preprocessor to index your texts.</p>
+            </div>
+          `;
+          instructionsDiv.style.display = 'block';
+          return;
+        }
+
+        listDiv.innerHTML = manifest.corpora.map(corpus => `
+          <a href="${corpus.id}/" class="corpus-card">
+            <h3>${escapeHtml(corpus.title)}</h3>
+            ${corpus.subtitle ? `<p class="corpus-subtitle">${escapeHtml(corpus.subtitle)}</p>` : ''}
+            <div class="corpus-stats">
+              <span>📚 ${corpus.works} work${corpus.works !== 1 ? 's' : ''}</span>
+              <span>📝 ${corpus.chunks.toLocaleString()} passages</span>
+              <span>✍️ ${corpus.words.toLocaleString()} words</span>
+            </div>
+          </a>
+        `).join('');
+
+        // Show instructions anyway for adding more
+        instructionsDiv.style.display = 'block';
+
+      } catch (err) {
+        listDiv.innerHTML = `
+          <div class="no-corpora">
+            <p>No manifest found. Run the preprocessor first:</p>
+            <pre style="margin-top: var(--spacing-md); text-align: left; display: inline-block;">node txt/engine/preprocess.js</pre>
+          </div>
+        `;
+        instructionsDiv.style.display = 'block';
+      }
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    loadManifest();
+  </script>
+</body>
+</html>
