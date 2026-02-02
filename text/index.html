@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codex - Text Explorer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <h1 class="logo">Codex</h1>
+        <span class="tagline">Text Explorer</span>
+      </div>
+      <div class="header-right">
+        <button class="icon-btn" id="statsToggle" title="Statistics">📊</button>
+        <button class="icon-btn" id="themeToggle" title="Toggle theme">🌙</button>
+        <button class="icon-btn" id="helpToggle" title="Keyboard shortcuts">⌨️</button>
+      </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search across selected texts..." autocomplete="off">
+      <span class="search-hint" id="searchHint"></span>
+    </div>
+
+    <!-- File Selector Row -->
+    <div class="file-row">
+      <div class="file-grid" id="fileGrid">
+        <!-- Files rendered by JS -->
+      </div>
+      <div class="file-drop" id="fileDrop">
+        <span class="drop-icon">📄</span>
+        <span class="drop-text">Drop .txt file</span>
+      </div>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="filters">
+      <button class="filter-btn active" data-category="all">All</button>
+      <button class="filter-btn" data-category="shakespeare">🎭 Shakespeare</button>
+      <button class="filter-btn" data-category="scripture">📖 Scripture</button>
+      <button class="filter-btn" data-category="user">👤 My Files</button>
+    </div>
+
+    <!-- Stats Panel (collapsible) -->
+    <div class="stats-panel hidden" id="statsPanel">
+      <div class="stats-header">
+        <h3>Statistics</h3>
+        <div class="stats-actions">
+          <button class="stat-btn" id="wordCloudBtn">Word Cloud</button>
+          <button class="stat-btn" id="frequencyBtn">Frequency</button>
+          <button class="stat-btn" id="randomBtn">Random Verse</button>
+        </div>
+      </div>
+      <div class="stats-content" id="statsContent">
+        <p class="stats-placeholder">Select texts and click a stats option above.</p>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Results View -->
+      <div class="results-view" id="resultsView">
+        <div class="results-header" id="resultsHeader">
+          <span id="resultCount">Select texts to begin exploring</span>
+        </div>
+        <div class="results-list" id="resultsList">
+          <div class="empty-state">
+            <div class="empty-icon">📚</div>
+            <p>Click on texts above to select them, then search or explore stats.</p>
+          </div>
+        </div>
+        <div class="pagination hidden" id="pagination">
+          <button id="prevPage">← Previous</button>
+          <span id="pageInfo">Page 1 of 1</span>
+          <button id="nextPage">Next →</button>
+        </div>
+      </div>
+
+      <!-- Reader View (full text) -->
+      <div class="reader-view hidden" id="readerView">
+        <div class="reader-header">
+          <button class="back-btn" id="backToResults">← Back to results</button>
+          <h2 id="readerTitle">Title</h2>
+          <div class="reader-actions">
+            <button class="icon-btn" id="readerPrev" title="Previous chunk">⬆️</button>
+            <button class="icon-btn" id="readerNext" title="Next chunk">⬇️</button>
+          </div>
+        </div>
+        <div class="reader-content" id="readerContent">
+          <!-- Full text content -->
+        </div>
+      </div>
+    </main>
+
+    <!-- Keyboard Help Modal -->
+    <div class="modal hidden" id="helpModal">
+      <div class="modal-content">
+        <h3>Keyboard Shortcuts</h3>
+        <div class="shortcut-grid">
+          <kbd>/</kbd><span>Focus search</span>
+          <kbd>Esc</kbd><span>Clear / close</span>
+          <kbd>t</kbd><span>Toggle theme</span>
+          <kbd>s</kbd><span>Toggle stats</span>
+          <kbd>r</kbd><span>Random verse</span>
+          <kbd>←</kbd><span>Previous page</span>
+          <kbd>→</kbd><span>Next page</span>
+          <kbd>1-9</kbd><span>Toggle file selection</span>
+        </div>
+        <button class="close-btn" id="closeHelp">Close</button>
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Loading Codex...</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

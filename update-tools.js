@@ -56,7 +56,8 @@ const toolDescriptions = {
   '52': '52 - Random playing card drawer',
   'sn': 'Security Now! Explorer - Search and explore 20 years of Security Now! podcast transcripts',
   'txt': 'Ministry of Grep - Universal text search engine for classical and public-domain corpora',
-  'bill': "The Bard's Library - Shakespeare explorer with search, quotes, insults, and more"
+  'bill': "The Bard's Library - Shakespeare explorer with search, quotes, insults, and more",
+  'text': 'Codex - Unified text explorer with multi-file search, stats, and drag-drop custom texts'
 };
 
 // Tool categories for sorting by kind
@@ -104,7 +105,8 @@ const toolCategories = {
   '52': 'entertainment',
   'sn': 'entertainment',
   'txt': 'productivity',
-  'bill': 'entertainment'
+  'bill': 'entertainment',
+  'text': 'productivity'
 };
 
 // Directories to exclude from tool detection

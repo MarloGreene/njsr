@@ -90,6 +90,8 @@ This document provides a comprehensive overview of all the web-based tools and a
 
 - **Tarot Card Reader** (tarot/): Mystical card reading application
 
+- **Codex** (text/): Unified text explorer with multi-file search, stats, and drag-drop custom texts
+
 - **tTracker** (tt/): Tinnitus episode logger
 
 - **Ministry of Grep** (txt/): Universal text search engine for classical and public-domain corpora
