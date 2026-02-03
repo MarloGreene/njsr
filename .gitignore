@@ -61,3 +61,6 @@ billmd/
 # Codex generated index (users generate locally)
 text/codex-data.json
 text/txt/
+
+# Private tools (not for public distribution)
+scea/
